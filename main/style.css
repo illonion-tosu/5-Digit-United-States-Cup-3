@@ -1,6 +1,6 @@
 :root {
-    --redColor: #f46262;
-    --blueColor: #6379db;
+    --redColor: rgb(244, 98, 98);
+    --blueColor: rgb(99, 121, 219);
 }
 
 @font-face {
@@ -83,6 +83,7 @@
 .currentScore {
     position: absolute; top: 873px;
     font-family: "Bicyclette"; font-size: 48px; font-weight: 800;
+    transition: 500ms ease-in-out;
 }
 #redCurrentScore {
     left: 25%; 
@@ -98,6 +99,7 @@
 .currentUnderline {
     position: absolute; top: 932px; 
     width: 294px; height: 7px;
+    transition: 500ms ease-in-out;
 }
 #redCurrentUnderline {
     left: 25%;
@@ -115,6 +117,7 @@
     transform: translateX(-50%);
     font-family: "Bicyclette"; 
     color: white;
+    transition: 500ms ease-in-out;
 }
 #scoreDifferenceNumber {
     top: 873px;
