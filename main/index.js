@@ -46,6 +46,23 @@ const mapInformationSongProgressCircleEl = document.getElementById("mapInformati
 // IPC State 
 let currentIPCState
 
+// Current map information
+// Left container
+const mapInformationLeftContainerMapBackgroundEl = document.getElementById("mapInformationLeftContainerMapBackground")
+const mapInformationLeftContainerMapperImageEl = document.getElementById("mapInformationLeftContainerMapperImage")
+// Right container - Artist / Song Name / Difficulty / Mapper
+const mapInformationRightSongNameDifficultyEl = document.getElementById("mapInformationRightSongNameDifficulty")
+const mapInformationRightArtistEl = document.getElementById("mapInformationRightArtist")
+const mapInformationRightMappedByNameEl = document.getElementById("mapInformationRightMappedByName")
+// Right container - stats
+const mapInformationRightSREl = document.getElementById("mapInformationRightSR")
+const mapInformationRightBPMEl = document.getElementById("mapInformationRightBPM")
+const mapInformationRightCSEl = document.getElementById("mapInformationRightCS")
+const mapInformationRightAREl = document.getElementById("mapInformationRightAR")
+const mapInformationRightODEl = document.getElementById("mapInformationRightOD")
+let currentId, currentMd5
+let foundMapInMappool = false
+
 socket.onmessage = async (event) => {
     const data = JSON.parse(event.data)
     console.log(data)
@@ -184,6 +201,64 @@ socket.onmessage = async (event) => {
         const currentTimeDeltaPercentage = data.menu.bm.time.current / data.menu.bm.time.mp3 * 95
         mapInformationSongProgressCircleEl.style.left = `${currentTimeDeltaPercentage}%`
     }
+
+    // Beatmap changes
+    if (currentId !== data.menu.bm.id || currentMd5 !== data.menu.bm.md5) {
+        currentId = data.menu.bm.id
+        currentMd5 = data.menu.bm.md5
+        foundMapInMappool = false
+
+        // Left side changes - Background Image and Mapper Profile Picture
+        mapInformationLeftContainerMapBackgroundEl.style.backgroundImage = `url("https://assets.ppy.sh/beatmaps/${data.menu.bm.set}/covers/cover.jpg")`
+        let request = new XMLHttpRequest();
+        request.open("GET",`https://osu.ppy.sh/api/get_user?k=0501452af051a7c75928ab9775d5381bd4745a08&u=${data.menu.bm.metadata.mapper}`,false)
+        request.onload = function() {
+            let userData = JSON.parse(this.response)[0]
+            if (request.status == 200) {
+                mapInformationLeftContainerMapperImageEl.style.backgroundImage = `url("https://a.ppy.sh/${userData.user_id}")`
+            }
+        }
+        request.send()
+
+        // Right hand side - Artist / Title / Difficulty / Mapper
+        mapInformationRightSongNameDifficultyEl.innerText = `${data.menu.bm.metadata.title} [${data.menu.bm.metadata.difficulty}]`
+        mapInformationRightArtistEl.innerText = `${data.menu.bm.metadata.artist}`
+        mapInformationRightMappedByNameEl.innerText = data.menu.bm.metadata.mapper
+        addRemoveTextWrap(mapInformationRightSongNameDifficultyEl)
+        addRemoveTextWrap(mapInformationRightArtistEl)
+
+        // Right hand side - backgrounds
+        for (const stylesheet of document.styleSheets) {
+            try {
+                for (const rule of stylesheet.cssRules || stylesheet.rules) {
+                    if (rule.selectorText && rule.selectorText.includes('.mapInformationRightContainers::before')) {
+                        rule.style.backgroundImage = `url("https://assets.ppy.sh/beatmaps/${data.menu.bm.set}/covers/cover.jpg")`
+                    }
+                }
+            } catch (e) {
+                console.error(e)
+            }
+        }
+    }
+
+    // Mappool stats
+    if (!foundMapInMappool) {
+        mapInformationRightSREl.innerText = `SR: ${data.menu.bm.stats.SR}`
+        mapInformationRightCSEl.innerText = `CS: ${data.menu.bm.stats.CS}`
+        mapInformationRightAREl.innerText = `AR: ${data.menu.bm.stats.AR}`
+        mapInformationRightODEl.innerText = `OD: ${data.menu.bm.stats.OD}`
+        if (data.menu.bm.stats.BPM.min === data.menu.bm.stats.BPM.max) {
+            mapInformationRightBPMEl.innerText = `BPM: ${data.menu.bm.stats.BPM.min}`
+        } else {
+            mapInformationRightBPMEl.innerText = `BPM: ${data.menu.bm.stats.BPM.min}-${data.menu.bm.stats.BPM.max} (${data.menu.bm.stats.BPM.common})`
+        }
+    }   
+}
+
+// Add / Remove Wrap
+function addRemoveTextWrap(element) {
+    if (element.getBoundingClientRect().width > 372) element.classList.add("mapInformationRightWrap")
+    else element.classList.remove("mapInformationRightWrap")
 }
 
 // Map Information Right Container Transitions
@@ -191,10 +266,8 @@ const mapInformationRightSongNameDifficultyWrapperEl = document.getElementById("
 const mapInformationRightMappedByTextEl = document.getElementById("mapInformationRightMappedByText")
 const mapInformationRightSRandBPMEl = document.getElementById("mapInformationRightSRandBPM")
 const mapInformationRightArtistWrapperEl = document.getElementById("mapInformationRightArtistWrapper")
-const mapInformationRightMappedByNameEl = document.getElementById("mapInformationRightMappedByName")
 const mapInformationRightCSandARandODEl = document.getElementById("mapInformationRightCSandARandOD")
 const mapInformationLeftContainerEl = document.getElementById("mapInformationLeftContainer")
-const mapInformationLeftContainerMapperImageEl = document.getElementById("mapInformationLeftContainerMapperImage")
 const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
 
 async function moveElements(moveOutElement1, moveOutElement2, moveInElement1, moveInElement2, stationaryElement1, stationaryElement2) {
