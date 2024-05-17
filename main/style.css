@@ -137,6 +137,7 @@
     width: 170px; height: 102px;
     border-radius: 3px;
     overflow: hidden;
+    transition: 750ms ease-in-out;
 }
 #mapInformationLeftContainer > * {
     position: absolute;
@@ -153,6 +154,7 @@
     width: 102px;
     background-image: url("https://a.ppy.sh/8306102");
     opacity: 1;
+    transition: 750ms ease-in-out;
 }
 
 /* Map Information Right Containers */
@@ -195,11 +197,38 @@
 .mapInformationRightTexts { 
     position: absolute; left: 11px; 
     width: 372px; height: 22.5px;
+    overflow: hidden;
 }
 #mapInformationRightTopText { top: 9px; }
 #mapInformationRightBottomText { bottom: 9px; }
+#mapInformationRightSongNameDifficultyWrapper, #mapInformationRightArtistWrapper, #mapInformationRightMappedByText, #mapInformationRightMappedByName {
+    position: absolute; top: 0;
+    overflow: hidden;
+    width: 372px; height: 22.5px;
+    transition: 750ms ease-in-out;
+}
+#mapInformationRightMappedByText, #mapInformationRightMappedByName {
+    top: -22.5px;
+    opacity: 0;
+}
+#mapInformationRightSongNameDifficulty {
+	display: inline-block;
+	width: max-content;
+}
+.mapInformationRightWrap {
+    animation: mapInformationRightWrap 12s infinite linear forwards
+}
+@keyframes mapInformationRightWrap {
+    0% { transform: translateX(0%) }
+    20% { transform: translateX(0%) }
+    80% { transform: translateX(calc(-100% + 372px)); }
+    100% { transform: translateX(calc(-100% + 372px)); }
+}
 /* Map Information Stats */
-#mapInformationRightSRandBPM, #mapInformationRightCSandARandOD { display: flex; }
+#mapInformationRightSRandBPM, #mapInformationRightCSandARandOD { 
+    position: absolute; display: flex; top: -22.5px;
+    transition: 750ms ease-in-out;
+}
 .mapInformationRightStatsFirstElement { width: 105px; }
 .mapInformationRightStatsSecondElement { width: 150px; }
 
@@ -231,4 +260,5 @@
     width: 12px; height: 12px;
     border-radius: 12px;
     background-color: white;
+    transition: 50ms linear;
 }

@@ -32,7 +32,7 @@ const scoreAnimation = {
     scoreDifferenceNumber: new CountUp(scoreDifferenceNumberEl, 0, 0, 0, 0.2, { useEasing: true, useGrouping: true, separator: ", ", decimal: "." })
 }
 
-// RGBs
+// Team RGBs
 const redTeamRedColourInverse = 255 - 244
 const redTeamGreenColourInverse = 255 - 98
 const redTeamBlueColourInverse = 255 - 98
@@ -40,8 +40,15 @@ const blueTeamRedColourInverse = 255 - 99
 const blueTeamGreenColourInverse = 255 - 121
 const blueTeamBlueColourInverse = 255 - 219
 
+// Song Progress Circle
+const mapInformationSongProgressCircleEl = document.getElementById("mapInformationSongProgressCircle")
+
+// IPC State 
+let currentIPCState
+
 socket.onmessage = async (event) => {
     const data = JSON.parse(event.data)
+    console.log(data)
 
     // TODO: Flags
     // Team Name
@@ -154,4 +161,133 @@ socket.onmessage = async (event) => {
             scoreDifferenceNumberEl.style.color = `rgb(${255 - currentDifference * blueTeamRedColourInverse}, ${255 - currentDifference * blueTeamGreenColourInverse}, ${255 - currentDifference * blueTeamBlueColourInverse})`
         }
     }
+
+    // IPC State
+    if (currentIPCState !== data.tourney.manager.ipcState) {
+        currentIPCState = data.tourney.manager.ipcState
+    }
+
+    // Gameplay Song Progress Circle
+    if (currentIPCState === 2 || currentIPCState === 3) {
+        if (data.menu.bm.time.firstObj > data.menu.bm.time.current) {
+            mapInformationSongProgressCircleEl.style.left = "0%"
+        } else if (data.menu.bm.time.full < data.menu.bm.time.current) {
+            mapInformationSongProgressCircleEl.style.left = "95%"
+        } else if (data.menu.bm.time.firstObj <= data.menu.bm.time.current &&
+            data.menu.bm.time.full >= data.menu.bm.time.current) {
+            const timeDifference = data.menu.bm.time.full - data.menu.bm.time.firstObj
+            const currentTime = data.menu.bm.time.current - data.menu.bm.time.firstObj
+            const currentTimeDeltaPercentage = currentTime / timeDifference * 95
+            mapInformationSongProgressCircleEl.style.left = `${currentTimeDeltaPercentage}%`
+        }
+    } else {
+        const currentTimeDeltaPercentage = data.menu.bm.time.current / data.menu.bm.time.mp3 * 95
+        mapInformationSongProgressCircleEl.style.left = `${currentTimeDeltaPercentage}%`
+    }
 }
+
+// Map Information Right Container Transitions
+const mapInformationRightSongNameDifficultyWrapperEl = document.getElementById("mapInformationRightSongNameDifficultyWrapper")
+const mapInformationRightMappedByTextEl = document.getElementById("mapInformationRightMappedByText")
+const mapInformationRightSRandBPMEl = document.getElementById("mapInformationRightSRandBPM")
+const mapInformationRightArtistWrapperEl = document.getElementById("mapInformationRightArtistWrapper")
+const mapInformationRightMappedByNameEl = document.getElementById("mapInformationRightMappedByName")
+const mapInformationRightCSandARandODEl = document.getElementById("mapInformationRightCSandARandOD")
+const mapInformationLeftContainerEl = document.getElementById("mapInformationLeftContainer")
+const mapInformationLeftContainerMapperImageEl = document.getElementById("mapInformationLeftContainerMapperImage")
+const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
+
+// Move Maapped By In
+async function moveMappedByIn() {
+    // Move mapped by AND stats into the top, and opacity - 0
+    mapInformationRightSRandBPMEl.style.opacity = 0
+    mapInformationRightCSandARandODEl.style.opacity = 0
+    mapInformationRightMappedByTextEl.style.opacity = 0
+    mapInformationRightMappedByNameEl.style.opacity = 0
+    await sleep(750)
+    // Move everything to correct positions
+    mapInformationRightSRandBPMEl.style.top = "-22.5px"
+    mapInformationRightCSandARandODEl.style.top = "-22.5px"
+    mapInformationRightMappedByTextEl.style.top = "22.5px"
+    mapInformationRightMappedByNameEl.style.top = "22.5px"
+    await sleep(750)
+    // Mapped by information opacity open
+    mapInformationRightMappedByTextEl.style.opacity = 1
+    mapInformationRightMappedByNameEl.style.opacity = 1
+    await sleep(750)
+    // Make the move
+    mapInformationRightSongNameDifficultyWrapperEl.style.top = "-22.5px"
+    mapInformationRightArtistWrapperEl.style.top = "-22.5px"
+    mapInformationRightMappedByTextEl.style.top = "0px"
+    mapInformationRightMappedByNameEl.style.top = "0px"
+    // Left container
+    mapInformationLeftContainerEl.style.width = "102px"
+    mapInformationLeftContainerMapperImageEl.style.opacity = 1
+}
+
+// Move Stats in
+async function moveStatsIn() {
+    // Move stats and song name / difficulty / artist into the top, and opacity - 0
+    mapInformationRightSRandBPMEl.style.opacity = 0
+    mapInformationRightCSandARandODEl.style.opacity = 0
+    mapInformationRightSongNameDifficultyWrapperEl.style.opacity = 0
+    mapInformationRightArtistWrapperEl.style.opacity = 0
+    await sleep(750)
+    // Move everything into correct positions
+    mapInformationRightSRandBPMEl.style.top = "22.5px"
+    mapInformationRightCSandARandODEl.style.top = "22.5px"
+    mapInformationRightSongNameDifficultyWrapperEl.style.top = "-22.5px"
+    mapInformationRightArtistWrapperEl.style.top = "-22.5px"
+    await sleep(750)
+    // Stats opacity = 1
+    mapInformationRightSRandBPMEl.style.opacity = 1
+    mapInformationRightCSandARandODEl.style.opacity = 1
+    await sleep(750)
+    // Make the move
+    mapInformationRightMappedByTextEl.style.top = "-22.5px"
+    mapInformationRightMappedByNameEl.style.top = "-22.5px"
+    mapInformationRightSRandBPMEl.style.top = "0px"
+    mapInformationRightCSandARandODEl.style.top = "0px"
+    // Left container
+    mapInformationLeftContainerEl.style.width = "170px"
+    mapInformationLeftContainerMapperImageEl.style.opacity = 0
+}
+
+// Move song details in
+async function moveMapSongDetailsIn() {
+    // Move map song details and mapped by details into invisible
+    mapInformationRightMappedByTextEl.style.opacity = 0
+    mapInformationRightMappedByNameEl.style.opacity = 0
+    mapInformationRightSongNameDifficultyWrapperEl.style.opacity = 0
+    mapInformationRightArtistWrapperEl.style.opacity = 0
+    await sleep(750)
+    // Move everythig into correct positions
+    mapInformationRightMappedByTextEl.style.top = "-22.5px"
+    mapInformationRightMappedByNameEl.style.top = "-22.5px"
+    mapInformationRightSongNameDifficultyWrapperEl.style.top = "22.5px"
+    mapInformationRightArtistWrapperEl.style.top = "22.5px"
+    await sleep(750)
+    // Song Details opacity
+    mapInformationRightSongNameDifficultyWrapperEl.style.opacity = 1
+    mapInformationRightArtistWrapperEl.style.opacity = 1
+    // Make the move
+    mapInformationRightSRandBPMEl.style.top = "-22.5px"
+    mapInformationRightCSandARandODEl.style.top = "-22.5px"
+    mapInformationRightSongNameDifficultyWrapperEl.style.top = "0px"
+    mapInformationRightArtistWrapperEl.style.top = "0px"
+    // Left container
+    mapInformationLeftContainerEl.style.width = "170px"
+    mapInformationLeftContainerMapperImageEl.style.opacity = 0
+}
+
+let animationCounter = 0
+setInterval(() => {
+    animationCounter++
+    if (animationCounter % 3 === 1) {
+        moveMappedByIn()
+    } else if (animationCounter % 3 === 2) {
+        moveStatsIn()
+    } else if (animationCounter % 3 === 0) {
+        moveMapSongDetailsIn()
+    }
+}, 12000)
