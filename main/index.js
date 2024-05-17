@@ -197,97 +197,52 @@ const mapInformationLeftContainerEl = document.getElementById("mapInformationLef
 const mapInformationLeftContainerMapperImageEl = document.getElementById("mapInformationLeftContainerMapperImage")
 const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
 
-// Move Maapped By In
-async function moveMappedByIn() {
-    // Move mapped by AND stats into the top, and opacity - 0
-    mapInformationRightSRandBPMEl.style.opacity = 0
-    mapInformationRightCSandARandODEl.style.opacity = 0
-    mapInformationRightMappedByTextEl.style.opacity = 0
-    mapInformationRightMappedByNameEl.style.opacity = 0
+async function moveElements(moveOutElement1, moveOutElement2, moveInElement1, moveInElement2, stationaryElement1, stationaryElement2) {
+    // Reset stationary and moveIn elements opacity to make sure they can get to the right position
+    stationaryElement1.style.opacity = 0
+    stationaryElement2.style.opacity = 0
+    moveInElement1.style.opacity = 0
+    moveInElement2.style.opacity = 0
     await sleep(750)
-    // Move everything to correct positions
-    mapInformationRightSRandBPMEl.style.top = "-22.5px"
-    mapInformationRightCSandARandODEl.style.top = "-22.5px"
-    mapInformationRightMappedByTextEl.style.top = "22.5px"
-    mapInformationRightMappedByNameEl.style.top = "22.5px"
+    // Move stationary and moveIn elements to the right position
+    stationaryElement1.style.top = "-22.5px"
+    stationaryElement2.style.top = "-22.5px"
+    moveInElement1.style.top = "22.5px"
+    moveInElement2.style.top = "22.5px"
     await sleep(750)
-    // Mapped by information opacity open
-    mapInformationRightMappedByTextEl.style.opacity = 1
-    mapInformationRightMappedByNameEl.style.opacity = 1
+    // Move in elemnts opacity = 1
+    moveInElement1.style.opacity = 1
+    moveInElement2.style.opacity = 1
     await sleep(750)
-    // Make the move
-    mapInformationRightSongNameDifficultyWrapperEl.style.top = "-22.5px"
-    mapInformationRightArtistWrapperEl.style.top = "-22.5px"
-    mapInformationRightMappedByTextEl.style.top = "0px"
-    mapInformationRightMappedByNameEl.style.top = "0px"
+    // Move correct elements
+    moveOutElement1.style.top = "-22.5px"
+    moveOutElement2.style.top = "-22.5px"
+    moveInElement1.style.top = "0px"
+    moveInElement2.style.top = "0px"
     // Left container
-    mapInformationLeftContainerEl.style.width = "102px"
-    mapInformationLeftContainerMapperImageEl.style.opacity = 1
-}
-
-// Move Stats in
-async function moveStatsIn() {
-    // Move stats and song name / difficulty / artist into the top, and opacity - 0
-    mapInformationRightSRandBPMEl.style.opacity = 0
-    mapInformationRightCSandARandODEl.style.opacity = 0
-    mapInformationRightSongNameDifficultyWrapperEl.style.opacity = 0
-    mapInformationRightArtistWrapperEl.style.opacity = 0
-    await sleep(750)
-    // Move everything into correct positions
-    mapInformationRightSRandBPMEl.style.top = "22.5px"
-    mapInformationRightCSandARandODEl.style.top = "22.5px"
-    mapInformationRightSongNameDifficultyWrapperEl.style.top = "-22.5px"
-    mapInformationRightArtistWrapperEl.style.top = "-22.5px"
-    await sleep(750)
-    // Stats opacity = 1
-    mapInformationRightSRandBPMEl.style.opacity = 1
-    mapInformationRightCSandARandODEl.style.opacity = 1
-    await sleep(750)
-    // Make the move
-    mapInformationRightMappedByTextEl.style.top = "-22.5px"
-    mapInformationRightMappedByNameEl.style.top = "-22.5px"
-    mapInformationRightSRandBPMEl.style.top = "0px"
-    mapInformationRightCSandARandODEl.style.top = "0px"
-    // Left container
-    mapInformationLeftContainerEl.style.width = "170px"
-    mapInformationLeftContainerMapperImageEl.style.opacity = 0
-}
-
-// Move song details in
-async function moveMapSongDetailsIn() {
-    // Move map song details and mapped by details into invisible
-    mapInformationRightMappedByTextEl.style.opacity = 0
-    mapInformationRightMappedByNameEl.style.opacity = 0
-    mapInformationRightSongNameDifficultyWrapperEl.style.opacity = 0
-    mapInformationRightArtistWrapperEl.style.opacity = 0
-    await sleep(750)
-    // Move everythig into correct positions
-    mapInformationRightMappedByTextEl.style.top = "-22.5px"
-    mapInformationRightMappedByNameEl.style.top = "-22.5px"
-    mapInformationRightSongNameDifficultyWrapperEl.style.top = "22.5px"
-    mapInformationRightArtistWrapperEl.style.top = "22.5px"
-    await sleep(750)
-    // Song Details opacity
-    mapInformationRightSongNameDifficultyWrapperEl.style.opacity = 1
-    mapInformationRightArtistWrapperEl.style.opacity = 1
-    // Make the move
-    mapInformationRightSRandBPMEl.style.top = "-22.5px"
-    mapInformationRightCSandARandODEl.style.top = "-22.5px"
-    mapInformationRightSongNameDifficultyWrapperEl.style.top = "0px"
-    mapInformationRightArtistWrapperEl.style.top = "0px"
-    // Left container
-    mapInformationLeftContainerEl.style.width = "170px"
-    mapInformationLeftContainerMapperImageEl.style.opacity = 0
+    if (moveInElement1 === mapInformationRightMappedByTextEl || moveInElement2 === mapInformationRightMappedByTextEl) {
+        mapInformationLeftContainerEl.style.width = "102px"
+        mapInformationLeftContainerMapperImageEl.style.opacity = 1
+    } else {
+        mapInformationLeftContainerEl.style.width = "170px"
+        mapInformationLeftContainerMapperImageEl.style.opacity = 0
+    }
 }
 
 let animationCounter = 0
 setInterval(() => {
     animationCounter++
     if (animationCounter % 3 === 1) {
-        moveMappedByIn()
+        moveElements(mapInformationRightSongNameDifficultyWrapperEl, mapInformationRightArtistWrapperEl,
+            mapInformationRightMappedByTextEl,mapInformationRightMappedByNameEl,
+            mapInformationRightSRandBPMEl,mapInformationRightCSandARandODEl)    
     } else if (animationCounter % 3 === 2) {
-        moveStatsIn()
+        moveElements(mapInformationRightMappedByTextEl, mapInformationRightMappedByNameEl,
+            mapInformationRightSRandBPMEl, mapInformationRightCSandARandODEl,
+            mapInformationRightSongNameDifficultyWrapperEl, mapInformationRightArtistWrapperEl)
     } else if (animationCounter % 3 === 0) {
-        moveMapSongDetailsIn()
+        moveElements(mapInformationRightSRandBPMEl, mapInformationRightCSandARandODEl,
+            mapInformationRightSongNameDifficultyWrapperEl, mapInformationRightArtistWrapperEl,
+            mapInformationRightMappedByTextEl, mapInformationRightMappedByNameEl)
     }
 }, 12000)

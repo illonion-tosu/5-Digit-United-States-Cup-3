@@ -131,7 +131,7 @@
 /* Map Information */
 /* Map Information Left Container */
 #mapInformationLeftContainer {
-    position: absolute; left: 91px; bottom: 10px;
+    position: absolute; left: 100px; bottom: 10px;
     transform: translateX(-50%);
     border: 3px solid white;
     width: 170px; height: 102px;
