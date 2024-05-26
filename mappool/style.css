@@ -1,0 +1,32 @@
+@font-face {
+    font-family: "Bicyclette";
+    src: url("../font/Bicyclette-Regular.woff");
+    font-weight: 500
+}
+@font-face {
+    font-family: "Bicyclette";
+    src: url("../font/Bicyclette-Bold.woff");
+    font-weight: 800
+}
+
+/* Whole Page */
+#main {
+    position: absolute; left: 0; top: 0;
+    width: 1920px; height: 1080px;
+    background-image: url("static/background.png")
+}
+
+/* Logo */
+#logo {
+    position: absolute;
+    left: 45px;
+    top: 23px;
+    width: 140px;
+}
+
+/* Team Section */
+#roundName {
+    position: absolute; right: 45px; top: 40px; 
+    font-family: "Bicyclette"; font-weight: 800; font-size: 38px;
+    color: white;
+}
