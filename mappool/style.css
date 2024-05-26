@@ -30,3 +30,46 @@
     font-family: "Bicyclette"; font-weight: 800; font-size: 38px;
     color: white;
 }
+
+/* Chat Display */
+#chatDisplay {
+    position: absolute; bottom: 28px; left: 28px;
+    opacity: 0.902;
+    width: 851px; height: 171px;
+    border-radius: 15px;
+    background-color: #282828;
+}
+
+/* Map Information */
+/* Map Information Left Container */
+#mapInformationLeftContainer { left: 991px; bottom: 32px; }
+
+/* Map Information Right Containers */
+.mapInformationRightContainers {
+    left: 1119px; 
+    width: 420px;
+}
+.mapInformationRightContainers::before { width: 430px; }
+
+/* Map Information Right Container Top */
+#mapInformationRightContainer { bottom: 75px; }
+/* Map Information Texts */
+.mapInformationRightTexts { width: 397px; }
+#mapInformationRightSongNameDifficultyWrapper, #mapInformationRightArtistWrapper, #mapInformationRightMappedByText, #mapInformationRightMappedByName {
+    width: 397px;
+}
+@keyframes mapInformationRightWrap {
+    0% { transform: translateX(0%) }
+    20% { transform: translateX(0%) }
+    80% { transform: translateX(calc(-100% + 397px)); }
+    100% { transform: translateX(calc(-100% + 397px)); }
+}
+
+/* Map Information Right Container Bottom */
+#mapInformationRightSongProgressContainer { bottom: 30px; }
+#mapInformationRightSongProgressContainer::before {
+    width: 430px;
+}
+/* Map Information Progress */
+#mapInformationSongProgressSection { width: 385px; }
+#mapInformationSongProgressRectangle { width: 385px; }

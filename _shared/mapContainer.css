@@ -1,0 +1,122 @@
+/* Map Information */
+/* Map Information Left Container */
+#mapInformationLeftContainer {
+    position: absolute;
+    transform: translateX(-50%);
+    border: 3px solid white;
+    width: 170px; height: 102px;
+    border-radius: 3px;
+    overflow: hidden;
+    transition: 750ms ease-in-out;
+}
+#mapInformationLeftContainer > * {
+    position: absolute;
+    height: 102px;
+    background-size: cover;
+}
+#mapInformationLeftContainerMapBackground {
+    width: 100%;
+    background-image: url("https://assets.ppy.sh/beatmaps/292301/covers/cover.jpg");
+    background-position: center;
+}
+#mapInformationLeftContainerMapperImage {
+    left: 50%; transform: translateX(-50%);
+    width: 102px;
+    background-image: url("https://a.ppy.sh/8306102");
+    opacity: 0;
+    transition: 750ms ease-in-out;
+}
+
+/* Map Information Right Containers */
+.mapInformationRightContainers {
+    position: absolute;
+    overflow: hidden;
+    border-radius: 3px;
+}
+.mapInformationRightContainers::before {
+    content: '';
+    position: absolute; left: -3px; top: -3px;
+    background-image: url("https://assets.ppy.sh/beatmaps/292301/covers/cover.jpg");
+    filter: blur(3px);
+    background-size: cover;
+}
+
+/* Map Information Right Container Layer */
+.mapInformationRightHandSideLayer {
+    position: absolute; top: 0; left: 0;
+    width: 100%; height: 100%;
+    background-color: rgba(127,127,127,0.7);
+}
+
+/* Map Information Right Container Top */
+#mapInformationRightContainer {
+    height: 63px;
+    font-family: "Bicyclette"; font-weight: 800; font-size: 19px;
+    color: white;
+    letter-spacing: 0.15px;
+}
+#mapInformationRightContainer::before {
+    height: 69px;
+    background-position: 50% 1.6%;
+    filter: blur(2px);
+}
+/* Map Information Texts */
+.mapInformationRightTexts { 
+    position: absolute; left: 11px; 
+    height: 22.5px;
+    overflow: hidden;
+}
+#mapInformationRightTopText { top: 9px; }
+#mapInformationRightBottomText { bottom: 9px; }
+#mapInformationRightSongNameDifficultyWrapper, #mapInformationRightArtistWrapper, #mapInformationRightMappedByText, #mapInformationRightMappedByName {
+    position: absolute; top: 0;
+    overflow: hidden;
+    height: 22.5px;
+    transition: 750ms ease-in-out;
+}
+#mapInformationRightMappedByText, #mapInformationRightMappedByName {
+    top: -22.5px;
+    opacity: 0;
+}
+#mapInformationRightSongNameDifficulty {
+	display: inline-block;
+	width: max-content;
+}
+.mapInformationRightWrap {
+    animation: mapInformationRightWrap 12s infinite linear forwards
+}
+/* Map Information Stats */
+#mapInformationRightSRandBPM, #mapInformationRightCSandARandOD { 
+    position: absolute; display: flex; top: -22.5px;
+    transition: 750ms ease-in-out;
+}
+.mapInformationRightStatsFirstElement { width: 105px; }
+.mapInformationRightStatsSecondElement { width: 175px; }
+
+/* Map Information Right Container Bottom */
+#mapInformationRightSongProgressContainer { height: 32px; }
+#mapInformationRightSongProgressContainer::before {
+    height: 38px;
+    background-position: 50% 99%;
+}
+/* Map Information Progress */
+#mapInformationSongProgressSection {
+    position: absolute; left: 50%; top: 50%;
+    transform: translate(-50%, -50%);
+    height: 19px;
+}
+#mapInformationSongProgressRectangle {
+    position: absolute; left: 50%; top: 50%;
+    transform: translate(-50%, -50%);
+    width: 3px; height: 3px;
+    border-radius: 3px;
+    background-color: white;
+}
+#mapInformationSongProgressCircle {
+    position: absolute; top: 50%; left: 0;
+    transform: translateY(-50%);
+    width: 12px; height: 12px;
+    border-radius: 12px;
+    background-color: white;
+    transition: 50ms linear;
+}

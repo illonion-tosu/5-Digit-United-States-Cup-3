@@ -65,17 +65,17 @@ let foundMapInMappool = false
 
 socket.onmessage = async (event) => {
     const data = JSON.parse(event.data)
-    console.log(data)
 
-    // TODO: Flags
     // Team Name
     if (currentRedTeamName !== data.tourney.manager.teamName.left) {
         currentRedTeamName = data.tourney.manager.teamName.left
         redTeamNameEl.innerText = currentRedTeamName
+        redTeamFlagEl.setAttribute("src", `../flags/${currentRedTeamName}.png`)
     }
     if (currentBlueTeamName !== data.tourney.manager.teamName.right) {
         currentBlueTeamName = data.tourney.manager.teamName.right
         blueTeamNameEl.innerText = currentBlueTeamName
+        blueTeamFlagEl.setAttribute("src", `../flags/${currentBlueTeamName}.png`)
     }
 
     // Stars
