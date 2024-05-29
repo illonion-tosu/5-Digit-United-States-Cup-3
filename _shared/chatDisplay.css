@@ -1,0 +1,33 @@
+#chatDisplay {
+    position: absolute;
+    opacity: 0.902;
+    width: 851px; height: 171px;
+    border-radius: 15px;
+    background-color: #282828;
+}
+.chatMessageContainer {
+    display: flex;
+    margin: 4px 8px;
+    font-family: 'Bicyclette';
+    font-weight: 800;
+    color: white;
+    font-size: 18px;
+}
+.chatMessageTime {
+    width: 10%;
+    text-align: center;
+    color: lightgray;
+}
+.chatMessageContent {
+    display: flex;
+    width: 92%; 
+}
+.chatMessageUser { 
+    min-width: 12%;
+    margin-right: 5px;
+}
+
+.bot{ color: pink; }
+.left{ color: var(--redColor); }
+.right{ color: var(--blueColor); }
+.unknown{ color: yellow; }

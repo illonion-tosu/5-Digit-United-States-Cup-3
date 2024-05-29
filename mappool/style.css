@@ -180,13 +180,7 @@
 }
 
 /* Chat Display */
-#chatDisplay {
-    position: absolute; bottom: 28px; left: 28px;
-    opacity: 0.902;
-    width: 851px; height: 171px;
-    border-radius: 15px;
-    background-color: #282828;
-}
+#chatDisplay { bottom: 28px; left: 28px; }
 
 /* Map Information */
 /* Map Information Left Container */
@@ -221,3 +215,4 @@
 /* Map Information Progress */
 #mapInformationSongProgressSection { width: 385px; }
 #mapInformationSongProgressRectangle { width: 385px; }
+
