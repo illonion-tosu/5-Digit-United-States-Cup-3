@@ -14,11 +14,19 @@
     font-weight: 800
 }
 
+/* Videos */
+.backgroundVideo {
+    position: absolute; left: 0; top: 0;
+}
+#backgroundVideoMajorLeague {
+    opacity: 0;
+    transition: 500ms ease-in-out;
+}
+
 /* Whole Page */
 #main {
     position: absolute; left: 0; top: 0;
     width: 1920px; height: 1080px;
-    background-image: url("static/background.png")
 }
 
 /* Team Flag */
@@ -34,6 +42,7 @@
     position: absolute; top: 16px;
     font-family: "Bicyclette"; font-size: 38px; font-weight: 500;
     letter-spacing: 0.3px;
+    transition: 500ms ease-in-out;
 }
 #redTeamName { left: 169px; }
 #blueTeamName { right: 169px; }
@@ -75,8 +84,10 @@
     font-family: "Bicyclette"; font-size: 30px; font-weight: 500;
     letter-spacing: 6px;
     text-indent: 4px;
-    color: white;
+    transition: 500ms ease-in-out;
 }
+.roundTextMinor { color: white; }
+.roundTextMajor { color: black; }
 
 /* Scores */
 /* Red / Blue Scores */
@@ -122,6 +133,8 @@
     transition: 500ms ease-in-out;
     opacity: 1;
 }
+.scoreDifferenceMinor { color: white; }
+.scoreDifferenceMajor { color: black;}
 #scoreDifferenceNumber {
     top: 873px;
     font-size: 60px;
@@ -165,3 +178,42 @@
 
 /* Chat Display */
 #chatDisplay { bottom: 18px; right: 28px; }
+
+/* Side Bar */
+#sideBar {
+    position: absolute; left: 1920px; top: 0;
+    width: 250px; height: 1080px;
+    background-color: rgb(17, 17, 17);
+    font-family: "Bicyclette"; font-weight: 800;
+    color: white;
+}
+/* Tournament Selection Section */
+#tournamentSelectionSection h1 {
+    margin: 20px;
+}
+#tournamentSelection {
+    font-size: 40px;
+    margin-left: 20px;
+    margin-bottom: 20px;
+}
+#tournamentSelectionSectionButtons {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+}
+#tournamentSelectionSectionButtons button {
+    width: 210px; height: 50px;
+    margin-bottom: 10px;
+    font-family: inherit;
+    font-weight: inherit;
+    font-size: 24px;
+    color: white;
+    background-color: transparent;
+    border: 2px solid white;
+    border-radius: 10px;
+}
+#tournamentSelectionSectionButtons button:active {
+    background-color: white;
+    color: black;
+}

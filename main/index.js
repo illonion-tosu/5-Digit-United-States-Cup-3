@@ -272,11 +272,11 @@ socket.onmessage = async (event) => {
 
             // Chat message container
             const chatMessageContainer = document.createElement("div")
-            chatMessageContainer.classList.add("chatMessageContainer")
+            chatMessageContainer.classList.add("chatMessageContainer", (tournamentSelectionLeague === "minor")? "chatMessageContainerMinor": "ChatMessageContainerMajor")
 
             // Time
             const chatMessageTime = document.createElement("div")
-            chatMessageTime.classList.add("chatMessageTime")
+            chatMessageTime.classList.add("chatMessageTime", (tournamentSelectionLeague === "minor")? "chatMessageTimeMinor": "chatMessageTimeMajor")
             chatMessageTime.innerText = data.tourney.manager.chat[i].time
 
             // Whole Message
@@ -371,3 +371,100 @@ setInterval(() => {
             mapInformationRightMappedByTextEl, mapInformationRightMappedByNameEl)
     }
 }, 12000)
+
+// Tournament Selection
+const roundTextEl = document.getElementById("roundText")
+const backgroundVideoMajorLeagueEl = document.getElementById("backgroundVideoMajorLeague")
+const tournamentSelectionEl = document.getElementById("tournamentSelection")
+let tournamentSelectionLeague = "minor"
+function tournamentSelection(league) {
+    if (league === "major") {
+        // Text on sidebar
+        tournamentSelectionEl.innerText = "Major League"
+
+        // Team Names
+        redTeamNameEl.classList.add("teamNameMajor")
+        blueTeamNameEl.classList.add("teamNameMajor")
+        redTeamNameEl.classList.remove("teamNameMinor")
+        blueTeamNameEl.classList.remove("teamNameMinor")
+
+        // Logo
+
+        // Round Name
+        roundTextEl.classList.add("roundTextMajor")
+        roundTextEl.classList.remove("roundTextMinor")
+
+        // Score Difference
+        scoreDifferenceNumberEl.classList.add("scoreDifferenceMajor")
+        scoreDifferenceTextEl.classList.add("scoreDifferenceMajor")
+        scoreDifferenceNumberEl.classList.remove("scoreDifferenceMinor")
+        scoreDifferenceTextEl.classList.remove("scoreDifferenceMinor")
+
+        // Video
+        backgroundVideoMajorLeagueEl.style.opacity = 1
+
+        // Chat Display
+        chatDisplayEl.classList.add("chatDisplayMajor")
+        chatDisplayEl.classList.remove("chatDisplayMinor")
+        // Chat Message Containers
+        const chatMessageContainerElements = document.getElementsByClassName("chatMessageContainer")
+        for (let i = 0; i < chatMessageContainerElements.length; i++) {
+            chatMessageContainerElements[i].classList.add("chatMessageContainerMajor")
+            chatMessageContainerElements[i].classList.remove("chatMessageContainerMinor")
+        }
+        // Chat Message Time
+        const chatMessageTimeElements = document.getElementsByClassName("chatMessageTime")
+        for (let i = 0; i < chatMessageTimeElements.length; i++) {
+            chatMessageTimeElements[i].classList.add("chatMessageTimeMajor")
+            chatMessageTimeElements[i].classList.remove("chatMessageTimeMinor")
+        }
+
+        // Left Container
+        mapInformationLeftContainerEl.classList.add("mapInformationLeftContainerMajor")
+        mapInformationLeftContainerEl.classList.remove("mapInformationLeftContainerMinor")
+    } else {
+        // Text on sidebar
+        tournamentSelectionEl.innerText = "Minor League"
+
+        // Team Names
+        redTeamNameEl.classList.remove("teamNameMajor")
+        blueTeamNameEl.classList.remove("teamNameMajor")
+        redTeamNameEl.classList.add("teamNameMinor")
+        blueTeamNameEl.classList.add("teamNameMinor")
+
+        // Logo
+
+        // Round Name
+        roundTextEl.classList.remove("roundTextMajor")
+        roundTextEl.classList.add("roundTextMinor")
+
+        // Score difference
+        scoreDifferenceNumberEl.classList.remove("scoreDifferenceMajor")
+        scoreDifferenceTextEl.classList.remove("scoreDifferenceMajor")
+        scoreDifferenceNumberEl.classList.add("scoreDifferenceMinor")
+        scoreDifferenceTextEl.classList.add("scoreDifferenceMinor")
+
+        // Background
+        backgroundVideoMajorLeagueEl.style.opacity = 0
+
+        // Chat Display
+        chatDisplayEl.classList.remove("chatDisplayMajor")
+        chatDisplayEl.classList.add("chatDisplayMinor")
+        // Chat Message Containers
+        const chatMessageContainerElements = document.getElementsByClassName("chatMessageContainer")
+        for (let i = 0; i < chatMessageContainerElements.length; i++) {
+            chatMessageContainerElements[i].classList.remove("chatMessageContainerMajor")
+            chatMessageContainerElements[i].classList.add("chatMessageContainerMinor")
+        }
+        // Chat Message times
+        const chatMessageTimeElements = document.getElementsByClassName("chatMessageTime")
+        for (let i = 0; i < chatMessageTimeElements.length; i++) {
+            chatMessageTimeElements[i].classList.remove("chatMessageTimeMajor")
+            chatMessageTimeElements[i].classList.add("chatMessageTimeMinor")
+        }
+
+        // Left Container
+        mapInformationLeftContainerEl.classList.remove("mapInformationLeftContainerMajor")
+        mapInformationLeftContainerEl.classList.add("mapInformationLeftContainerMinor")
+    }
+}

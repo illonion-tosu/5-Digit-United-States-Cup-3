@@ -6,6 +6,7 @@
     
     <title>Gameplay</title>
     
+    <link rel="stylesheet" href="../_shared/chatDisplay.css">
     <link rel="stylesheet" href="../_shared/mapContainer.css">
     <link rel="stylesheet" href="style.css"> 
 
@@ -13,6 +14,12 @@
     <script src="../_shared/deps/reconnecting-websocket.min.js"></script>
 </head>
 <body>
+    <video autoplay loop muted class="backgroundVideo" id="backgroundVideoMinorLeague">
+        <source src="../_shared/background-videos/MINORLEAGUE-Background.mp4" type="video/mp4">
+    </video>
+    <video autoplay loop muted class="backgroundVideo" id="backgroundVideoMajorLeague">
+        <source src="../_shared/background-videos/MAJORLEAGUE-Background.mp4" type="video/mp4">
+    </video>
     <div id="main">
         <!-- Teams -->
         <!-- Red Team -->
@@ -32,7 +39,7 @@
         <img id="logo" src="static/minor_league_logo.png">
 
         <!-- Round Text -->
-        <div id="roundText">QUARTERFINALS</div>
+        <div class="roundTextMinor" id="roundText">QUARTERFINALS</div>
 
         <!-- Scores -->
         <!-- Red Team -->
@@ -46,7 +53,7 @@
         <div class="scoreDifferenceSection" id="scoreDifferenceText">DIFFERENCE</div>
 
         <!-- Map Information Section -->
-        <div id="mapInformationLeftContainer">
+        <div id="mapInformationLeftContainer" class="mapInformationLeftContainerMinor">
             <div id="mapInformationLeftContainerMapBackground"></div>
             <div id="mapInformationLeftContainerMapperImage"></div>
         </div>
@@ -80,7 +87,19 @@
         </div>
 
         <!-- Chat Display -->
-        <div id="chatDisplay"></div>
+        <div class="chatDisplayMinor" id="chatDisplay"></div>
+    </div>
+
+    <!-- Side Bar -->
+    <div id="sideBar">
+        <section id="tournamentSelectionSection">
+            <h1>Which tournament?</h1>
+            <div id="tournamentSelection">Minor League</div>
+            <div id="tournamentSelectionSectionButtons">
+                <button onclick="tournamentSelection('major')">Major</button>
+                <button onclick="tournamentSelection('minor')">Minor</button>
+            </div>
+        </section>
     </div>
     <script src="index.js"></script>
 </body>

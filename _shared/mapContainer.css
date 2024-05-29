@@ -3,12 +3,15 @@
 #mapInformationLeftContainer {
     position: absolute;
     transform: translateX(-50%);
-    border: 3px solid white;
+    border-width: 3px;
+    border-style: solid;
     width: 170px; height: 102px;
     border-radius: 3px;
     overflow: hidden;
     transition: 750ms ease-in-out;
 }
+.mapInformationLeftContainerMinor { border-color: white; }
+.mapInformationLeftContainerMajor { border-color: black; }
 #mapInformationLeftContainer > * {
     position: absolute;
     height: 102px;
