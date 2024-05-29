@@ -63,6 +63,10 @@ const mapInformationRightODEl = document.getElementById("mapInformationRightOD")
 let currentId, currentMd5
 let foundMapInMappool = false
 
+//
+const chatDisplayEl = document.getElementById("chatDisplay")
+let chatLength = 0
+
 socket.onmessage = async (event) => {
     const data = JSON.parse(event.data)
 
@@ -134,19 +138,21 @@ socket.onmessage = async (event) => {
         isScoreVisible = data.tourney.manager.bools.scoreVisible
 
         if (isScoreVisible) {
-            redCurrentScoreEl.style.display = "block"
-            redCurrentUnderlineEl.style.display = "block"
-            blueCurrentScoreEl.style.display = "block"
-            blueCurrentUnderlineEl.style.display = "block"
-            scoreDifferenceNumberEl.style.display = "block"
-            scoreDifferenceTextEl.style.display = "block"
+            redCurrentScoreEl.style.opacity = 1
+            redCurrentUnderlineEl.style.opacity = 1
+            blueCurrentScoreEl.style.opacity = 1
+            blueCurrentUnderlineEl.style.opacity = 1
+            scoreDifferenceNumberEl.style.opacity = 1
+            scoreDifferenceTextEl.style.opacity = 1
+            chatDisplayEl.style.opacity = 0;
         } else {
-            redCurrentScoreEl.style.display = "none"
-            redCurrentUnderlineEl.style.display = "none"
-            blueCurrentScoreEl.style.display = "none"
-            blueCurrentUnderlineEl.style.display = "none"
-            scoreDifferenceNumberEl.style.display = "none"
-            scoreDifferenceTextEl.style.display = "none"
+            redCurrentScoreEl.style.opacity = 0
+            redCurrentUnderlineEl.style.opacity = 0
+            blueCurrentScoreEl.style.opacity = 0
+            blueCurrentUnderlineEl.style.opacity = 0
+            scoreDifferenceNumberEl.style.opacity = 0
+            scoreDifferenceTextEl.style.opacity = 0
+            chatDisplayEl.style.opacity = 0.902;
         }
     }
 
@@ -252,7 +258,53 @@ socket.onmessage = async (event) => {
         } else {
             mapInformationRightBPMEl.innerText = `BPM: ${data.menu.bm.stats.BPM.min}-${data.menu.bm.stats.BPM.max} (${data.menu.bm.stats.BPM.common})`
         }
-    }   
+    }
+
+    // Chat Display
+    if (chatLength !== data.tourney.manager.chat.length) {
+        // Chat stuff
+        // This is also mostly taken from Victim Crasher: https://github.com/VictimCrasher/static/tree/master/WaveTournament
+        (chatLength === 0 || chatLength > data.tourney.manager.chat.length) ? (chatDisplayEl.innerHTML = "", chatLength = 0) : null;
+        const fragment = document.createDocumentFragment()
+
+        for (let i = chatLength; i < data.tourney.manager.chat.length; i++) {
+            const chatColour = data.tourney.manager.chat[i].team
+
+            // Chat message container
+            const chatMessageContainer = document.createElement("div")
+            chatMessageContainer.classList.add("chatMessageContainer")
+
+            // Time
+            const chatMessageTime = document.createElement("div")
+            chatMessageTime.classList.add("chatMessageTime")
+            chatMessageTime.innerText = data.tourney.manager.chat[i].time
+
+            // Whole Message
+            const chatMessageContent = document.createElement("div")
+            chatMessageContent.classList.add("chatMessageContent")  
+            
+            // Name
+            const chatMessageName = document.createElement("div")
+            chatMessageName.classList.add(chatColour, "chatMessageUser")
+            chatMessageName.innerText = data.tourney.manager.chat[i].name + ": "
+
+            // Message
+            const chatMessageText = document.createElement("div")
+            chatMessageText.classList.add("chatMessageText")
+            chatMessageText.innerText = data.tourney.manager.chat[i].messageBody
+
+            chatMessageContent.append(chatMessageName, chatMessageText)
+            chatMessageContainer.append(chatMessageTime, chatMessageContent)
+            fragment.append(chatMessageContainer)
+        }
+
+        chatDisplayEl.append(fragment)
+        chatLength = data.tourney.manager.chat.length
+        chatDisplayEl.scrollTo({
+            top: chatDisplayEl.scrollHeight,
+            behavior: 'smooth'
+        })
+    }
 }
 
 // Add / Remove Wrap

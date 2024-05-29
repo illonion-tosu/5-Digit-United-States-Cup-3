@@ -84,6 +84,7 @@
     position: absolute; top: 873px;
     font-family: "Bicyclette"; font-size: 48px; font-weight: 800;
     transition: 500ms ease-in-out;
+    opacity: 1;
 }
 #redCurrentScore {
     left: 25%; 
@@ -100,6 +101,7 @@
     position: absolute; top: 932px; 
     width: 294px; height: 7px;
     transition: 500ms ease-in-out;
+    opacity: 1;
 }
 #redCurrentUnderline {
     left: 25%;
@@ -118,6 +120,7 @@
     font-family: "Bicyclette"; 
     color: white;
     transition: 500ms ease-in-out;
+    opacity: 1;
 }
 #scoreDifferenceNumber {
     top: 873px;
@@ -159,3 +162,40 @@
 /* Map Information Progress */
 #mapInformationSongProgressSection { width: 360px; }
 #mapInformationSongProgressRectangle { width: 360px; }
+
+/* Chat Display */
+#chatDisplay {
+    position: absolute; bottom: 18px; right: 28px;
+    opacity: 0.902;
+    width: 851px; height: 171px;
+    border-radius: 15px;
+    background-color: #282828;
+    transition: 500ms ease-in-out;
+}
+
+.chatMessageContainer {
+    display: flex;
+    margin: 4px 8px;
+    font-family: 'BICYCLETTE';
+    font-weight: 800;
+    color: white;
+    font-size: 18px;
+}
+.chatMessageTime {
+    width: 10%;
+    text-align: center;
+    color: lightgray;
+}
+.chatMessageContent {
+    display: flex;
+    width: 92%; 
+}
+.chatMessageUser { 
+    min-width: 12%;
+    margin-right: 5px;
+}
+
+.bot{ color: pink; }
+.left{ color: var(--redColor); }
+.right{ color: var(--blueColor); }
+.unknown{ color: yellow; }
