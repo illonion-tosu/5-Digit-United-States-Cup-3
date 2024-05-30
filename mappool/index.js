@@ -9,6 +9,25 @@ async function getMappool() {
     roundNametEl.innerText = mappool.roundName.toUpperCase()
 }
 
+// Star positions
+const sevenStars = [
+    {left: "408px", top: "111px"},
+    {left: "472px", top: "174px"},
+    {left: "420px", top: "193px"},
+    {left: "370px", top: "174px"},
+    {left: "472px", top: "66px"},
+    {left: "420px", top: "45px"},
+    {left: "370px", top: "66px"},
+]
+const sixStars = [
+    {left: "408px", top: "111px"},
+    {left: "450px", top: "67px"},
+    {left: "475px", top: "130px"},
+    {left: "418px", top: "176px"},
+    {left: "360px", top: "130px"},
+    {left: "381px", top: "67px"},
+]
+
 getMappool()
 
 // Find mappool map
@@ -28,6 +47,11 @@ const blueTeamSectionFlagEl = document.getElementById("blueTeamSectionFlag")
 const blueTeamNameEl = document.getElementById("blueTeamName")
 let currentRedTeamName, currentBlueTeamName
 
+// Stars
+const redTeamStarContainerEl = document.getElementById("redTeamStarContainer")
+const blueTeamStarContainerEl = document.getElementById("blueTeamStarContainer")
+let currentBestOf, currentFirstTo, currentRedStars, currentBlueStars
+
 socket.onmessage = async (event) => {
     const data = JSON.parse(event.data)
 
@@ -41,5 +65,45 @@ socket.onmessage = async (event) => {
         currentBlueTeamName = data.tourney.manager.teamName.right
         blueTeamNameEl.innerText = currentBlueTeamName
         blueTeamSectionFlagEl.setAttribute("src", `../flags/${currentBlueTeamName}.png`)
+    }
+
+    // Stars
+    if (currentBestOf !== data.tourney.manager.bestOF ||
+        currentRedStars !== data.tourney.manager.stars.left ||
+        currentBlueStars !== data.tourney.manager.stars.right) {
+        
+        // Set details
+        currentBestOf = data.tourney.manager.bestOF
+        currentFirstTo = Math.ceil(currentBestOf / 2)
+        currentRedStars = data.tourney.manager.stars.left
+        currentBlueStars = data.tourney.manager.stars.right
+
+        // Reset stars
+        redTeamStarContainerEl.innerHTML = ""
+        // blueTeamStarContainerEl.innerHTML = ""
+
+        let starPositions
+        switch (currentFirstTo) {
+            case 6: starPositions = sixStars; break;
+            case 7: starPositions = sevenStars; break;
+        }
+
+        let i = 0
+        for (i; i < currentRedStars; i++) {
+            const createStar = document.createElement("img")
+            createStar.classList.add((i === 0)? "largeStar" : "smallStar")
+            createStar.style.left = starPositions[i].left
+            createStar.style.top = starPositions[i].top
+            createStar.setAttribute("src", "../_shared/stars/white_star.png")
+            redTeamStarContainerEl.append(createStar)
+        }
+        for (i; i < currentFirstTo; i++) {
+            const createStar = document.createElement("img")
+            createStar.classList.add((i === 0)? "largeStar" : "smallStar")
+            createStar.style.left = starPositions[i].left
+            createStar.style.top = starPositions[i].top
+            createStar.setAttribute("src", "../_shared/stars/red_star.png")
+            redTeamStarContainerEl.append(createStar)
+        }
     }
 }

@@ -60,6 +60,16 @@
     font-family: "Bicyclette"; font-weight: 800; font-size: 35px;
 }
 
+/* Team Stars */
+.largeStar {
+    position: absolute;
+    width: 60px;
+}
+.smallStar {
+    position: absolute;
+    width: 39px;
+}
+
 /* Team Bans */
 /* Team Ban Container */
 .teamBanContainer {

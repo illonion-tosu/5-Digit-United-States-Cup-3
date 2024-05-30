@@ -123,7 +123,7 @@ socket.onmessage = async (event) => {
             const starImage = document.createElement("img")
             if (index === currentFirstTo - 1) starImage.classList.add("starLarge")
             else starImage.classList.add("starSmall")
-            starImage.setAttribute("src", `static/${starImageSource}.png`)
+            starImage.setAttribute("src", `../_shared/stars/${starImageSource}.png`)
 
             // Append
             starContainer.append(starImage)
