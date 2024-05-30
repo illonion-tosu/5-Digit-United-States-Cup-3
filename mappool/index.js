@@ -62,15 +62,10 @@ async function getMappool() {
     }
 
     // Add ban elements
-    if (numberOfBans === 1) {
-        for (let i = 0; i < 2; i++) {
-            createBanElements(i, "oneTeamBan")
-        }
-    } else if (numberOfBans === 2) {
-        for (let i = 0; i < 4; i++) {
-            createBanElements(i, "multipleTeamBan")
-        }
-    }
+    let teamBanSize
+    if (numberOfBans === 1) teamBanSize = "oneTeamBan"
+    else teamBanSize = "multipleTeamBan"
+    for (let i = 0; i < numberOfBans * 2; i++) createBanElements(i, teamBanSize)
 }
 
 // Star positions
