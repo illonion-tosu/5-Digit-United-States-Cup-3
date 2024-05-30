@@ -228,6 +228,8 @@ const tournamentSelectionEl = document.getElementById("tournamentSelection")
 let tournamentSelectionLeague = "minor"
 
 function tournamentSelection(league) {
+    document.cookie = `tournamentSelection=${league}; path=/`
+
     if (league === "major") {
         // Text on sidebar
         tournamentSelectionEl.innerText = "Major League"
