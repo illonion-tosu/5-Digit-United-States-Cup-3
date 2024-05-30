@@ -177,7 +177,7 @@ socket.onmessage = async (event) => {
         } else if (currentScoreRed === currentScoreBlue) {
             redCurrentUnderlineEl.style.opacity = 0
             blueCurrentUnderlineEl.style.opacity = 0
-            scoreDifferenceNumberEl.style.color = `rgb(255, 255, 255)`
+            scoreDifferenceNumberEl.style.color = (tournamentSelectionLeague === "minor")? "white" : "black"
         } else if (currentScoreRed < currentScoreBlue) {
             redCurrentUnderlineEl.style.opacity = 0
             blueCurrentUnderlineEl.style.opacity = 1
@@ -372,15 +372,21 @@ setInterval(() => {
     }
 }, 12000)
 
+// Logos
+const logoMajorEl = document.getElementById("logoMajor")
+const logoMinorEl = document.getElementById("logoMinor")
+
 // Tournament Selection
 const roundTextEl = document.getElementById("roundText")
 const backgroundVideoMajorLeagueEl = document.getElementById("backgroundVideoMajorLeague")
 const tournamentSelectionEl = document.getElementById("tournamentSelection")
 let tournamentSelectionLeague = "minor"
+
 function tournamentSelection(league) {
     if (league === "major") {
         // Text on sidebar
         tournamentSelectionEl.innerText = "Major League"
+        tournamentSelectionLeague = "major"
 
         // Team Names
         redTeamNameEl.classList.add("teamNameMajor")
@@ -389,6 +395,8 @@ function tournamentSelection(league) {
         blueTeamNameEl.classList.remove("teamNameMinor")
 
         // Logo
+        logoMajorEl.style.opacity = 1
+        logoMinorEl.style.opacity = 0
 
         // Round Name
         roundTextEl.classList.add("roundTextMajor")
@@ -425,6 +433,7 @@ function tournamentSelection(league) {
     } else {
         // Text on sidebar
         tournamentSelectionEl.innerText = "Minor League"
+        tournamentSelectionLeague = "minor"
 
         // Team Names
         redTeamNameEl.classList.remove("teamNameMajor")
@@ -433,6 +442,8 @@ function tournamentSelection(league) {
         blueTeamNameEl.classList.add("teamNameMinor")
 
         // Logo
+        logoMajorEl.style.opacity = 0
+        logoMinorEl.style.opacity = 1
 
         // Round Name
         roundTextEl.classList.remove("roundTextMajor")

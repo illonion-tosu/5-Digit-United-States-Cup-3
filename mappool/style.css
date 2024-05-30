@@ -17,12 +17,12 @@
 }
 
 /* Logo */
-#logo {
-    position: absolute;
-    left: 45px;
-    top: 23px;
+.logo {
+    position: absolute; left: 45px; top: 23px;
     width: 140px;
+    opacity: 1;
 }
+#logoMajor { opacity: 0; }
 
 /* Round Name */
 #roundName {

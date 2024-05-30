@@ -72,10 +72,14 @@
 .starLarge { height: 57px; }
 
 /* Logo */
-#logo {
+.logo {
     position: absolute; left: 50%; top: 16px;
     transform: translateX(-50%);
+    width: 274px;
+    transition: 500ms ease-in-out;
+    opacity: 1;
 }
+#logoMajor { opacity: 0; }
 
 /* Round Text */
 #roundText {
