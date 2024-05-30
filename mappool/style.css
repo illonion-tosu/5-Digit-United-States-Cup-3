@@ -29,6 +29,7 @@
 .logo {
     position: absolute; left: 45px; top: 23px;
     width: 140px;
+    transition: 500ms ease-in-out;
     opacity: 1;
 }
 #logoMajor { opacity: 0; }
@@ -37,8 +38,10 @@
 #roundName {
     position: absolute; right: 45px; top: 40px; 
     font-family: "Bicyclette"; font-weight: 800; font-size: 38px;
-    color: white;
+    transition: 500ms ease-in-out;
 }
+.roundNameMinor { color: white; }
+.roundNameMajor { color: black; }
 
 /* Team Section */
 /* Container */
@@ -238,3 +241,41 @@
 #mapInformationSongProgressSection { width: 385px; }
 #mapInformationSongProgressRectangle { width: 385px; }
 
+/* Side Bar */
+#sideBar {
+    position: absolute; left: 1920px; top: 0;
+    width: 250px; height: 1080px;
+    background-color: rgb(17, 17, 17);
+    font-family: "Bicyclette"; font-weight: 800;
+    color: white;
+}
+/* Tournament Selection Section */
+#tournamentSelectionSection h1 {
+    margin: 20px;
+}
+#tournamentSelection {
+    font-size: 40px;
+    margin-left: 20px;
+    margin-bottom: 20px;
+}
+#tournamentSelectionSectionButtons {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+}
+#tournamentSelectionSectionButtons button {
+    width: 210px; height: 50px;
+    margin-bottom: 10px;
+    font-family: inherit;
+    font-weight: inherit;
+    font-size: 24px;
+    color: white;
+    background-color: transparent;
+    border: 2px solid white;
+    border-radius: 10px;
+}
+#tournamentSelectionSectionButtons button:active {
+    background-color: white;
+    color: black;
+}

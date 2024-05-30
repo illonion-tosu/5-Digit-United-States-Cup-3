@@ -79,7 +79,7 @@ const mapInformationRightODEl = document.getElementById("mapInformationRightOD")
 let currentId, currentMd5
 let foundMapInMappool = false
 
-//
+// Chat Display
 const chatDisplayEl = document.getElementById("chatDisplay")
 let chatLength = 0
 

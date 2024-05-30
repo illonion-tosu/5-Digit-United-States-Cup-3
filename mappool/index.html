@@ -26,7 +26,7 @@
         <img class="logo" id="logoMajor" src="../_shared/logos/5USC3-Short.svg">
 
         <!-- Round -->
-        <div id="roundName">QUARTERFINALS</div>
+        <div class="roundNameMinor" id="roundName">QUARTERFINALS</div>
 
         <!-- Teams -->
         <div class="teamSection" id="redTeamSection">
@@ -92,6 +92,18 @@
                 <div id="mapInformationSongProgressCircle"></div>
             </div>
         </div>
+    </div>
+
+    <!-- Side Bar -->
+    <div id="sideBar">
+        <section id="tournamentSelectionSection">
+            <h1>Which tournament?</h1>
+            <div id="tournamentSelection">Minor League</div>
+            <div id="tournamentSelectionSectionButtons">
+                <button onclick="tournamentSelection('major')">Major</button>
+                <button onclick="tournamentSelection('minor')">Minor</button>
+            </div>
+        </section>
     </div>
 
     <script src="index.js"></script>

@@ -148,6 +148,13 @@ const redTeamStarContainerEl = document.getElementById("redTeamStarContainer")
 const blueTeamStarContainerEl = document.getElementById("blueTeamStarContainer")
 let currentBestOf, currentFirstTo, currentRedStars, currentBlueStars
 
+// Chat Display
+const chatDisplayEl = document.getElementById("chatDisplay")
+let chatLength = 0
+
+// Map Information Left Container
+const mapInformationLeftContainerEl = document.getElementById("mapInformationLeftContainer")
+
 socket.onmessage = async (event) => {
     const data = JSON.parse(event.data)
 
@@ -208,5 +215,88 @@ socket.onmessage = async (event) => {
         for (i; i < currentFirstTo; i++) {
             createStar(i, "white_star", blueTeamStarContainerEl)
         }
+    }
+}
+
+// Logos
+const logoMajorEl = document.getElementById("logoMajor")
+const logoMinorEl = document.getElementById("logoMinor")
+
+// Tournament Selection
+const backgroundVideoMajorLeagueEl = document.getElementById("backgroundVideoMajorLeague")
+const tournamentSelectionEl = document.getElementById("tournamentSelection")
+let tournamentSelectionLeague = "minor"
+
+function tournamentSelection(league) {
+    if (league === "major") {
+        // Text on sidebar
+        tournamentSelectionEl.innerText = "Major League"
+        tournamentSelectionLeague = "major"
+
+        // Video
+        backgroundVideoMajorLeagueEl.style.opacity = 1
+
+        // Logos
+        logoMajorEl.style.opacity = 1
+        logoMinorEl.style.opacity = 0
+
+        // Round Name
+        roundNametEl.classList.add("roundNameMajor")
+        roundNametEl.classList.remove("roundNameMinor")
+
+        // Chat Display
+        chatDisplayEl.classList.add("chatDisplayMajor")
+        chatDisplayEl.classList.remove("chatDisplayMinor")
+        // Chat Message Containers
+        const chatMessageContainerElements = document.getElementsByClassName("chatMessageContainer")
+        for (let i = 0; i < chatMessageContainerElements.length; i++) {
+            chatMessageContainerElements[i].classList.add("chatMessageContainerMajor")
+            chatMessageContainerElements[i].classList.remove("chatMessageContainerMinor")
+        }
+        // Chat Message Time
+        const chatMessageTimeElements = document.getElementsByClassName("chatMessageTime")
+        for (let i = 0; i < chatMessageTimeElements.length; i++) {
+            chatMessageTimeElements[i].classList.add("chatMessageTimeMajor")
+            chatMessageTimeElements[i].classList.remove("chatMessageTimeMinor")
+        }
+
+        // Left Container
+        mapInformationLeftContainerEl.classList.add("mapInformationLeftContainerMajor")
+        mapInformationLeftContainerEl.classList.remove("mapInformationLeftContainerMinor")
+    } else if (league === "minor") {
+        // Text on sidebar
+        tournamentSelectionEl.innerText = "Minor League"
+        tournamentSelectionLeague = "minor"
+
+        // Video
+        backgroundVideoMajorLeagueEl.style.opacity = 0
+
+        // Logos
+        logoMajorEl.style.opacity = 0
+        logoMinorEl.style.opacity = 1
+
+        // Round Name
+        roundNametEl.classList.remove("roundNameMajor")
+        roundNametEl.classList.add("roundNameMinor")
+
+        // Chat Display
+        chatDisplayEl.classList.remove("chatDisplayMajor")
+        chatDisplayEl.classList.add("chatDisplayMinor")
+        // Chat Message Containers
+        const chatMessageContainerElements = document.getElementsByClassName("chatMessageContainer")
+        for (let i = 0; i < chatMessageContainerElements.length; i++) {
+            chatMessageContainerElements[i].classList.remove("chatMessageContainerMajor")
+            chatMessageContainerElements[i].classList.add("chatMessageContainerMinor")
+        }
+        // Chat Message times
+        const chatMessageTimeElements = document.getElementsByClassName("chatMessageTime")
+        for (let i = 0; i < chatMessageTimeElements.length; i++) {
+            chatMessageTimeElements[i].classList.remove("chatMessageTimeMajor")
+            chatMessageTimeElements[i].classList.add("chatMessageTimeMinor")
+        }
+
+        // Left Container
+        mapInformationLeftContainerEl.classList.remove("mapInformationLeftContainerMajor")
+        mapInformationLeftContainerEl.classList.add("mapInformationLeftContainerMinor")
     }
 }
