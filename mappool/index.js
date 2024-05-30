@@ -1,12 +1,77 @@
 // Import mappool
 const roundNametEl = document.getElementById("roundName")
+let numberOfBans
+let numberOfPicks
+
 let allBeatmaps
+
+// Bans
+const redTeamBanContainerEl = document.getElementById("redTeamBanContainer")
+const blueTeamBanContainerEl = document.getElementById("blueTeamBanContainer")
+
 async function getMappool() {
     const response = await fetch("http://127.0.0.1:24050/5DUSC3/_data/beatmaps.json")
     const mappool = await response.json()
-    console.log(mappool)
     allBeatmaps = mappool.beatmaps
     roundNametEl.innerText = mappool.roundName.toUpperCase()
+
+    // Set number of bans and number of picks
+    switch (mappool.roundName.toUpperCase()) {
+        case "ROUND OF 32": case "ROUND OF 16":
+            numberOfBans = 1
+            numberOfPicks = 6
+            break
+        case "QUARTERFINALS": case "SEMIFINALS":
+            numberOfBans = 2
+            numberOfPicks = 6
+            break
+        case "FINALS": case "GRAND FINALS":
+            numberOfBans = 2
+            numberOfPicks = 7
+    }
+    
+    // Reset bans
+    redTeamBanContainerEl.innerHTML = ""
+    blueTeamBanContainerEl.innerHTML = ""
+
+    // Create ban elements
+    function createBanElements(index, teamBanSize) {
+        const teamBan = document.createElement("div")
+        teamBan.classList.add("teamBan", teamBanSize)
+
+        const teamBanImage = document.createElement("div")
+        teamBanImage.classList.add("teamBanImage")
+
+        const teamBanLayer = document.createElement("div")
+        teamBanLayer.classList.add("teamBanImage")
+
+        const bannedIcon = document.createElement("bannedIcon")
+        bannedIcon.classList.add("bannedIcon")
+        bannedIcon.setAttribute("src", "static/banned.png")
+
+        const teamBanText = document.createElement("div")
+        teamBanText.classList.add("teamBanText")
+
+        // Set correct container
+        let currentContainer
+        if (index % 2 === 0) currentContainer = redTeamBanContainerEl
+        else currentContainer = blueTeamBanContainerEl
+
+        // Append everything
+        teamBan.append(teamBanImage, teamBanLayer, bannedIcon, teamBanText)
+        currentContainer.append(teamBan)
+    }
+
+    // Add ban elements
+    if (numberOfBans === 1) {
+        for (let i = 0; i < 2; i++) {
+            createBanElements(i, "oneTeamBan")
+        }
+    } else if (numberOfBans === 2) {
+        for (let i = 0; i < 4; i++) {
+            createBanElements(i, "multipleTeamBan")
+        }
+    }
 }
 
 // Star positions

@@ -102,10 +102,11 @@
 .teamBanImage {
     position: absolute; top: 0; left: 0;
     width: 100%; height: calc(100% - 42px);
-    background-image: url("https://assets.ppy.sh/beatmaps/1262411/covers/cover.jpg");
     background-position: center;
     background-size: cover;
     overflow: hidden;
+    opacity: 0;
+    transition: 500ms ease-in-out;
 }
 /* Team Ban Layer*/
 .teamBanLayer {
@@ -117,7 +118,8 @@
 /* Banned Icon */
 .bannedIcon {
     position: absolute; top: calc((100% - 42px) / 2); left: 50%;
-    transform: translate(-50%, -50%)
+    transform: translate(-50%, -50%);
+    display: none;
 }
 /* Team Banned Text */
 .teamBanText {
