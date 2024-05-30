@@ -9,6 +9,15 @@
     font-weight: 800
 }
 
+/* Videos */
+.backgroundVideo {
+    position: absolute; left: 0; top: 0;
+}
+#backgroundVideoMajorLeague {
+    opacity: 0;
+    transition: 500ms ease-in-out;
+}
+
 /* Whole Page */
 #main {
     position: absolute; left: 0; top: 0;
