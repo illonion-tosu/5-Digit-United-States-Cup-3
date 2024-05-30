@@ -1,3 +1,19 @@
+// Import mappool
+const roundTextEl = document.getElementById("roundText")
+let allBeatmaps
+async function getMappool() {
+    const response = await fetch("http://127.0.0.1:24050/5DUSC3/_data/beatmaps.json")
+    const mappool = await response.json()
+    console.log(mappool)
+    allBeatmaps = mappool.beatmaps
+    roundTextEl.innerText = mappool.roundName.toUpperCase()
+}
+
+getMappool()
+
+// Find mappool map
+const findMapInMappool = (beatmapID) => allBeatmaps.find(beatmap => beatmap.beatmapID == beatmapID) || null
+
 // Socket Events
 // Credits: VictimCrasher - https://github.com/VictimCrasher/static/tree/master/WaveTournament
 const socket = new ReconnectingWebSocket("ws://" + location.host + "/ws")
@@ -69,6 +85,7 @@ let chatLength = 0
 
 socket.onmessage = async (event) => {
     const data = JSON.parse(event.data)
+    console.log(data)
 
     // Team Name
     if (currentRedTeamName !== data.tourney.manager.teamName.left) {
@@ -209,22 +226,20 @@ socket.onmessage = async (event) => {
     }
 
     // Beatmap changes
-    if (currentId !== data.menu.bm.id || currentMd5 !== data.menu.bm.md5) {
+    if ((currentId !== data.menu.bm.id || currentMd5 !== data.menu.bm.md5) && allBeatmaps) {
         currentId = data.menu.bm.id
         currentMd5 = data.menu.bm.md5
         foundMapInMappool = false
 
         // Left side changes - Background Image and Mapper Profile Picture
         mapInformationLeftContainerMapBackgroundEl.style.backgroundImage = `url("https://assets.ppy.sh/beatmaps/${data.menu.bm.set}/covers/cover.jpg")`
-        let request = new XMLHttpRequest();
-        request.open("GET",`https://osu.ppy.sh/api/get_user?k=0501452af051a7c75928ab9775d5381bd4745a08&u=${data.menu.bm.metadata.mapper}`,false)
-        request.onload = function() {
-            let userData = JSON.parse(this.response)[0]
-            if (request.status == 200) {
-                mapInformationLeftContainerMapperImageEl.style.backgroundImage = `url("https://a.ppy.sh/${userData.user_id}")`
-            }
-        }
-        request.send()
+        fetch(`https://osu.ppy.sh/api/get_user?k=0501452af051a7c75928ab9775d5381bd4745a08&u=${data.menu.bm.metadata.mapper}`)
+            .then(response => response.json())
+            .then(data => {
+                let userData = data[0];
+                mapInformationLeftContainerMapperImageEl.style.backgroundImage = `url("https://a.ppy.sh/${userData.user_id}")`;
+            })
+            .catch(error => console.error('Error fetching user data:', error));
 
         // Right hand side - Artist / Title / Difficulty / Mapper
         mapInformationRightSongNameDifficultyEl.innerText = `${data.menu.bm.metadata.title} [${data.menu.bm.metadata.difficulty}]`
@@ -245,11 +260,23 @@ socket.onmessage = async (event) => {
                 console.error(e)
             }
         }
+
+        // Put in correct stats for mappool map
+        const currentMapDetails = findMapInMappool(currentId)
+        console.log(currentMapDetails)
+        if (currentMapDetails) {
+            foundMapInMappool = true
+            mapInformationRightSREl.innerText = `SR: ${Math.round(parseFloat(currentMapDetails.difficultyrating) * 100) / 100}`
+            mapInformationRightCSEl.innerText = `CS: ${Math.round(parseFloat(currentMapDetails.cs) * 10) / 10}`
+            mapInformationRightAREl.innerText = `AR: ${Math.round(parseFloat(currentMapDetails.ar) * 10) / 10}`
+            mapInformationRightODEl.innerText = `OD: ${Math.round(parseFloat(currentMapDetails.od) * 10) / 10}`
+            mapInformationRightBPMEl.innerText = `BPM: ${Math.round(parseFloat(currentMapDetails.bpm) * 10) / 10}`
+        }
     }
 
     // Mappool stats
-    if (!foundMapInMappool) {
-        mapInformationRightSREl.innerText = `SR: ${data.menu.bm.stats.SR}`
+    if (!foundMapInMappool && allBeatmaps) {
+        mapInformationRightSREl.innerText = `SR: ${data.menu.bm.stats.fullSR}`
         mapInformationRightCSEl.innerText = `CS: ${data.menu.bm.stats.CS}`
         mapInformationRightAREl.innerText = `AR: ${data.menu.bm.stats.AR}`
         mapInformationRightODEl.innerText = `OD: ${data.menu.bm.stats.OD}`
@@ -377,7 +404,6 @@ const logoMajorEl = document.getElementById("logoMajor")
 const logoMinorEl = document.getElementById("logoMinor")
 
 // Tournament Selection
-const roundTextEl = document.getElementById("roundText")
 const backgroundVideoMajorLeagueEl = document.getElementById("backgroundVideoMajorLeague")
 const tournamentSelectionEl = document.getElementById("tournamentSelection")
 let tournamentSelectionLeague = "minor"
