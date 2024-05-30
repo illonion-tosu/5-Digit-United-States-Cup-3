@@ -4,9 +4,12 @@ let numberOfBans
 let numberOfPicks
 let allBeatmaps
 
-// Bans
+// Ban Containers
 const redTeamBanContainerEl = document.getElementById("redTeamBanContainer")
 const blueTeamBanContainerEl = document.getElementById("blueTeamBanContainer")
+// Pick Containers
+const redPickSectionEl = document.getElementById("redPickSection")
+const bluePickSectionEl = document.getElementById("bluePickSection")
 
 async function getMappool() {
     const response = await fetch("http://127.0.0.1:24050/5DUSC3/_data/beatmaps.json")
@@ -66,6 +69,40 @@ async function getMappool() {
     if (numberOfBans === 1) teamBanSize = "oneTeamBan"
     else teamBanSize = "multipleTeamBan"
     for (let i = 0; i < numberOfBans * 2; i++) createBanElements(i, teamBanSize)
+
+    // Reset pick containers
+    redPickSectionEl.innerHTML = ""
+    bluePickSectionEl.innerHTML = ""
+    
+    // Add pick containers
+    for (let i = 0; i < numberOfPicks * 2; i++) {
+        const pickContainer = document.createElement("div")
+        pickContainer.classList.add("pickContainer")
+
+        const pickContainerBackgroundImage = document.createElement("div")
+        pickContainerBackgroundImage.classList.add("pickContainerBackgroundImage")
+
+        const pickContainerWinner = document.createElement("div")
+        pickContainerWinner.classList.add("pickContainerWinner")
+
+        const pickContainerGradient = document.createElement("div")
+        pickContainerGradient.classList.add("pickContainerGradient")
+
+        const pickContainerBottom = document.createElement("div")
+        pickContainerBottom.classList.add("pickContainerBottom")
+
+        const pickContainerCrown = document.createElement("div")
+        pickContainerCrown.classList.add("pickContainerCrown")
+
+        const pickContainerText = document.createElement("div")
+        pickContainerText.classList.add("pickContainerText")
+
+        pickContainer.append(pickContainerBackgroundImage, pickContainerWinner,
+            pickContainerGradient, pickContainerBottom, pickContainerCrown, pickContainerText) 
+            
+        if (i % 2 === 0) redPickSectionEl.append(pickContainer)
+        else bluePickSectionEl.append(pickContainer)
+    }
 }
 
 // Star positions
