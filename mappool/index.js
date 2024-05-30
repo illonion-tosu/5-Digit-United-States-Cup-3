@@ -2,7 +2,6 @@
 const roundNametEl = document.getElementById("roundName")
 let numberOfBans
 let numberOfPicks
-
 let allBeatmaps
 
 // Bans
@@ -76,21 +75,21 @@ async function getMappool() {
 
 // Star positions
 const sevenStars = [
-    {left: "408px", top: "111px"},
-    {left: "472px", top: "174px"},
-    {left: "420px", top: "193px"},
-    {left: "370px", top: "174px"},
-    {left: "472px", top: "66px"},
-    {left: "420px", top: "45px"},
     {left: "370px", top: "66px"},
+    {left: "420px", top: "45px"},
+    {left: "472px", top: "66px"},
+    {left: "370px", top: "174px"},
+    {left: "420px", top: "193px"},
+    {left: "472px", top: "174px"},
+    {left: "408px", top: "111px"}
 ]
 const sixStars = [
-    {left: "408px", top: "111px"},
-    {left: "450px", top: "67px"},
-    {left: "475px", top: "130px"},
-    {left: "418px", top: "176px"},
-    {left: "360px", top: "130px"},
     {left: "381px", top: "67px"},
+    {left: "360px", top: "130px"},
+    {left: "418px", top: "176px"},
+    {left: "475px", top: "130px"},
+    {left: "450px", top: "67px"},
+    {left: "408px", top: "111px"},
 ]
 
 getMappool()
@@ -155,7 +154,7 @@ socket.onmessage = async (event) => {
 
         function createStar(i, starImage, starContainer) {
             const createStar = document.createElement("img")
-            createStar.classList.add((i === 0)? "largeStar" : "smallStar")
+            createStar.classList.add((i === currentFirstTo - 1)? "largeStar" : "smallStar")
             createStar.style.left = starPositions[i].left
             createStar.style.top = starPositions[i].top
             createStar.setAttribute("src", `../_shared/stars/${starImage}.png`)
@@ -164,18 +163,18 @@ socket.onmessage = async (event) => {
 
         let i = 0
         for (i; i < currentRedStars; i++) {
-            createStar(i, "white_star", redTeamStarContainerEl)
+            createStar(i, "red_star", redTeamStarContainerEl)
         }
         for (i; i < currentFirstTo; i++) {
-            createStar(i, "red_star", redTeamStarContainerEl)
+            createStar(i, "white_star", redTeamStarContainerEl)
         }
 
         i = 0
         for (i; i < currentBlueStars; i++) {
-            createStar(i, "white_star", blueTeamStarContainerEl)
+            createStar(i, "blue_star", blueTeamStarContainerEl)
         }
         for (i; i < currentFirstTo; i++) {
-            createStar(i, "blue_star", blueTeamStarContainerEl)
+            createStar(i, "white_star", blueTeamStarContainerEl)
         }
     }
 }
