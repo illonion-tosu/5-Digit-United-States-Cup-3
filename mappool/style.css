@@ -198,10 +198,8 @@
 .pickContainerText {
     position: absolute; left: 50%; bottom: 14px;
     transform: translateX(-50%);
-    font-size: 38px;
     color: white;
-    font-weight: 800;
-    font-family: "Bicyclette";
+    font-family: "Bicyclette"; font-weight: 800; font-size: 38px;
 }
 
 /* Chat Display */
@@ -211,6 +209,19 @@
 /* Map Information Left Container */
 #mapInformationLeftContainer { left: 991px; bottom: 32px; }
 
+/* Currently Picking */
+#currentlyPicking {
+    position: absolute; left: 901px; top: 887px;
+    color: #6379db;
+    font-family: "Bicyclette"; font-weight: 800; font-size: 38px;
+    opacity: 1;
+    animation: currentlyPickingBlinking 4s infinite linear forwards
+}
+@keyframes currentlyPickingBlinking {
+    0% { opacity: 1 }
+    50% { opacity: 0 }
+    100% { opacity: 1}
+}
 /* Map Information Right Containers */
 .mapInformationRightContainers {
     left: 1119px; 

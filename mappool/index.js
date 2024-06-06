@@ -49,7 +49,7 @@ async function getMappool() {
         const teamBanLayer = document.createElement("div")
         teamBanLayer.classList.add("teamBanImage")
 
-        const bannedIcon = document.createElement("bannedIcon")
+        const bannedIcon = document.createElement("img")
         bannedIcon.classList.add("bannedIcon")
         bannedIcon.setAttribute("src", "static/banned.png")
 
@@ -112,6 +112,8 @@ async function getMappool() {
         const mappoolSideBarButton = document.createElement("button")
         mappoolSideBarButton.classList.add("sideBarButton")
         mappoolSideBarButton.innerText = `${allBeatmaps[i].mod}${allBeatmaps[i].order}`
+        mappoolSideBarButton.setAttribute("id", allBeatmaps[i].beatmapID)
+        mappoolSideBarButton.addEventListener("click", mapClickEvent)
         mappoolSectionButtonsEl.append(mappoolSideBarButton)
     }
 }
@@ -316,9 +318,41 @@ function tournamentSelection(league) {
 
 // Next Action
 const nextActionTextEl = document.getElementById("nextActionText")
-const setNextAction = (team, action) => nextActionTextEl.innerText = `${team} ${action}`
+let nextActionTeam
+let nextAction
+const setNextAction = (team, action) => {
+    nextActionTextEl.innerText = `${team} ${action}`
+    nextActionTeam = team
+    nextAction = action
+}
 
 // Map Click
 function mapClickEvent() {
+    // Get current ID
+    let currentId = this.id
+    // Find map information
+    const currentMap = findMapInMappool(currentId)
+    if (!currentMap) return
 
+    // Check if map has been banned or picked before
+    if (document.getElementById(`${currentId}-Ban`) || document.getElementById(`${currentId}-Pick`)) return
+
+    // Bans
+    if (nextAction === "Ban") {
+        // Set current tile
+        let currentContainer = (nextActionTeam === "Red")? redTeamBanContainerEl : blueTeamBanContainerEl
+        let currentTile = currentContainer.children[0]
+        if (currentContainer.childElementCount > 1 && 
+            currentContainer.children[0].hasAttribute("id") && 
+            currentContainer.children[0].id !== null) {
+                currentTile = redTeamBanContainerEl.children[1]
+            }
+    
+        // Set information for that tile
+        currentTile.setAttribute("id", `${currentId}-Ban`)
+        currentTile.children[0].style.backgroundImage = `url("${currentMap.imgURL}")`
+        currentTile.children[0].style.opacity = 1
+        currentTile.children[2].style.display = "block"
+        currentTile.children[3].innerText = `${currentMap.mod}${currentMap.order}`
+    }
 }
