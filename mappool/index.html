@@ -96,13 +96,26 @@
 
     <!-- Side Bar -->
     <div id="sideBar">
-        <section id="tournamentSelectionSection">
+        <section class="sideBarSection" id="tournamentSelectionSection">
             <h1>Which tournament?</h1>
-            <div id="tournamentSelection">Minor League</div>
-            <div id="tournamentSelectionSectionButtons">
-                <button onclick="tournamentSelection('major')">Major</button>
-                <button onclick="tournamentSelection('minor')">Minor</button>
+            <div class="sideBarSectionMainText" id="tournamentSelection">Minor League</div>
+            <div class="sideBarButtonSection" id="tournamentSelectionSectionButtons">
+                <button class="sideBarButton" onclick="tournamentSelection('major')">Major</button>
+                <button class="sideBarButton" onclick="tournamentSelection('minor')">Minor</button>
             </div>
+        </section>
+        <section class="sideBarSection" id="nextActionSection">
+            <h1>Next Action:</h1>
+            <div class="sideBarSectionMainText" id="nextActionText"></div>
+            <div class="sideBarButtonSection" id="nextActionSectionButtons">
+                <button class="sideBarButton" onclick="setNextAction('Red','Ban')">R Ban</button>
+                <button class="sideBarButton" onclick="setNextAction('Blue','Ban')">B Ban</button>
+                <button class="sideBarButton" onclick="setNextAction('Red','Pick')">R Pick</button>
+                <button class="sideBarButton" onclick="setNextAction('Blue','Pick')">B Pick</button>
+            </div>
+        </section>
+        <section id="mappoolSection">
+            <section class="sideBarButtonSection" id="mappoolSectionButtons"></section>
         </section>
     </div>
 

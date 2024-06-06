@@ -249,23 +249,20 @@
     font-family: "Bicyclette"; font-weight: 800;
     color: white;
 }
-/* Tournament Selection Section */
-#tournamentSelectionSection h1 {
-    margin: 20px;
-}
-#tournamentSelection {
+.sideBarSection h1 { margin: 20px; }
+.sideBarSectionMainText {
     font-size: 40px;
     margin-left: 20px;
     margin-bottom: 20px;
 }
-#tournamentSelectionSectionButtons {
+.sideBarButtonSection {
     display: flex;
     justify-content: center;
     flex-direction: column;
     align-items: center;
 }
-#tournamentSelectionSectionButtons button {
-    width: 210px; height: 50px;
+.sideBarButton {
+    height: 50px;
     margin-bottom: 10px;
     font-family: inherit;
     font-weight: inherit;
@@ -275,7 +272,30 @@
     border: 2px solid white;
     border-radius: 10px;
 }
-#tournamentSelectionSectionButtons button:active {
+.sideBarButton:active {
     background-color: white;
     color: black;
 }
+/* Tournament Selection Section */
+#tournamentSelectionSectionButtons button { width: 210px;  }
+/* Next Action Section */
+#nextActionSection { 
+    border-top: 1px solid white; 
+    margin: 25px 0px;
+}
+#nextActionSectionButtons {
+    margin: 0px 20px;
+    flex-direction: row;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+#nextActionSectionButtons button { width: 100px; }
+/* Mappool Section */
+#mappoolSection { border-top: 1px solid white;  }
+#mappoolSectionButtons {
+    margin: 25px 20px 0 20px;
+    flex-direction: row;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+#mappoolSectionButtons button { width: 100px; height: 33px; }

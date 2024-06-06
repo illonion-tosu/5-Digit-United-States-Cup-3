@@ -10,6 +10,8 @@ const blueTeamBanContainerEl = document.getElementById("blueTeamBanContainer")
 // Pick Containers
 const redPickSectionEl = document.getElementById("redPickSection")
 const bluePickSectionEl = document.getElementById("bluePickSection")
+// Mappool bar chart buttons
+const mappoolSectionButtonsEl = document.getElementById("mappoolSectionButtons")
 
 async function getMappool() {
     const response = await fetch("http://127.0.0.1:24050/5DUSC3/_data/beatmaps.json")
@@ -25,11 +27,11 @@ async function getMappool() {
             break
         case "QUARTERFINALS": case "SEMIFINALS":
             numberOfBans = 2
-            numberOfPicks = 6
+            numberOfPicks = 7
             break
         case "FINALS": case "GRAND FINALS":
             numberOfBans = 2
-            numberOfPicks = 7
+            numberOfPicks = 8
     }
     
     // Reset bans
@@ -102,6 +104,15 @@ async function getMappool() {
             
         if (i % 2 === 0) redPickSectionEl.append(pickContainer)
         else bluePickSectionEl.append(pickContainer)
+    }
+
+    // Add mappool side bar elements
+    for (let i = 0; i < allBeatmaps.length; i++) {
+        if (Object.keys(allBeatmaps[i]).length === 0) continue
+        const mappoolSideBarButton = document.createElement("button")
+        mappoolSideBarButton.classList.add("sideBarButton")
+        mappoolSideBarButton.innerText = `${allBeatmaps[i].mod}${allBeatmaps[i].order}`
+        mappoolSectionButtonsEl.append(mappoolSideBarButton)
     }
 }
 
@@ -301,4 +312,13 @@ function tournamentSelection(league) {
         mapInformationLeftContainerEl.classList.remove("mapInformationLeftContainerMajor")
         mapInformationLeftContainerEl.classList.add("mapInformationLeftContainerMinor")
     }
+}
+
+// Next Action
+const nextActionTextEl = document.getElementById("nextActionText")
+const setNextAction = (team, action) => nextActionTextEl.innerText = `${team} ${action}`
+
+// Map Click
+function mapClickEvent() {
+
 }
