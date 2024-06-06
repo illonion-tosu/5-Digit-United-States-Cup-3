@@ -316,14 +316,27 @@ function tournamentSelection(league) {
     }
 }
 
+// Has map been picked yet
+let mapPicked = false
+
 // Next Action
 const nextActionTextEl = document.getElementById("nextActionText")
+const currentlyPickingEl = document.getElementById("currentlyPicking")
 let nextActionTeam
 let nextAction
 const setNextAction = (team, action) => {
     nextActionTextEl.innerText = `${team} ${action}`
     nextActionTeam = team
     nextAction = action
+    if (action === "Pick" && !mapPicked) {
+        currentlyPickingEl.style.display = "block"
+        currentlyPickingEl.innerText = `${team.toUpperCase()} IS CURRENTLY PICKING...`
+        currentlyPickingEl.classList.add(`${team.toLowerCase()}TeamColor`)
+        if (team === "Red") currentlyPickingEl.classList.remove("blueTeamColor")
+        else currentlyPickingEl.classList.remove("redTeamColor")
+    } else if (action === "Ban") {
+        currentlyPickingEl.style.display = "none"
+    }
 }
 
 // Map Click
@@ -340,19 +353,70 @@ function mapClickEvent() {
     // Bans
     if (nextAction === "Ban") {
         // Set current tile
-        let currentContainer = (nextActionTeam === "Red")? redTeamBanContainerEl : blueTeamBanContainerEl
+        let currentContainer = (nextActionTeam === "Red") ? redTeamBanContainerEl : blueTeamBanContainerEl
         let currentTile = currentContainer.children[0]
         if (currentContainer.childElementCount > 1 && 
             currentContainer.children[0].hasAttribute("id") && 
             currentContainer.children[0].id !== null) {
-                currentTile = redTeamBanContainerEl.children[1]
+                currentTile = currentContainer.children[1]
             }
     
+        // Get potential previous pick's information
+        let previousTileId
+        if (currentTile.hasAttribute("id")) {
+            previousTileId = currentTile.id
+            previousTileId = previousTileId.split("-")[0]
+        }
+        
         // Set information for that tile
         currentTile.setAttribute("id", `${currentId}-Ban`)
         currentTile.children[0].style.backgroundImage = `url("${currentMap.imgURL}")`
         currentTile.children[0].style.opacity = 1
         currentTile.children[2].style.display = "block"
         currentTile.children[3].innerText = `${currentMap.mod}${currentMap.order}`
+
+        // Set background colour for current button
+        this.setAttribute("class", "banColourBackground sideBarButton")
+        this.style.color = "black"
+
+        // Remove background colour for previous button
+        let previousTile = document.getElementById(previousTileId)
+        if (document.contains(previousTile)) {
+            previousTile.classList.remove("banColourBackground")
+            previousTile.style.color = "white"
+        }
     }
+
+    // Picks
+    if (nextAction === "Pick") {
+        // Set current tile container
+        let currentContainer = (nextActionTeam === "Red") ? redPickSectionEl : bluePickSectionEl
+        
+        // Find correct tile
+        let currentTile
+        for (let i = 0; i < currentContainer.childElementCount; i++) {
+            if (currentContainer.children[i].id) continue
+            currentTile = currentContainer.children[i]
+            break
+        }
+        if (!currentTile) return
+
+        // Set information on tile
+        currentTile.setAttribute("id", `${currentId}-Pick`)
+        currentTile.children[0].style.backgroundImage = `url("${currentMap.imgURL}")`
+        currentTile.children[3].classList.add("pickContainerBottomNone")
+        currentTile.children[5].innerText = `${currentMap.mod}${currentMap.order}`
+
+        // Set background colour for current button
+        this.style.color = "black"
+        this.style.backgroundColor = "lightgreen"
+
+        mapPicked = true
+        currentlyPickingEl.style.display = "none"
+    }
+
+    // Switch teams for next action
+    if (nextActionTeam === "Red") nextActionTeam = "Blue"
+    else if (nextActionTeam === "Blue") nextActionTeam = "Red"
+    nextActionTextEl.innerText = `${nextActionTeam} ${nextAction}`
 }
