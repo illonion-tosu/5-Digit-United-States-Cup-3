@@ -203,6 +203,9 @@ const mapInformationRightODEl = document.getElementById("mapInformationRightOD")
 let currentId, currentMd5
 let foundMapInMappool = false
 
+// Has map been picked yet
+let mapPicked = false
+
 socket.onmessage = async (event) => {
     const data = JSON.parse(event.data)
 
@@ -348,7 +351,6 @@ socket.onmessage = async (event) => {
 
         // Put in correct stats for mappool map
         const currentMapDetails = findMapInMappool(currentId)
-        console.log(currentMapDetails)
         if (currentMapDetails) {
             foundMapInMappool = true
             mapInformationRightSREl.innerText = `SR: ${Math.round(parseFloat(currentMapDetails.difficultyrating) * 100) / 100}`
@@ -356,6 +358,24 @@ socket.onmessage = async (event) => {
             mapInformationRightAREl.innerText = `AR: ${Math.round(parseFloat(currentMapDetails.ar) * 10) / 10}`
             mapInformationRightODEl.innerText = `OD: ${Math.round(parseFloat(currentMapDetails.od) * 10) / 10}`
             mapInformationRightBPMEl.innerText = `BPM: ${Math.round(parseFloat(currentMapDetails.bpm) * 10) / 10}`
+
+            if (!mapPicked && nextAction === "Pick" && nextActionTeam) {
+                // Find correct button
+                const buttons = document.querySelectorAll("[data-id]")
+                let currentButton
+                buttons.forEach(button => {
+                    if (button.dataset.id == currentId && !button.dataset.action) {
+                        currentButton = button
+                        return
+                    }
+                })
+                
+                if (currentButton) {
+                    currentButton.click()
+                    mapPicked = true
+                    currentlyPickingEl.style.display = "none"
+                }
+            }
         }
     }
 
@@ -394,6 +414,10 @@ socket.onmessage = async (event) => {
         const currentTimeDeltaPercentage = data.menu.bm.time.current / data.menu.bm.time.mp3 * 95
         mapInformationSongProgressCircleEl.style.left = `${currentTimeDeltaPercentage}%`
     }
+    if (currentIPCState === 4) {
+        mapPicked = false
+        currentlyPickingEl.style.display = "block"
+    }
 }
 
 // Add / Remove Wrap
@@ -409,7 +433,7 @@ const mapInformationRightSRandBPMEl = document.getElementById("mapInformationRig
 const mapInformationRightArtistWrapperEl = document.getElementById("mapInformationRightArtistWrapper")
 const mapInformationRightCSandARandODEl = document.getElementById("mapInformationRightCSandARandOD")
 const mapInformationLeftContainerEl = document.getElementById("mapInformationLeftContainer")
-const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
+const sleep = ms => new Promise(resolve => setTimeout(resolve, ms))
 // Move Elements
 async function moveElements(moveOutElement1, moveOutElement2, moveInElement1, moveInElement2, stationaryElement1, stationaryElement2) {
     // Reset stationary and moveIn elements opacity to make sure they can get to the right position
@@ -544,9 +568,6 @@ function tournamentSelection(league) {
         mapInformationLeftContainerEl.classList.add("mapInformationLeftContainerMinor")
     }
 }
-
-// Has map been picked yet
-let mapPicked = false
 
 // Next Action
 const nextActionTextEl = document.getElementById("nextActionText")

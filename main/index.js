@@ -346,7 +346,7 @@ const mapInformationRightSRandBPMEl = document.getElementById("mapInformationRig
 const mapInformationRightArtistWrapperEl = document.getElementById("mapInformationRightArtistWrapper")
 const mapInformationRightCSandARandODEl = document.getElementById("mapInformationRightCSandARandOD")
 const mapInformationLeftContainerEl = document.getElementById("mapInformationLeftContainer")
-const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
+const sleep = ms => new Promise(resolve => setTimeout(resolve, ms))
 
 async function moveElements(moveOutElement1, moveOutElement2, moveInElement1, moveInElement2, stationaryElement1, stationaryElement2) {
     // Reset stationary and moveIn elements opacity to make sure they can get to the right position
