@@ -12,6 +12,11 @@ const redPickSectionEl = document.getElementById("redPickSection")
 const bluePickSectionEl = document.getElementById("bluePickSection")
 // Mappool bar chart buttons
 const mappoolSectionButtonsEl = document.getElementById("mappoolSectionButtons")
+// Pick Container Lengths
+const pickContainerWidths = ["174.19px", "146.16px", "126.89px"]
+const minimumNumberOfPicks = 6
+// Tiebreaker pick container
+const tiebreakerPickContainerEl = document.getElementById("tiebreakerPickContainer")
 
 async function getMappool() {
     const response = await fetch("http://127.0.0.1:24050/5DUSC3/_data/beatmaps.json")
@@ -75,11 +80,15 @@ async function getMappool() {
     // Reset pick containers
     redPickSectionEl.innerHTML = ""
     bluePickSectionEl.innerHTML = ""
+
+    // Set pick container width
+    const pickContainerWidth = pickContainerWidths[numberOfPicks - minimumNumberOfPicks]
     
     // Add pick containers
-    for (let i = 0; i < numberOfPicks * 2; i++) {
+    for (let i = 0; i < numberOfPicks * 2 - 2; i++) {
         const pickContainer = document.createElement("div")
         pickContainer.classList.add("pickContainer")
+        pickContainer.style.width = pickContainerWidth
 
         const pickContainerBackgroundImage = document.createElement("div")
         pickContainerBackgroundImage.classList.add("pickContainerBackgroundImage")
@@ -106,13 +115,19 @@ async function getMappool() {
         else bluePickSectionEl.append(pickContainer)
     }
 
+    // Set width and left of tiebreaker
+    tiebreakerPickContainerEl.style.width = pickContainerWidth
+    let redPickSectionLeft = window.getComputedStyle(redPickSectionEl).left
+    redPickSectionLeft = redPickSectionLeft.substring(0, redPickSectionLeft.length - 2)
+    tiebreakerPickContainerEl.style.left = `${parseInt(redPickSectionLeft) + redPickSectionEl.getBoundingClientRect().width + 15}px`
+
     // Add mappool side bar elements
     for (let i = 0; i < allBeatmaps.length; i++) {
         if (Object.keys(allBeatmaps[i]).length === 0) continue
         const mappoolSideBarButton = document.createElement("button")
         mappoolSideBarButton.classList.add("sideBarButton")
         mappoolSideBarButton.innerText = `${allBeatmaps[i].mod}${allBeatmaps[i].order}`
-        mappoolSideBarButton.setAttribute("id", allBeatmaps[i].beatmapID)
+        mappoolSideBarButton.dataset.id = allBeatmaps[i].beatmapID
         mappoolSideBarButton.addEventListener("click", mapClickEvent)
         mappoolSectionButtonsEl.append(mappoolSideBarButton)
     }
@@ -387,22 +402,35 @@ const setNextAction = (team, action) => {
 // Map Click
 function mapClickEvent() {
     // Get current ID
-    let currentId = this.id
+    let currentId = this.dataset.id
     // Find map information
     const currentMap = findMapInMappool(currentId)
     if (!currentMap) return
+    // Check if the actions extist
+    if (!nextAction || !nextActionTeam) return
 
     // Check if map has been banned or picked before
-    if (document.getElementById(`${currentId}-Ban`) || document.getElementById(`${currentId}-Pick`)) return
+    const elements = document.querySelectorAll("[data-id]")
+    let mapFound = false
+    elements.forEach(element => {
+        if (element.dataset.id === currentId && (element.dataset.action === "Ban" || element.dataset.action === "Pick")) {
+            mapFound = true
+            return
+        }
+    })
+    if (mapFound) return
 
     // Bans
     if (nextAction === "Ban") {
+        // Cannot ban TB
+        if (currentMap.mod === "TB") return
+
         // Set current tile
         let currentContainer = (nextActionTeam === "Red") ? redTeamBanContainerEl : blueTeamBanContainerEl
         let currentTile = currentContainer.children[0]
         if (currentContainer.childElementCount > 1 && 
-            currentContainer.children[0].hasAttribute("id") && 
-            currentContainer.children[0].id !== null) {
+            currentContainer.dataset.id &&
+            currentContainer.dataset.action) {
                 currentTile = currentContainer.children[1]
             }
     
@@ -414,11 +442,12 @@ function mapClickEvent() {
         }
         
         // Set information for that tile
-        currentTile.setAttribute("id", `${currentId}-Ban`)
+        currentTile.dataset.id = currentId
+        currentTile.dataset.action = "Ban"
         currentTile.children[0].style.backgroundImage = `url("${currentMap.imgURL}")`
         currentTile.children[0].style.opacity = 1
         currentTile.children[2].style.display = "block"
-        currentTile.children[3].innerText = `${currentMap.mod}${currentMap.order}`
+        currentTile.children[3].innerText = `${currentMap.mod}${(checkNumberOfModsInModpoolIsOne(currentMap.mod))? "" : currentMap.order}`
 
         // Set background colour for current button
         this.setAttribute("class", "banColourBackground sideBarButton")
@@ -439,23 +468,39 @@ function mapClickEvent() {
         
         // Find correct tile
         let currentTile
-        for (let i = 0; i < currentContainer.childElementCount; i++) {
-            if (currentContainer.children[i].id) continue
-            currentTile = currentContainer.children[i]
-            break
+
+        // Check if mod is tb first
+        if (currentMap.mod === "TB") currentTile = tiebreakerPickContainerEl
+        // Go through all the tiles if the current map is not tb
+        if (!currentTile) {
+            for (let i = 0; i < currentContainer.childElementCount; i++) {
+                if (currentContainer.children[i].dataset.id) continue
+                currentTile = currentContainer.children[i]
+                break
+            }
         }
+
         if (!currentTile) return
 
         // Set information on tile
-        currentTile.setAttribute("id", `${currentId}-Pick`)
+        currentTile.dataset.id = currentId
+        currentTile.dataset.action = "Pick"
         currentTile.children[0].style.backgroundImage = `url("${currentMap.imgURL}")`
+        currentTile.children[0].style.opacity = 1
         currentTile.children[3].classList.add("pickContainerBottomNone")
-        currentTile.children[5].innerText = `${currentMap.mod}${currentMap.order}`
+        currentTile.children[5].innerText = `${currentMap.mod}${(checkNumberOfModsInModpoolIsOne(currentMap.mod))? "" : currentMap.order}`
+
+        // Set colour of text on current tile
+        getAverageColor(currentMap.imgURL, function(brightness) {
+            if (brightness > 140) currentTile.children[5].style.color = "black"
+            else currentTile.children[5].style.color = "white"
+        })
 
         // Set background colour for current button
         this.style.color = "black"
         this.style.backgroundColor = "lightgreen"
 
+        // Reset some elements
         mapPicked = true
         currentlyPickingEl.style.display = "none"
     }
@@ -465,3 +510,40 @@ function mapClickEvent() {
     else if (nextActionTeam === "Blue") nextActionTeam = "Red"
     nextActionTextEl.innerText = `${nextActionTeam} ${nextAction}`
 }
+
+// Get average background color
+function getAverageColor(imageUrl, callback) {
+    var img = new Image()
+    img.crossOrigin = 'Anonymous'
+    img.src = imageUrl
+
+    img.onload = function() {
+        var canvas = document.createElement('canvas')
+        var context = canvas.getContext('2d')
+        var width = canvas.width = img.width
+        var height = canvas.height = img.height
+
+        context.drawImage(img, 0, 0, width, height)
+        var imageData = context.getImageData(0, 0, width, height)
+        var data = imageData.data
+
+        var r = 0, g = 0, b = 0
+
+        for (var i = 0; i < data.length; i += 4) {
+            r += data[i]
+            g += data[i + 1]
+            b += data[i + 2]
+        }
+
+        var pixelCount = data.length / 4
+        r = Math.floor(r / pixelCount)
+        g = Math.floor(g / pixelCount)
+        b = Math.floor(b / pixelCount)
+
+        var brightness = (r + g + b) / 3
+        callback(brightness)
+    }
+}
+
+// Check number of mods in particular modpool
+const checkNumberOfModsInModpoolIsOne = mod => allBeatmaps.filter(beatmap => beatmap.mod === mod).length === 1
