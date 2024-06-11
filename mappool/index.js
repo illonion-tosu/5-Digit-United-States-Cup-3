@@ -52,7 +52,7 @@ async function getMappool() {
         teamBanImage.classList.add("teamBanImage")
 
         const teamBanLayer = document.createElement("div")
-        teamBanLayer.classList.add("teamBanImage")
+        teamBanLayer.classList.add("teamBanLayer")
 
         const bannedIcon = document.createElement("img")
         bannedIcon.classList.add("bannedIcon")
@@ -395,6 +395,10 @@ socket.onmessage = async (event) => {
     // IPC State
     if (currentIPCState !== data.tourney.manager.ipcState) {
         currentIPCState = data.tourney.manager.ipcState
+        if (currentIPCState === 4) {
+            mapPicked = false
+            currentlyPickingEl.style.display = "block"
+        }
     }
 
     // Gameplay Song Progress Circle
@@ -413,10 +417,6 @@ socket.onmessage = async (event) => {
     } else {
         const currentTimeDeltaPercentage = data.menu.bm.time.current / data.menu.bm.time.mp3 * 95
         mapInformationSongProgressCircleEl.style.left = `${currentTimeDeltaPercentage}%`
-    }
-    if (currentIPCState === 4) {
-        mapPicked = false
-        currentlyPickingEl.style.display = "block"
     }
 }
 
@@ -737,3 +737,124 @@ function getAverageColor(imageUrl, callback) {
 
 // Check number of mods in particular modpool
 const checkNumberOfModsInModpoolIsOne = mod => allBeatmaps.filter(beatmap => beatmap.mod === mod).length === 1
+
+const pickBanManagementSelectEl = document.getElementById("pickBanManagementSelect")
+const sideBarColumn2El = document.getElementById("sideBarColumn2")
+let selectedPickManagementOption
+pickBanManagementSelectEl.addEventListener('change', function()  {
+    selectedPickManagementOption = this.value
+    while (sideBarColumn2El.childElementCount > 2) sideBarColumn2El.lastChild.remove()
+    
+    // Set Ban
+    if (selectedPickManagementOption === "setBan") {
+        // Create title
+        const banTitle = document.createElement("h1")
+        banTitle.innerText = "Whose ban?"
+        sideBarColumn2El.append(banTitle)
+        
+        // Create select
+        const select = document.createElement("select")
+        select.classList.add("pickBanManagementSelect")
+        select.setAttribute("id", "pickBanManagementBanSelect")
+        sideBarColumn2El.append(select)
+
+        // Create options
+        for (let i = 0; i < redTeamBanContainerEl.childElementCount; i++) {
+            const optionRed = document.createElement("option")
+            optionRed.value = `red_ban_${i}`
+            optionRed.innerText = `Red Ban ${i + 1}`
+            select.append(optionRed)
+
+            const optionBlue = document.createElement("option")
+            optionBlue.value = `blue_ban_${i}`
+            optionBlue.innerText = `Blue Ban ${i + 1}`
+            select.append(optionBlue)
+        }
+        select.setAttribute("size", select.childElementCount)
+
+        // Create mappool title
+        const mappoolTitle = document.createElement("h1")
+        mappoolTitle.innerText = "Which map?"
+        sideBarColumn2El.append(mappoolTitle)
+
+        // Create mappool button section
+        const pickManagementMappool = document.createElement("div")
+        pickManagementMappool.classList.add("pickManagementMappool")
+
+        // Create mappool buttons
+        for (let i = 0 ; i < allBeatmaps.length - 1; i++) {
+            const button = document.createElement("button")
+            button.addEventListener("click", pickManagementSelectMap)
+            button.classList.add("pickManagementMappoolButton")
+            button.innerText = `${allBeatmaps[i].mod}${allBeatmaps[i].order}`
+            button.dataset.id = allBeatmaps[i].beatmapID
+            pickManagementMappool.append(button)
+        }
+        sideBarColumn2El.append(pickManagementMappool)
+
+        // Apply changes button
+        const applyChangesButton = document.createElement("button")
+        applyChangesButton.innerText = "Apply Changes"
+        applyChangesButton.classList.add("sideBarButton")
+        applyChangesButton.style.width = "200px"
+        applyChangesButton.style.marginLeft = "10%"
+        applyChangesButton.addEventListener("click", applyChangesSetBan)
+        sideBarColumn2El.append(applyChangesButton)
+    }
+})
+
+const pickManagementMappoolButtonEls = document.getElementsByClassName("pickManagementMappoolButton")
+let pickManagementSelectedMap
+// Pick the current map
+function pickManagementSelectMap() {
+    // Set current map
+    pickManagementSelectedMap = this.dataset.id
+
+    // Set colour
+    for (let i = 0; i < pickManagementMappoolButtonEls.length; i++) {
+        pickManagementMappoolButtonEls[i].style.backgroundColor = "transparent"
+        pickManagementMappoolButtonEls[i].style.color = "white"
+    }
+    this.style.backgroundColor = "rgb(206,206,206)"
+    this.style.color = "black"
+}
+
+function applyChangesSetBan() {
+    const pickBanManagementBanSelectElValue = document.getElementById("pickBanManagementBanSelect").value
+    const pickBanManagementBanSelectElValueSplit = pickBanManagementBanSelectElValue.split("_")
+    const pickBanManagementBanColour = pickBanManagementBanSelectElValueSplit[0]
+    const pickBanManagementBanNumber = pickBanManagementBanSelectElValueSplit[2]
+
+    // Get current element we are replacing
+    let currentBanContainer
+    if (pickBanManagementBanColour === "red") currentBanContainer = redTeamBanContainerEl.children[parseInt(pickBanManagementBanNumber)]
+    else currentBanContainer = blueTeamBanContainerEl.children[parseInt(pickBanManagementBanNumber)]
+
+    // Save current element information we are replacing
+    let previousBanId = currentBanContainer.dataset.id
+    if (previousBanId) {
+        // Remove current element ban button colour if it is a ban colour only
+        mappoolSectionButtonsEl.querySelectorAll("[data-id]")
+        let previousButton = mappoolSectionButtonsEl.querySelector(`[data-id="${previousBanId}"]`)
+        previousButton.classList.remove("banColourBackground")
+        previousButton.style.color = "white"
+    }
+
+    // Find current map details
+    const currentMap = findMapInMappool(pickManagementSelectedMap)
+    console.log(currentMap)
+    console.log(currentBanContainer)
+    
+    // Set new element
+    currentBanContainer.dataset.id = pickManagementSelectedMap
+    currentBanContainer.dataset.action = "Ban"
+    currentBanContainer.children[0].style.backgroundImage = `url("${currentMap.imgURL}")`
+    currentBanContainer.children[0].style.opacity = 1
+    currentBanContainer.children[2].style.display = "block"
+    currentBanContainer.children[3].innerText = `${currentMap.mod}${currentMap.order}`
+
+    // Set new colour element ban colour
+    let currentButton = mappoolSectionButtonsEl.querySelector(`[data-id="${pickManagementSelectedMap}"]`)
+    currentButton.classList.add("banColourBackground")
+    currentButton.style.color = "white"
+}

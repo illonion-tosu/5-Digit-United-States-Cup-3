@@ -261,11 +261,27 @@
 /* Side Bar */
 #sideBar {
     position: absolute; left: 1920px; top: 0;
-    width: 250px; height: 1080px;
+    width: 500px; height: 1080px;
     background-color: rgb(17, 17, 17);
     font-family: "Bicyclette"; font-weight: 800;
     color: white;
 }
+/* Columns */
+.sideBarColumn {
+    position: absolute;
+    width: 250px; height: inherit;
+}
+#sideBarColumn1 { left: 0; }
+#sideBarColumn2 { left: 250px; }
+/* Dividers */
+.divider {
+    position: absolute; top: 0;
+    width: 2px; height: 1080px;
+    background-color: white;
+}
+#divider1 { left: 249px; }
+#divider2 { left: 499px; }
+/* Section Stuff */
 .sideBarSection h1 { margin: 20px; }
 .sideBarSectionMainText {
     font-size: 40px;
@@ -294,7 +310,7 @@
     color: black;
 }
 /* Tournament Selection Section */
-#tournamentSelectionSectionButtons button { width: 210px;  }
+#tournamentSelectionSectionButtons button { width: 210px; }
 /* Next Action Section */
 #nextActionSection { 
     border-top: 1px solid white; 
@@ -318,6 +334,39 @@
 #mappoolSectionButtons button { width: 100px; height: 33px; }
 
 /* Ban Colour Background For Mappool Section Buttons */
-.banColourBackground { background-color: var(--banColour)}
+.banColourBackground { background-color: var(--banColour); }
 .redTeamColor { color: var(--redTeam); }
 .blueTeamColor { color: var(--blueTeam); }
+
+/* Pick Ban Management Main Select */
+.pickBanManagementSelect {
+    margin: 0 25px;
+    background-color: transparent;
+    border: none;
+}
+.pickBanManagementSelect::-webkit-scrollbar { display: none; }
+.pickBanManagementSelect option { 
+    width: 200px;
+    color: white;
+    text-align: center;
+    font-family: "Bicyclette"; font-weight: 800; font-size: 20px;
+}
+.pickBanManagementSelect option:checked {
+    color: black
+}
+
+/* Pick Management Mappool */
+.pickManagementMappool {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+}
+.pickManagementMappoolButton {
+    width: 80px; height: 30px;
+    color: white;
+    text-align: center;
+    font-family: "Bicyclette"; font-weight: 800; font-size: 20px;
+    background-color: transparent;
+    border: none;
+}
