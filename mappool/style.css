@@ -360,7 +360,6 @@
     display: flex;
     justify-content: center;
     flex-wrap: wrap;
-    margin-bottom: 20px;
 }
 .pickManagementMappoolButton {
     width: 80px; height: 30px;
