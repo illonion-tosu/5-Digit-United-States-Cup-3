@@ -355,17 +355,19 @@
     color: black
 }
 
-/* Pick Management Mappool */
-.pickManagementMappool {
+/* Pick Management Buttons */
+.pickManagementButtonSection {
     display: flex;
     justify-content: center;
     flex-wrap: wrap;
 }
-.pickManagementMappoolButton {
-    width: 80px; height: 30px;
+.pickManagementButton {
     color: white;
     text-align: center;
     font-family: "Bicyclette"; font-weight: 800; font-size: 20px;
     background-color: transparent;
     border: none;
+    height: 30px;
 }
+.pickManagementMappoolButton { width: 80px; }
+.pickManagementPicksButton { width: 110px; }

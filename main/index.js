@@ -202,9 +202,7 @@ socket.onmessage = async (event) => {
     }
 
     // IPC State
-    if (currentIPCState !== data.tourney.manager.ipcState) {
-        currentIPCState = data.tourney.manager.ipcState
-    }
+    if (currentIPCState !== data.tourney.manager.ipcState) currentIPCState = data.tourney.manager.ipcState
 
     // Gameplay Song Progress Circle
     if (currentIPCState === 2 || currentIPCState === 3) {
