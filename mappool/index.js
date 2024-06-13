@@ -792,7 +792,7 @@ pickBanManagementSelectEl.addEventListener('change', function()  {
     }
 
     // Set Pick
-    if (selectedPickManagementOption === "setPick") {
+    if (selectedPickManagementOption === "setPick" || selectedPickManagementOption === "removePick") {
         // Create title
         createPickBanManagementTitle("Whose map?")
 
@@ -820,22 +820,24 @@ pickBanManagementSelectEl.addEventListener('change', function()  {
         pickManagementPickButtonsSection.append(tiebreakerPickButton)
         sideBarColumn2El.append(pickManagementPickButtonsSection)
 
-        // Create mappool title
-        createPickBanManagementTitle("Which map?")
-        // Create mappool button section
-        const pickManagementMappoolButtonSection = document.createElement("div")
+        if (selectedPickManagementOption === "setPick") {
+            // Create mappool title
+            createPickBanManagementTitle("Which map?")
+            // Create mappool button section
+            const pickManagementMappoolButtonSection = document.createElement("div")
 
-        pickManagementMappoolButtonSection.classList.add("pickManagementButtonSection")
-        // Create mappool buttons
-        for (let i = 0 ; i < allBeatmaps.length - 1; i++) {
-            const button = document.createElement("button")
-            button.addEventListener("click", pickManagementSelectMap)
-            button.classList.add("pickManagementButton", "pickManagementMappoolButton")
-            button.innerText = `${allBeatmaps[i].mod}${allBeatmaps[i].order}`
-            button.dataset.id = allBeatmaps[i].beatmapID
-            pickManagementMappoolButtonSection.append(button)
+            pickManagementMappoolButtonSection.classList.add("pickManagementButtonSection")
+            // Create mappool buttons
+            for (let i = 0 ; i < allBeatmaps.length - 1; i++) {
+                const button = document.createElement("button")
+                button.addEventListener("click", pickManagementSelectMap)
+                button.classList.add("pickManagementButton", "pickManagementMappoolButton")
+                button.innerText = `${allBeatmaps[i].mod}${allBeatmaps[i].order}`
+                button.dataset.id = allBeatmaps[i].beatmapID
+                pickManagementMappoolButtonSection.append(button)
+            }
+            sideBarColumn2El.append(pickManagementMappoolButtonSection)
         }
-        sideBarColumn2El.append(pickManagementMappoolButtonSection)
     }
 
     // Apply changes button
@@ -851,6 +853,7 @@ pickBanManagementSelectEl.addEventListener('change', function()  {
         case "setBan": applyChangesButton.addEventListener("click", applyChangesSetBan); break;
         case "removeBan": applyChangesButton.addEventListener("click", applyChangesRemoveBan); break;
         case "setPick": applyChangesButton.addEventListener("click", applyChangesSetPick); break;
+        case "removePick": applyChangesButton.addEventListener("click", applyChangesRemovePick); break;
     }
 })
 
@@ -990,4 +993,25 @@ function applyChangesSetPick() {
     let currentButton = mappoolSectionButtonsEl.querySelector(`[data-id="${pickManagementSelectedMap}"]`)
     currentButton.style.backgroundColor = "lightgreen"
     currentButton.style.color = "black"
+}
+
+// Remove changes
+function applyChangesRemovePick() {
+    // Get current container
+    let currentPickContainer = applyChangesGetCurrentPickContainer()
+
+    // Save current element information we are replacing
+    let previousPickId = currentPickContainer.dataset.id
+    if (previousPickId) removePreviousButtonStyles(previousPickId)
+
+    currentPickContainer.removeAttribute('data-id')
+    currentPickContainer.removeAttribute('data-action')
+    currentPickContainer.children[0].style.backgroundImage = `none`
+    currentPickContainer.children[0].style.opacity = 0
+    currentPickContainer.children[3].classList.remove("pickContainerBottomNone", "pickContainerBottomRed", "pickContainerBottomBlue")
+    if (window.getComputedStyle(currentPickContainer.children[4]).display !== "none") {
+        currentPickContainer.children[4].style.display = "none"
+        currentPickContainer.children[1].classList.remove("pickContainerWinnerRed", "pickContainerWinnerBlue")
+    }
+    currentPickContainer.children[5].innerText = ""
 }
