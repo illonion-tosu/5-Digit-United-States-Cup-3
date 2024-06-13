@@ -745,6 +745,57 @@ let selectedPickManagementOption
 pickBanManagementSelectEl.addEventListener('change', function()  {
     selectedPickManagementOption = this.value
     while (sideBarColumn2El.childElementCount > 2) sideBarColumn2El.lastChild.remove()
+
+    // Add mappool
+    function addMappool() {
+        // Create mappool title
+        createPickBanManagementTitle("Which map?")
+        // Create mappool button section
+        const pickManagementMappoolButtonSection = document.createElement("div")
+
+        pickManagementMappoolButtonSection.classList.add("pickManagementButtonSection")
+        // Create mappool buttons
+        for (let i = 0 ; i < allBeatmaps.length - 1; i++) {
+            const button = document.createElement("button")
+            button.addEventListener("click", pickManagementSelectMap)
+            button.classList.add("pickManagementButton", "pickManagementMappoolButton")
+            button.innerText = `${allBeatmaps[i].mod}${allBeatmaps[i].order}`
+            button.dataset.id = allBeatmaps[i].beatmapID
+            pickManagementMappoolButtonSection.append(button)
+        }
+        sideBarColumn2El.append(pickManagementMappoolButtonSection)
+    }
+
+    // Add picks
+    function addPicks() {
+        // Create title
+        createPickBanManagementTitle("Whose map?")
+
+        // Select Pick Div
+        const pickManagementPickButtonsSection = document.createElement("div")
+        pickManagementPickButtonsSection.classList.add("pickManagementButtonSection")
+        for (let i = 0; i < redPickSectionEl.childElementCount; i++) {
+            const redPickButton = document.createElement("button")
+            redPickButton.innerText = `Red P ${i + 1}`
+            redPickButton.classList.add("pickManagementButton", "pickManagementPicksButton")
+            redPickButton.addEventListener("click", pickManagementSelectPick)
+            pickManagementPickButtonsSection.append(redPickButton)
+
+            const bluePickButton = document.createElement("button")
+            bluePickButton.innerText = `Blue P ${i + 1}`
+            bluePickButton.addEventListener("click", pickManagementSelectPick)
+            bluePickButton.classList.add("pickManagementButton", "pickManagementPicksButton")
+            pickManagementPickButtonsSection.append(bluePickButton)
+        }
+        // Add tiebreaker pick
+        const tiebreakerPickButton = document.createElement("button")
+        tiebreakerPickButton.innerText = `Tiebreaker`
+        tiebreakerPickButton.classList.add("pickManagementButton", "pickManagementPicksButton")
+        tiebreakerPickButton.addEventListener("click", pickManagementSelectPick)
+        pickManagementPickButtonsSection.append(tiebreakerPickButton)
+        sideBarColumn2El.append(pickManagementPickButtonsSection)
+    }
+
     
     // Set Ban and Remove Ban
     if (selectedPickManagementOption === "setBan" || selectedPickManagementOption === "removeBan") {
@@ -771,103 +822,17 @@ pickBanManagementSelectEl.addEventListener('change', function()  {
         }
         select.setAttribute("size", select.childElementCount)
 
-        if (selectedPickManagementOption === "setBan") {
-            // Create mappool title
-            createPickBanManagementTitle("Which map?")
-
-            // Create mappool button section
-            const pickManagementButtonSection = document.createElement("div")
-            pickManagementButtonSection.classList.add("pickManagementButtonSection")
-
-            // Create mappool buttons
-            for (let i = 0 ; i < allBeatmaps.length - 1; i++) {
-                const button = document.createElement("button")
-                button.addEventListener("click", pickManagementSelectMap)
-                button.classList.add("pickManagementButton", "pickManagementMappoolButton")
-                button.innerText = `${allBeatmaps[i].mod}${allBeatmaps[i].order}`
-                button.dataset.id = allBeatmaps[i].beatmapID
-                pickManagementButtonSection.append(button)
-            }
-            sideBarColumn2El.append(pickManagementButtonSection)
-        }
+        if (selectedPickManagementOption === "setBan") addMappool()
     }
 
     // Set Pick
     if (selectedPickManagementOption === "setPick" || selectedPickManagementOption === "removePick") {
-        // Create title
-        createPickBanManagementTitle("Whose map?")
-
-        // Select Pick Div
-        const pickManagementPickButtonsSection = document.createElement("div")
-        pickManagementPickButtonsSection.classList.add("pickManagementButtonSection")
-        for (let i = 0; i < redPickSectionEl.childElementCount; i++) {
-            const redPickButton = document.createElement("button")
-            redPickButton.innerText = `Red P ${i + 1}`
-            redPickButton.classList.add("pickManagementButton", "pickManagementPicksButton")
-            redPickButton.addEventListener("click", pickManagementSelectPick)
-            pickManagementPickButtonsSection.append(redPickButton)
-
-            const bluePickButton = document.createElement("button")
-            bluePickButton.innerText = `Blue P ${i + 1}`
-            bluePickButton.addEventListener("click", pickManagementSelectPick)
-            bluePickButton.classList.add("pickManagementButton", "pickManagementPicksButton")
-            pickManagementPickButtonsSection.append(bluePickButton)
-        }
-        // Add tiebreaker pick
-        const tiebreakerPickButton = document.createElement("button")
-        tiebreakerPickButton.innerText = `Tiebreaker`
-        tiebreakerPickButton.classList.add("pickManagementButton", "pickManagementPicksButton")
-        tiebreakerPickButton.addEventListener("click", pickManagementSelectPick)
-        pickManagementPickButtonsSection.append(tiebreakerPickButton)
-        sideBarColumn2El.append(pickManagementPickButtonsSection)
-
-        if (selectedPickManagementOption === "setPick") {
-            // Create mappool title
-            createPickBanManagementTitle("Which map?")
-            // Create mappool button section
-            const pickManagementMappoolButtonSection = document.createElement("div")
-
-            pickManagementMappoolButtonSection.classList.add("pickManagementButtonSection")
-            // Create mappool buttons
-            for (let i = 0 ; i < allBeatmaps.length - 1; i++) {
-                const button = document.createElement("button")
-                button.addEventListener("click", pickManagementSelectMap)
-                button.classList.add("pickManagementButton", "pickManagementMappoolButton")
-                button.innerText = `${allBeatmaps[i].mod}${allBeatmaps[i].order}`
-                button.dataset.id = allBeatmaps[i].beatmapID
-                pickManagementMappoolButtonSection.append(button)
-            }
-            sideBarColumn2El.append(pickManagementMappoolButtonSection)
-        }
+        addPicks()
+        if (selectedPickManagementOption === "setPick") addMappool()
     }
 
     if (selectedPickManagementOption === "winnerOptions") {
-        // Create title
-        createPickBanManagementTitle("Whose map?")
-
-        // Select Pick Div
-        const pickManagementPickButtonsSection = document.createElement("div")
-        pickManagementPickButtonsSection.classList.add("pickManagementButtonSection")
-        for (let i = 0; i < redPickSectionEl.childElementCount; i++) {
-            const redPickButton = document.createElement("button")
-            redPickButton.innerText = `Red P ${i + 1}`
-            redPickButton.classList.add("pickManagementButton", "pickManagementPicksButton")
-            redPickButton.addEventListener("click", pickManagementSelectPick)
-            pickManagementPickButtonsSection.append(redPickButton)
-
-            const bluePickButton = document.createElement("button")
-            bluePickButton.innerText = `Blue P ${i + 1}`
-            bluePickButton.addEventListener("click", pickManagementSelectPick)
-            bluePickButton.classList.add("pickManagementButton", "pickManagementPicksButton")
-            pickManagementPickButtonsSection.append(bluePickButton)
-        }
-        // Add tiebreaker pick
-        const tiebreakerPickButton = document.createElement("button")
-        tiebreakerPickButton.innerText = `Tiebreaker`
-        tiebreakerPickButton.classList.add("pickManagementButton", "pickManagementPicksButton")
-        tiebreakerPickButton.addEventListener("click", pickManagementSelectPick)
-        pickManagementPickButtonsSection.append(tiebreakerPickButton)
-        sideBarColumn2El.append(pickManagementPickButtonsSection)
+        addPicks()
 
         // Set winner of map
         // Create title
@@ -1074,16 +1039,16 @@ function applyChangesWinnerOptions() {
     const pickManagementWinnerSelectElValue = document.getElementById("pickManagementWinnerSelect").value
     switch (pickManagementWinnerSelectElValue) {
         case "No One":
-            currentPickContainer.children[4].style.display = "none"
             currentPickContainer.children[1].classList.remove("pickContainerWinnerRed", "pickContainerWinnerBlue")
             currentPickContainer.children[3].classList.remove("pickContainerBottomRed", "pickContainerBottomBlue")
+            currentPickContainer.children[4].style.display = "none"
             if (currentPickContainer.children[5].innerText === "") currentPickContainer.children[3].classList.remove("pickContainerWinnerNone")
             else currentPickContainer.children[3].classList.add("pickContainerBottomNone")
             break
         case "Red": case "Blue":
             currentPickContainer.children[1].classList.remove("pickContainerWinnerNone", "pickContainerWinnerRed", "pickContainerWinnerBlue")
-            currentPickContainer.children[3].classList.remove("pickContainerBottomNone", "pickContainerBottomRed", "pickContainerBottomBlue")
             currentPickContainer.children[1].classList.add(`pickContainerWinner${pickManagementWinnerSelectElValue}`)
+            currentPickContainer.children[3].classList.remove("pickContainerBottomNone", "pickContainerBottomRed", "pickContainerBottomBlue")
             currentPickContainer.children[3].classList.add(`pickContainerBottom${pickManagementWinnerSelectElValue}`)
             currentPickContainer.children[4].style.display = "block"
             break
