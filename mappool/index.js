@@ -102,7 +102,8 @@ async function getMappool() {
         const pickContainerBottom = document.createElement("div")
         pickContainerBottom.classList.add("pickContainerBottom")
 
-        const pickContainerCrown = document.createElement("div")
+        const pickContainerCrown = document.createElement("img")
+        pickContainerCrown.setAttribute("src", "static/crown.png")
         pickContainerCrown.classList.add("pickContainerCrown")
 
         const pickContainerText = document.createElement("div")
@@ -840,6 +841,54 @@ pickBanManagementSelectEl.addEventListener('change', function()  {
         }
     }
 
+    if (selectedPickManagementOption === "winnerOptions") {
+        // Create title
+        createPickBanManagementTitle("Whose map?")
+
+        // Select Pick Div
+        const pickManagementPickButtonsSection = document.createElement("div")
+        pickManagementPickButtonsSection.classList.add("pickManagementButtonSection")
+        for (let i = 0; i < redPickSectionEl.childElementCount; i++) {
+            const redPickButton = document.createElement("button")
+            redPickButton.innerText = `Red P ${i + 1}`
+            redPickButton.classList.add("pickManagementButton", "pickManagementPicksButton")
+            redPickButton.addEventListener("click", pickManagementSelectPick)
+            pickManagementPickButtonsSection.append(redPickButton)
+
+            const bluePickButton = document.createElement("button")
+            bluePickButton.innerText = `Blue P ${i + 1}`
+            bluePickButton.addEventListener("click", pickManagementSelectPick)
+            bluePickButton.classList.add("pickManagementButton", "pickManagementPicksButton")
+            pickManagementPickButtonsSection.append(bluePickButton)
+        }
+        // Add tiebreaker pick
+        const tiebreakerPickButton = document.createElement("button")
+        tiebreakerPickButton.innerText = `Tiebreaker`
+        tiebreakerPickButton.classList.add("pickManagementButton", "pickManagementPicksButton")
+        tiebreakerPickButton.addEventListener("click", pickManagementSelectPick)
+        pickManagementPickButtonsSection.append(tiebreakerPickButton)
+        sideBarColumn2El.append(pickManagementPickButtonsSection)
+
+        // Set winner of map
+        // Create title
+        createPickBanManagementTitle("Who won?")
+        // Create select
+        const select = document.createElement("select")
+        select.classList.add("pickBanManagementSelect")
+        select.setAttribute("id", "pickManagementWinnerSelect")
+        sideBarColumn2El.append(select)
+        
+        // Create options
+        const winnerOfMapOptions = ["No One", "Red", "Blue"]
+        for (let i = 0; i < winnerOfMapOptions.length; i++) {
+            const optionRed = document.createElement("option")
+            optionRed.value = winnerOfMapOptions[i]
+            optionRed.innerText = winnerOfMapOptions[i]
+            select.append(optionRed)
+        }
+        select.setAttribute("size", select.childElementCount)
+    }
+
     // Apply changes button
     const applyChangesButton = document.createElement("button")
     applyChangesButton.innerText = "Apply Changes"
@@ -854,6 +903,7 @@ pickBanManagementSelectEl.addEventListener('change', function()  {
         case "removeBan": applyChangesButton.addEventListener("click", applyChangesRemoveBan); break;
         case "setPick": applyChangesButton.addEventListener("click", applyChangesSetPick); break;
         case "removePick": applyChangesButton.addEventListener("click", applyChangesRemovePick); break;
+        case "winnerOptions": applyChangesButton.addEventListener("click", applyChangesWinnerOptions); break;
     }
 })
 
@@ -995,7 +1045,7 @@ function applyChangesSetPick() {
     currentButton.style.color = "black"
 }
 
-// Remove changes
+// Remove pick
 function applyChangesRemovePick() {
     // Get current container
     let currentPickContainer = applyChangesGetCurrentPickContainer()
@@ -1014,4 +1064,28 @@ function applyChangesRemovePick() {
         currentPickContainer.children[1].classList.remove("pickContainerWinnerRed", "pickContainerWinnerBlue")
     }
     currentPickContainer.children[5].innerText = ""
+}
+
+// Winner options
+function applyChangesWinnerOptions() {
+    // Get current container
+    let currentPickContainer = applyChangesGetCurrentPickContainer()
+
+    const pickManagementWinnerSelectElValue = document.getElementById("pickManagementWinnerSelect").value
+    switch (pickManagementWinnerSelectElValue) {
+        case "No One":
+            currentPickContainer.children[4].style.display = "none"
+            currentPickContainer.children[1].classList.remove("pickContainerWinnerRed", "pickContainerWinnerBlue")
+            currentPickContainer.children[3].classList.remove("pickContainerBottomRed", "pickContainerBottomBlue")
+            if (currentPickContainer.children[5].innerText === "") currentPickContainer.children[3].classList.remove("pickContainerWinnerNone")
+            else currentPickContainer.children[3].classList.add("pickContainerBottomNone")
+            break
+        case "Red": case "Blue":
+            currentPickContainer.children[1].classList.remove("pickContainerWinnerNone", "pickContainerWinnerRed", "pickContainerWinnerBlue")
+            currentPickContainer.children[3].classList.remove("pickContainerBottomNone", "pickContainerBottomRed", "pickContainerBottomBlue")
+            currentPickContainer.children[1].classList.add(`pickContainerWinner${pickManagementWinnerSelectElValue}`)
+            currentPickContainer.children[3].classList.add(`pickContainerBottom${pickManagementWinnerSelectElValue}`)
+            currentPickContainer.children[4].style.display = "block"
+            break
+    }
 }
