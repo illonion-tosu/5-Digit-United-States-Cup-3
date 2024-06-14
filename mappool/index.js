@@ -207,8 +207,13 @@ let foundMapInMappool = false
 // Has map been picked yet
 let mapPicked = false
 
+// Automatically set winner of map
+let resultsShown = false
+let currentPickedTile
+
 socket.onmessage = async (event) => {
     const data = JSON.parse(event.data)
+    console.log(data)
 
     // Team Name
     if (currentRedTeamName !== data.tourney.manager.teamName.left) {
@@ -253,20 +258,12 @@ socket.onmessage = async (event) => {
         }
 
         let i = 0
-        for (i; i < currentRedStars; i++) {
-            createStar(i, "red_star", redTeamStarContainerEl)
-        }
-        for (i; i < currentFirstTo; i++) {
-            createStar(i, "white_star", redTeamStarContainerEl)
-        }
+        for (i; i < currentRedStars; i++) createStar(i, "red_star", redTeamStarContainerEl)
+        for (i; i < currentFirstTo; i++) createStar(i, "white_star", redTeamStarContainerEl)
 
         i = 0
-        for (i; i < currentBlueStars; i++) {
-            createStar(i, "blue_star", blueTeamStarContainerEl)
-        }
-        for (i; i < currentFirstTo; i++) {
-            createStar(i, "white_star", blueTeamStarContainerEl)
-        }
+        for (i; i < currentBlueStars; i++) createStar(i, "blue_star", blueTeamStarContainerEl)
+        for (i; i < currentFirstTo; i++) createStar(i, "white_star", blueTeamStarContainerEl)
     }
 
     if (chatLength !== data.tourney.manager.chat.length) {
@@ -399,6 +396,27 @@ socket.onmessage = async (event) => {
         if (currentIPCState === 4) {
             mapPicked = false
             currentlyPickingEl.style.display = "block"
+
+            // Set winner from previous map
+            if (!resultsShown) {
+                resultsShown = true
+                let currentWinner
+                if (data.tourney.manager.gameplay.score.left > data.tourney.manager.gameplay.score.right && currentPickedTile) {
+                    currentWinner = "Red"
+                } else if (data.tourney.manager.gameplay.score.left < data.tourney.manager.gameplay.score.right && currentPickedTile) {
+                    currentWinner = "Blue"
+                }
+
+                if (currentWinner) {
+                    currentPickedTile.children[1].classList.add(`pickContainerWinner${currentWinner}`)
+                    currentPickedTile.children[2].style.display = "block"
+                    currentPickedTile.children[3].classList.add(`pickContainerBottom${currentWinner}`)
+                    currentPickedTile.children[4].style.display = "block"
+                    currentPickedTile.children[5].style.color = "white"
+                }
+            }
+        } else {
+            resultsShown = false
         }
     }
 
@@ -694,6 +712,8 @@ function mapClickEvent() {
         // Reset some elements
         mapPicked = true
         currentlyPickingEl.style.display = "none"
+
+        currentPickedTile = currentTile
     }
 
     // Switch teams for next action
@@ -755,7 +775,7 @@ pickBanManagementSelectEl.addEventListener('change', function()  {
 
         pickManagementMappoolButtonSection.classList.add("pickManagementButtonSection")
         // Create mappool buttons
-        for (let i = 0 ; i < allBeatmaps.length - 1; i++) {
+        for (let i = 0 ; i < allBeatmaps.length; i++) {
             const button = document.createElement("button")
             button.addEventListener("click", pickManagementSelectMap)
             button.classList.add("pickManagementButton", "pickManagementMappoolButton")
@@ -1002,12 +1022,18 @@ function applyChangesSetPick() {
     currentPickContainer.children[0].style.backgroundImage = `url("${currentMap.imgURL}")`
     currentPickContainer.children[0].style.opacity = 1
     if (!previousPickId ||  window.getComputedStyle(currentPickContainer.children[4]).display === "none") currentPickContainer.children[3].classList.add("pickContainerBottomNone")
-    currentPickContainer.children[5].innerText = `${currentMap.mod}${currentMap.order}`
+    currentPickContainer.children[5].innerText = `${currentMap.mod}${(checkNumberOfModsInModpoolIsOne(currentMap.mod))? "" : currentMap.order}`
 
     // Set new colour element ban colour
     let currentButton = mappoolSectionButtonsEl.querySelector(`[data-id="${pickManagementSelectedMap}"]`)
     currentButton.style.backgroundColor = "lightgreen"
     currentButton.style.color = "black"
+
+    // Set colour of text on current tile
+    getAverageColor(currentMap.imgURL, function(brightness) {
+        if (brightness > 140) currentPickContainer.children[5].style.color = "black"
+        else currentPickContainer.children[5].style.color = "white"
+    })
 }
 
 // Remove pick
@@ -1040,6 +1066,7 @@ function applyChangesWinnerOptions() {
     switch (pickManagementWinnerSelectElValue) {
         case "No One":
             currentPickContainer.children[1].classList.remove("pickContainerWinnerRed", "pickContainerWinnerBlue")
+            currentPickContainer.children[2].style.display = "none"
             currentPickContainer.children[3].classList.remove("pickContainerBottomRed", "pickContainerBottomBlue")
             currentPickContainer.children[4].style.display = "none"
             if (currentPickContainer.children[5].innerText === "") currentPickContainer.children[3].classList.remove("pickContainerWinnerNone")
@@ -1048,9 +1075,11 @@ function applyChangesWinnerOptions() {
         case "Red": case "Blue":
             currentPickContainer.children[1].classList.remove("pickContainerWinnerNone", "pickContainerWinnerRed", "pickContainerWinnerBlue")
             currentPickContainer.children[1].classList.add(`pickContainerWinner${pickManagementWinnerSelectElValue}`)
+            currentPickContainer.children[2].style.display = "block"
             currentPickContainer.children[3].classList.remove("pickContainerBottomNone", "pickContainerBottomRed", "pickContainerBottomBlue")
             currentPickContainer.children[3].classList.add(`pickContainerBottom${pickManagementWinnerSelectElValue}`)
             currentPickContainer.children[4].style.display = "block"
+            currentPickContainer.children[5].style.color = "white"
             break
     }
 }
