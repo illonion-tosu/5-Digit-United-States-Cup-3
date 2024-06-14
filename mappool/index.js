@@ -135,6 +135,16 @@ async function getMappool() {
 }
 
 // Star positions
+const eightStars = [
+    {left: "363px", top: "78px"},
+    {left: "420px", top: "53px"},
+    {left: "479px", top: "78px"},
+    {left: "487px", top: "139px"},
+    {left: "451px", top: "189px"},
+    {left: "392px", top: "189px"},
+    {left: "355px", top: "139px"},
+    {left: "410px", top: "113px"}
+]
 const sevenStars = [
     {left: "370px", top: "66px"},
     {left: "420px", top: "45px"},
@@ -246,6 +256,8 @@ socket.onmessage = async (event) => {
         switch (currentFirstTo) {
             case 6: starPositions = sixStars; break;
             case 7: starPositions = sevenStars; break;
+            case 8: starPositions = eightStars; break;
+            default: starPositions = eightStars
         }
 
         function createStar(i, starImage, starContainer) {
