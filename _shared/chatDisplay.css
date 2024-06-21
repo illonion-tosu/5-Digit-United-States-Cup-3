@@ -10,7 +10,10 @@
     width: 851px; height: 171px;
     border-radius: 15px;
     transition: 500ms ease-in-out;
+    overflow-x: hidden;
+    overflow-y: scroll;
 }
+#chatDisplay::-webkit-scrollbar { display: none; }
 .chatDisplayMinor { background-color: #282828; }
 .chatDisplayMajor { background-color: rgb(215, 215, 215); }
 /* Chat Message Container */

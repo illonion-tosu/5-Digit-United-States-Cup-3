@@ -221,7 +221,8 @@
     position: absolute; left: 901px; top: 887px;
     font-family: "Bicyclette"; font-weight: 800; font-size: 38px;
     opacity: 1;
-    animation: currentlyPickingBlinking 4s infinite linear forwards
+    animation: currentlyPickingBlinking 4s infinite linear forwards;
+    display: none;
 }
 @keyframes currentlyPickingBlinking {
     0% { opacity: 1 }

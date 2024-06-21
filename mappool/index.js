@@ -422,6 +422,7 @@ socket.onmessage = async (event) => {
                 if (currentWinner) {
                     currentPickedTile.children[1].classList.add(`pickContainerWinner${currentWinner}`)
                     currentPickedTile.children[2].style.display = "block"
+                    currentPickedTile.children[3].classList.remove(`pickContainerBottomNone`)
                     currentPickedTile.children[3].classList.add(`pickContainerBottom${currentWinner}`)
                     currentPickedTile.children[4].style.display = "block"
                     currentPickedTile.children[5].style.color = "white"

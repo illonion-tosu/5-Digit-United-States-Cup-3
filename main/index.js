@@ -49,12 +49,18 @@ const scoreAnimation = {
 }
 
 // Team RGBs
-const redTeamRedColourInverse = 255 - 244
-const redTeamGreenColourInverse = 255 - 98
-const redTeamBlueColourInverse = 255 - 98
-const blueTeamRedColourInverse = 255 - 99
-const blueTeamGreenColourInverse = 255 - 121
-const blueTeamBlueColourInverse = 255 - 219
+const redTeamRedColour = 244
+const redTeamGreenColour = 98
+const redTeamBlueColour = 98
+const blueTeamRedColour = 99
+const blueTeamGreenColour = 121
+const blueTeamBlueColour = 219
+const redTeamRedColourInverse = 255 - redTeamRedColour
+const redTeamGreenColourInverse = 255 - redTeamGreenColour
+const redTeamBlueColourInverse = 255 - redTeamBlueColour
+const blueTeamRedColourInverse = 255 - blueTeamRedColour
+const blueTeamGreenColourInverse = 255 - blueTeamGreenColour
+const blueTeamBlueColourInverse = 255 - blueTeamBlueColour
 
 // Song Progress Circle
 const mapInformationSongProgressCircleEl = document.getElementById("mapInformationSongProgressCircle")
@@ -185,11 +191,16 @@ socket.onmessage = async (event) => {
         scoreAnimation.scoreDifferenceNumber.update(currentScoreDelta)
 
         // Score underline and score difference colour change
-        const currentDifference = Math.min(1000000, 1000000 - currentScoreDelta) / 1000000
+        const currentDifference = Math.min(1000000, currentScoreDelta) / 1000000
+        console.log(currentDifference, currentScoreDelta)
         if (currentScoreRed > currentScoreBlue) {
             redCurrentUnderlineEl.style.opacity = 1
             blueCurrentUnderlineEl.style.opacity = 0
-            scoreDifferenceNumberEl.style.color = `rgb(${255 - currentDifference * redTeamRedColourInverse}, ${255 - currentDifference * redTeamGreenColourInverse}, ${255 - currentDifference * redTeamBlueColourInverse})`
+            if (tournamentSelectionLeague === "minor") {
+                scoreDifferenceNumberEl.style.color = `rgb(${255 - currentDifference * redTeamRedColourInverse}, ${255 - currentDifference * redTeamGreenColourInverse}, ${255 - currentDifference * redTeamBlueColourInverse})`
+            } else {
+                scoreDifferenceNumberEl.style.color = `rgb(${currentDifference * redTeamRedColour}, ${currentDifference * redTeamGreenColour}, ${currentDifference * redTeamBlueColour})`
+            }
         } else if (currentScoreRed === currentScoreBlue) {
             redCurrentUnderlineEl.style.opacity = 0
             blueCurrentUnderlineEl.style.opacity = 0
@@ -197,7 +208,11 @@ socket.onmessage = async (event) => {
         } else if (currentScoreRed < currentScoreBlue) {
             redCurrentUnderlineEl.style.opacity = 0
             blueCurrentUnderlineEl.style.opacity = 1
-            scoreDifferenceNumberEl.style.color = `rgb(${255 - currentDifference * blueTeamRedColourInverse}, ${255 - currentDifference * blueTeamGreenColourInverse}, ${255 - currentDifference * blueTeamBlueColourInverse})`
+            if (tournamentSelectionLeague === "minor") {
+                scoreDifferenceNumberEl.style.color = `rgb(${255 - currentDifference * blueTeamRedColourInverse}, ${255 - currentDifference * blueTeamGreenColourInverse}, ${255 - currentDifference * blueTeamBlueColourInverse})`
+            } else {
+                scoreDifferenceNumberEl.style.color = `rgb(${currentDifference * blueTeamRedColour}, ${currentDifference * blueTeamGreenColour}, ${currentDifference * blueTeamBlueColour})`
+            }
         }
     }
 
