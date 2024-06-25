@@ -133,6 +133,18 @@
                 <option value="removeWinner"></option>
             </select>
         </section>
+        <div class="divider" id="divider2"></div>
+        <section class="sideBarColumn " id="sideBarColumn3">
+            <section class="sideBarSection" id="sideBarStarSection">
+                <button id="autoAdvanceButton" class="sideBarButton" onclick="switchAutoAdvance()">AUTO ADVANCE: OFF</button>
+                <h1 class="controlLabel">Scenes<br>(click to override)
+                <div id="sceneCollection">
+                    <template id="sceneButtonTemplate">
+                        <div class="sceneButton switchPickButton">SWITCH TO __SCENE_NAME__</div>
+                    </template>
+                </div>
+            </section>
+        </section>
     </div>
     <script src="index.js"></script>
 </body>

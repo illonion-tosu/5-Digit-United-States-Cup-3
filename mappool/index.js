@@ -221,6 +221,53 @@ let mapPicked = false
 let resultsShown = false
 let currentPickedTile
 
+// OBS Information
+const sceneCollection = document.getElementById("sceneCollection")
+let autoadvance_button = document.getElementById('autoAdvanceButton')
+let autoadvance_timer_container = document.getElementById('autoAdvanceTimer')
+let autoadvance_timer_label = document.getElementById('autoAdvanceTimerLabel')
+
+let enableAutoAdvance = false
+const gameplay_scene_name = "Gameplay (Gameplay)"
+const mappool_scene_name = "Mappool"
+const tema_win_scene_name = "Winner"
+
+function switchAutoAdvance() {
+    enableAutoAdvance = !enableAutoAdvance
+    if (enableAutoAdvance) {
+        autoadvance_button.innerText = 'AUTO ADVANCE: ON'
+        autoadvance_button.style.backgroundColor = '#9ffcb3'
+        autoadvance_button.style.color = "black"
+    } else {
+        autoadvance_button.innerText = 'AUTO ADVANCE: OFF'
+        autoadvance_button.style.backgroundColor = '#fc9f9f'
+        autoadvance_button.style.color = "white"
+    }
+}
+
+const obsGetCurrentScene = window.obsstudio?.getCurrentScene ?? (() => {})
+const obsGetScenes = window.obsstudio?.getScenes ?? (() => {})
+const obsSetCurrentScene = window.obsstudio?.setCurrentScene ?? (() => {})
+
+obsGetScenes(scenes => {
+    for (const scene of scenes) {
+        let clone = document.getElementById("sceneButtonTemplate").content.cloneNode(true)
+        let buttonNode = clone.querySelector('div')
+        buttonNode.id = `scene__${scene}`
+        buttonNode.textContent = `GO TO: ${scene}`
+        buttonNode.onclick = function() { obsSetCurrentScene(scene); }
+        sceneCollection.appendChild(clone)
+    }
+
+    obsGetCurrentScene((scene) => { document.getElementById(`scene__${scene.name}`).classList.add("activeScene") })
+})
+
+window.addEventListener('obsSceneChanged', function(event) {
+    let activeButton = document.getElementById(`scene__${event.detail.name}`)
+    for (const scene of sceneCollection.children) { scene.classList.remove("activeScene") }
+    activeButton.classList.add("activeScene")
+})
+
 socket.onmessage = async (event) => {
     const data = JSON.parse(event.data)
     console.log(data)
@@ -386,6 +433,15 @@ socket.onmessage = async (event) => {
                     currentlyPickingEl.style.display = "none"
                 }
             }
+
+            setTimeout(() => {
+                if (enableAutoAdvance) {
+                    obsGetCurrentScene((scene) => {
+                        if (scene.name === gameplay_scene_name) return
+                        if (enableAutoAdvance) obsSetCurrentScene(gameplay_scene_name)
+                    })
+                }
+            }, 10000)
         }
     }
 
@@ -405,7 +461,12 @@ socket.onmessage = async (event) => {
     // IPC State
     if (currentIPCState !== data.tourney.manager.ipcState) {
         currentIPCState = data.tourney.manager.ipcState
-        if (currentIPCState === 4) {
+        if (currentIPCState === 2 || currentIPCState === 3) {
+            obsGetCurrentScene((scene) => {
+                if (scene.name === gameplay_scene_name) return
+                if (enableAutoAdvance) obsSetCurrentScene(gameplay_scene_name)
+            })
+        } else if (currentIPCState === 4) {
             mapPicked = false
             currentlyPickingEl.style.display = "block"
 
@@ -426,6 +487,22 @@ socket.onmessage = async (event) => {
                     currentPickedTile.children[3].classList.add(`pickContainerBottom${currentWinner}`)
                     currentPickedTile.children[4].style.display = "block"
                     currentPickedTile.children[5].style.color = "white"
+                }
+
+                if (enableAutoAdvance) {
+                    setTimeout(() => {
+                        if (currentRedStars === currentFirstTo || currentBlueStars === currentFirstTo) {
+                            obsGetCurrentScene((scene) => {
+                                if (scene.name === tema_win_scene_name) return
+                                if (enableAutoAdvance) obsSetCurrentScene(tema_win_scene_name)
+                            })
+                        } else {
+                            obsGetCurrentScene((scene) => {
+                                if (scene.name === mappool_scene_name) return
+                                if (enableAutoAdvance) obsSetCurrentScene(mappool_scene_name)
+                            })
+                        }
+                    }, 20000)
                 }
             }
         } else {

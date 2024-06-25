@@ -262,7 +262,7 @@
 /* Side Bar */
 #sideBar {
     position: absolute; left: 1920px; top: 0;
-    width: 500px; height: 1080px;
+    width: 750px; height: 1080px;
     background-color: rgb(17, 17, 17);
     font-family: "Bicyclette"; font-weight: 800;
     color: white;
@@ -274,6 +274,7 @@
 }
 #sideBarColumn1 { left: 0; }
 #sideBarColumn2 { left: 250px; }
+#sideBarColumn3 { left: 500px; }
 /* Dividers */
 .divider {
     position: absolute; top: 0;
@@ -372,3 +373,38 @@
 }
 .pickManagementMappoolButton { width: 80px; }
 .pickManagementPicksButton { width: 110px; }
+
+/* Auto advancing */
+#autoAdvanceButton {
+    margin-left: 25px;
+    margin-top: 25px;
+    width: 200px;
+    height: 75px;
+}
+
+.sceneButton {
+    width: 360px;
+    height: 64px;
+    margin-bottom: 12px;
+    letter-spacing: normal;
+    font-family: sans-serif;
+    padding-left: 8px;
+    font-size: 20px;
+    display: flex;
+    text-align: left;
+    align-items: center;
+    justify-content: left;
+    color: var(--red);
+}
+.activeScene {
+    background-color: #3a8f29!important;
+}
+.switchPickButton {
+    color: #202020;
+    background-color: #e6e6e6;
+    cursor: pointer;
+}
+.switchPickButton:hover {
+    color: #202020;
+    background-color: #bebebe;
+}
