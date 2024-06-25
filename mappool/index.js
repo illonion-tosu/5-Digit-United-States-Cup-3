@@ -270,7 +270,6 @@ window.addEventListener('obsSceneChanged', function(event) {
 
 socket.onmessage = async (event) => {
     const data = JSON.parse(event.data)
-    console.log(data)
 
     // Team Name
     if (currentRedTeamName !== data.tourney.manager.teamName.left) {
