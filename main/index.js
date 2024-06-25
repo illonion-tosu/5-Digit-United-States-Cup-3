@@ -62,8 +62,10 @@ const blueTeamRedColourInverse = 255 - blueTeamRedColour
 const blueTeamGreenColourInverse = 255 - blueTeamGreenColour
 const blueTeamBlueColourInverse = 255 - blueTeamBlueColour
 
-// Song Progress Circle
+// Song Progress
 const mapInformationSongProgressCircleEl = document.getElementById("mapInformationSongProgressCircle")
+const mapInformationSongProgressTimerStartEl = document.getElementById("mapInformationSongProgressTimerStart")
+const mapInformationSongProgressTimerEndEl = document.getElementById("mapInformationSongProgressTimerEnd")
 
 // IPC State 
 let currentIPCState
@@ -219,22 +221,26 @@ socket.onmessage = async (event) => {
     // IPC State
     if (currentIPCState !== data.tourney.manager.ipcState) currentIPCState = data.tourney.manager.ipcState
 
-    // Gameplay Song Progress Circle
+    // Gameplay Song Progress
     if (currentIPCState === 2 || currentIPCState === 3) {
+        mapInformationSongProgressTimerStartEl.innerText = getTimeStringFromMilliseconds(data.menu.bm.time.firstObj)
+        mapInformationSongProgressTimerEndEl.innerText = getTimeStringFromMilliseconds(data.menu.bm.time.full)
         if (data.menu.bm.time.firstObj > data.menu.bm.time.current) {
-            mapInformationSongProgressCircleEl.style.left = "0%"
+            mapInformationSongProgressCircleEl.style.left = "11%"
         } else if (data.menu.bm.time.full < data.menu.bm.time.current) {
-            mapInformationSongProgressCircleEl.style.left = "95%"
+            mapInformationSongProgressCircleEl.style.left = "86%"
         } else if (data.menu.bm.time.firstObj <= data.menu.bm.time.current &&
             data.menu.bm.time.full >= data.menu.bm.time.current) {
             const timeDifference = data.menu.bm.time.full - data.menu.bm.time.firstObj
             const currentTime = data.menu.bm.time.current - data.menu.bm.time.firstObj
-            const currentTimeDeltaPercentage = currentTime / timeDifference * 95
+            const currentTimeDeltaPercentage = currentTime / timeDifference * 76 + 10
             mapInformationSongProgressCircleEl.style.left = `${currentTimeDeltaPercentage}%`
         }
     } else {
-        const currentTimeDeltaPercentage = data.menu.bm.time.current / data.menu.bm.time.mp3 * 95
+        mapInformationSongProgressTimerStartEl.innerText = "0:00"
+        const currentTimeDeltaPercentage = data.menu.bm.time.current / data.menu.bm.time.mp3 * 76 + 10
         mapInformationSongProgressCircleEl.style.left = `${currentTimeDeltaPercentage}%`
+        mapInformationSongProgressTimerEndEl.innerText = getTimeStringFromMilliseconds(data.menu.bm.time.mp3)
     }
 
     // Beatmap changes
@@ -531,3 +537,10 @@ setInterval(() => {
     tournamentSelectionLeague = getCookie("tournamentSelection")
     tournamentSelection(tournamentSelectionLeague)
 },500)
+
+function getTimeStringFromMilliseconds(milliseconds) {
+    let seconds = Math.round(milliseconds / 1000)
+    let minutes = Math.floor(seconds / 60)
+    let secondsCounter = (seconds % 60).toString().padStart(2, '0')
+    return `${minutes}:${secondsCounter}`
+}

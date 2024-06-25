@@ -256,8 +256,20 @@
     width: 430px;
 }
 /* Map Information Progress */
-#mapInformationSongProgressSection { width: 385px; }
-#mapInformationSongProgressRectangle { width: 385px; }
+#mapInformationSongProgressSection { 
+    display: flex;
+    width: 385px; 
+}
+#mapInformationSongProgressRectangle { width: 305px; }
+#mapInformationSongProgressTimerStart {
+    color: white;
+    font-family: "Bicyclette"; font-weight: 800;
+}
+#mapInformationSongProgressTimerEnd {
+    position: absolute; right: 0;
+    color: white;
+    font-family: "Bicyclette"; font-weight: 800;
+}
 
 /* Side Bar */
 #sideBar {
