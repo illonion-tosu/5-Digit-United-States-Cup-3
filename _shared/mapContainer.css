@@ -107,6 +107,7 @@
     position: absolute; left: 50%; top: 50%;
     transform: translate(-50%, -50%);
     height: 19px;
+    display: flex;
 }
 #mapInformationSongProgressRectangle {
     position: absolute; left: 50%; top: 50%;
@@ -122,4 +123,13 @@
     border-radius: 12px;
     background-color: white;
     transition: 50ms linear;
+}
+#mapInformationSongProgressTimerStart {
+    color: white;
+    font-family: "Bicyclette"; font-weight: 800;
+}
+#mapInformationSongProgressTimerEnd {
+    position: absolute; right: 0;
+    color: white;
+    font-family: "Bicyclette"; font-weight: 800;
 }

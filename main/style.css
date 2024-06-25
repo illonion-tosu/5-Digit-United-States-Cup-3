@@ -177,20 +177,8 @@
 #mapInformationRightSongProgressContainer { bottom: 8px; }
 #mapInformationRightSongProgressContainer::before { width: 400px; }
 /* Map Information Progress */
-#mapInformationSongProgressSection { 
-    display: flex;
-    width: 360px; 
-}
+#mapInformationSongProgressSection { width: 360px; }
 #mapInformationSongProgressRectangle { width: 280px; }
-#mapInformationSongProgressTimerStart {
-    color: white;
-    font-family: "Bicyclette"; font-weight: 800;
-}
-#mapInformationSongProgressTimerEnd {
-    position: absolute; right: 0;
-    color: white;
-    font-family: "Bicyclette"; font-weight: 800;
-}
 
 /* Chat Display */
 #chatDisplay { bottom: 18px; right: 28px; }

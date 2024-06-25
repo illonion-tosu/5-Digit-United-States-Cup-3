@@ -516,14 +516,14 @@ socket.onmessage = async (event) => {
         mapInformationSongProgressTimerStartEl.innerText = getTimeStringFromMilliseconds(data.menu.bm.time.firstObj)
         mapInformationSongProgressTimerEndEl.innerText = getTimeStringFromMilliseconds(data.menu.bm.time.full)
         if (data.menu.bm.time.firstObj > data.menu.bm.time.current) {
-            mapInformationSongProgressCircleEl.style.left = "11%"
+            mapInformationSongProgressCircleEl.style.left = "10%"
         } else if (data.menu.bm.time.full < data.menu.bm.time.current) {
-            mapInformationSongProgressCircleEl.style.left = "86%"
+            mapInformationSongProgressCircleEl.style.left = "88%"
         } else if (data.menu.bm.time.firstObj <= data.menu.bm.time.current &&
             data.menu.bm.time.full >= data.menu.bm.time.current) {
             const timeDifference = data.menu.bm.time.full - data.menu.bm.time.firstObj
             const currentTime = data.menu.bm.time.current - data.menu.bm.time.firstObj
-            const currentTimeDeltaPercentage = currentTime / timeDifference * 76 + 10
+            const currentTimeDeltaPercentage = currentTime / timeDifference * 78 + 10
             mapInformationSongProgressCircleEl.style.left = `${currentTimeDeltaPercentage}%`
         }
     } else {
