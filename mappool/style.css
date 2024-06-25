@@ -194,7 +194,7 @@
 }
 .pickContainerBottomRed { background-color: var(--redTeam); }
 .pickContainerBottomBlue { background-color: var(--blueTeam); }
-.pickContainerBottomNone { background-color: #57d2ff; }
+.pickContainerBottomNone { background-color: #49da5e; }
 /* Pick Container Crown */
 .pickContainerCrown {
     position: absolute; left: 50%; top: 10px;
