@@ -1172,3 +1172,16 @@ function applyChangesWinnerOptions() {
             break
     }
 }
+
+// Show or hide picking
+function showPicking(showPicking) {
+    if (nextAction === "Pick" && showPicking) {
+        currentlyPickingEl.style.display = "block"
+        currentlyPickingEl.innerText = `${nextActionTeam.toUpperCase()} IS CURRENTLY PICKING...`
+        currentlyPickingEl.classList.add(`${nextActionTeam.toLowerCase()}TeamColor`)
+        if (nextActionTeam === "Red") currentlyPickingEl.classList.remove("blueTeamColor")
+        else currentlyPickingEl.classList.remove("redTeamColor")
+    } else if (nextAction === "Ban" || !showPicking) {
+        currentlyPickingEl.style.display = "none"
+    }
+}

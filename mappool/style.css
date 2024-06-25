@@ -312,19 +312,30 @@
     color: black;
 }
 /* Tournament Selection Section */
-#tournamentSelectionSectionButtons button { width: 210px; }
+#tournamentSelectionSectionButtons button { width: 100px; }
 /* Next Action Section */
 #nextActionSection { 
     border-top: 1px solid white; 
     margin: 25px 0px;
 }
-#nextActionSectionButtons {
+#tournamentSelectionSectionButtons, #nextActionSectionButtons, #showCurrentlyPickingSectionButtons {
     margin: 0px 20px;
     flex-direction: row;
     justify-content: space-between;
     flex-wrap: wrap;
 }
+#showCurrentlyPickingSectionButtons {
+    margin-bottom: 10px;
+}
+#tournamentSelectionSectionButtons {
+    margin: 0 20px;
+}
 #nextActionSectionButtons button { width: 100px; }
+#showCurrentlyPickingSectionButtons button { width: 100px; }
+/* Show currently picking section */
+#showCurrentlyPickingSection {
+    border-top: 1px solid white;
+}
 /* Mappool Section */
 #mappoolSection { border-top: 1px solid white;  }
 #mappoolSectionButtons {
