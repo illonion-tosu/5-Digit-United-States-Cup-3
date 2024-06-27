@@ -1,0 +1,12 @@
+/* Whole Page */
+#main {
+    position: absolute; left: 0; top: 0;
+    width: 1920px; height: 1080px;
+    background-image: url("static/sampleBackground.png")
+}
+
+/* Top Section */
+/* 5 Digit United States Cup Text*/
+#fiveDigitUnitedStatesCup3Text {
+
+}
