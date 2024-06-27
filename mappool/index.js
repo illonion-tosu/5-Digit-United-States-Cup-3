@@ -1190,7 +1190,7 @@ function showPicking(showPicking) {
         currentlyPickingEl.classList.remove("blueTeamColor")
         currentlyPickingEl.classList.remove("redTeamColor")
         if (nextActionTeam === "Red") currentlyPickingEl.classList.add("redTeamColor")
-        else currentlyPickingEl.classList.addEventListener("blueTeamColor")
+        else currentlyPickingEl.classList.add("blueTeamColor")
     } else if (nextAction === "Ban" || !showPicking) {
         currentlyPickingEl.style.display = "none"
     }
