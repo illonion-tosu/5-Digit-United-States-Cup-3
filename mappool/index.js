@@ -609,12 +609,12 @@ let tournamentSelectionLeague = "minor"
 
 function tournamentSelection(league) {
     document.cookie = `tournamentSelection=${league}; path=/`
+    tournamentSelectionLeague = league
 
     if (league === "major") {
         // Text on sidebar
         tournamentSelectionEl.innerText = "Major League"
-        tournamentSelectionLeague = "major"
-
+        
         // Video
         backgroundVideoMajorLeagueEl.style.opacity = 1
 
@@ -648,7 +648,6 @@ function tournamentSelection(league) {
     } else if (league === "minor") {
         // Text on sidebar
         tournamentSelectionEl.innerText = "Minor League"
-        tournamentSelectionLeague = "minor"
 
         // Video
         backgroundVideoMajorLeagueEl.style.opacity = 0
@@ -1185,8 +1184,11 @@ function showPicking(showPicking) {
         currentlyPickingEl.style.display = "block"
         currentlyPickingEl.innerText = `${nextActionTeam.toUpperCase()} IS CURRENTLY PICKING...`
         currentlyPickingEl.classList.add(`${nextActionTeam.toLowerCase()}TeamColor`)
-        if (nextActionTeam === "Red") currentlyPickingEl.classList.remove("blueTeamColor")
-        else currentlyPickingEl.classList.remove("redTeamColor")
+
+        currentlyPickingEl.classList.remove("blueTeamColor")
+        currentlyPickingEl.classList.remove("redTeamColor")
+        if (nextActionTeam === "Red") currentlyPickingEl.classList.add("redTeamColor")
+        else currentlyPickingEl.classList.addEventListener("blueTeamColor")
     } else if (nextAction === "Ban" || !showPicking) {
         currentlyPickingEl.style.display = "none"
     }

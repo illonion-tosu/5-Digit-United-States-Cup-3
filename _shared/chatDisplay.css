@@ -15,7 +15,7 @@
 }
 #chatDisplay::-webkit-scrollbar { display: none; }
 .chatDisplayMinor { background-color: #282828; }
-.chatDisplayMajor { background-color: rgb(215, 215, 215); }
+.chatDisplayMajor { background-color: rgb(40,40,40,0.2); }
 /* Chat Message Container */
 .chatMessageContainer {
     display: flex;

@@ -138,6 +138,9 @@ socket.onmessage = async (event) => {
             return starContainer
         }
 
+        // Default star
+        const defaultStar = (tournamentSelectionLeague === "minor")? "white_star": "gray_star"
+
         // Set Stars
         // Red Stars
         let i = 0
@@ -145,7 +148,7 @@ socket.onmessage = async (event) => {
             redTeamStarsEl.append(createStar("redTeamStarContainer", i, "red_star"))
         }
         for (i; i < currentFirstTo; i++) {
-            redTeamStarsEl.append(createStar("redTeamStarContainer", i, "white_star"))
+            redTeamStarsEl.append(createStar("redTeamStarContainer", i, defaultStar))
         }
         // Blue Stars
         i = 0
@@ -153,7 +156,7 @@ socket.onmessage = async (event) => {
             blueTeamStarsEl.append(createStar("blueTeamStarContainer", i, "blue_star"))
         }
         for (i; i < currentFirstTo; i++) {
-            blueTeamStarsEl.append(createStar("blueTeamStarContainer", i, "white_star"))
+            blueTeamStarsEl.append(createStar("blueTeamStarContainer", i, defaultStar))
         }
     }
 
@@ -438,10 +441,10 @@ function getCookie(cname) {
 }
 
 function tournamentSelection(league) {
-    if (league === "major") {
-        // Text on sidebar
-        tournamentSelectionLeague = "major"
+    tournamentSelectionLeague = league
+    const images = document.getElementsByTagName("img")
 
+    if (league === "major") {
         // Team Names
         redTeamNameEl.classList.add("teamNameMajor")
         blueTeamNameEl.classList.add("teamNameMajor")
@@ -484,10 +487,15 @@ function tournamentSelection(league) {
         // Left Container
         mapInformationLeftContainerEl.classList.add("mapInformationLeftContainerMajor")
         mapInformationLeftContainerEl.classList.remove("mapInformationLeftContainerMinor")
-    } else {
-        // Text on sidebar
-        tournamentSelectionLeague = "minor"
 
+        // Set images
+        for (i = 0; i < images.length; i++) {
+            let currentSrcValue = images[i].getAttribute("src")
+            if (currentSrcValue.includes("white_star")) {
+                images[i].setAttribute("src", currentSrcValue.replace("white_star", "gray_star"))
+            }
+        }
+    } else {
         // Team Names
         redTeamNameEl.classList.remove("teamNameMajor")
         blueTeamNameEl.classList.remove("teamNameMajor")
@@ -530,6 +538,14 @@ function tournamentSelection(league) {
         // Left Container
         mapInformationLeftContainerEl.classList.remove("mapInformationLeftContainerMajor")
         mapInformationLeftContainerEl.classList.add("mapInformationLeftContainerMinor")
+
+        // Set images
+        for (i = 0; i < images.length; i++) {
+            let currentSrcValue = images[i].getAttribute("src")
+            if (currentSrcValue.includes("gray_star")) {
+                images[i].setAttribute("src", currentSrcValue.replace("gray_star", "white_star"))
+            }
+        }
     }
 }
 
