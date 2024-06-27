@@ -8,18 +8,19 @@
 #main {
     position: absolute; left: 0; top: 0;
     width: 1920px; height: 1080px;
-    background-image: url("static/sampleBackground.png")
+    background-image: url("static/sampleBackground.png");
+    font-family: "Bicyclette"; font-weight: 800;
 }
 
 /* Helper classes */
 /* Top / Bottom Text */
 .topBottomText {
     position: absolute; 
-    font-family: "Bicyclette"; font-weight: 800; font-size: 28px;
+    font-size: 28px;
     letter-spacing: -0.2px;
 }
-.topBottomTextMajor { color: black; }
-.topBottomTextMinor { color: white; }
+.textMajor { color: black; }
+.textMinor { color: white; }
 /* Top / Bottom Bars */
 .topBottomBar {
     width: 1872px; height: 3px;
@@ -36,3 +37,45 @@
 #bracketText { left: 24px; bottom: 15px; }
 #roundName { right: 24px; bottom: 15px; }
 #bottomBar { bottom: 57px; }
+
+/* Team Section */
+/* Team Banner */
+#teamBanner {
+    position: absolute; left: 50%; top: 213px;
+    transform: translateX(-50%);
+    width: 423px; height: 283px;
+    border-radius: 15px;
+}
+/* Winner Text */
+#winnerText {
+    position: absolute; left: 50%; top: 528px;
+    transform: translateX(-50%);
+    font-size: 38px;
+    letter-spacing: 8px;
+    text-indent: 4px;
+}
+/* Winner Team Name */
+#winnerTeam {
+    position: absolute; left: 50%; top: 565px;
+    transform: translateX(-50%);
+    font-size: 54px;
+}
+
+/* Player Section */
+#playerSection {
+    position: absolute; left: 50%; top: 733px;
+    transform: translateX(-50%);
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    width: 572px;
+}
+.playerText {
+    width: 266px;
+    font-size: 38px;
+    text-align: center;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin: 0 10px 6px 10px;
+}
