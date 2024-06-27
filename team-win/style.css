@@ -1,3 +1,9 @@
+@font-face {
+    font-family: "Bicyclette";
+    src: url("../font/Bicyclette-Bold.woff");
+    font-weight: 800
+}
+
 /* Whole Page */
 #main {
     position: absolute; left: 0; top: 0;
@@ -5,8 +11,28 @@
     background-image: url("static/sampleBackground.png")
 }
 
-/* Top Section */
-/* 5 Digit United States Cup Text*/
-#fiveDigitUnitedStatesCup3Text {
-
+/* Helper classes */
+/* Top / Bottom Text */
+.topBottomText {
+    position: absolute; 
+    font-family: "Bicyclette"; font-weight: 800; font-size: 28px;
+    letter-spacing: -0.2px;
 }
+.topBottomTextMajor { color: black; }
+.topBottomTextMinor { color: white; }
+/* Top / Bottom Bars */
+.topBottomBar {
+    width: 1872px; height: 3px;
+    position: absolute; left: 24px; 
+}
+.topBottomBarMajor { background-color: black; }
+.topBottomBarMinor { background-color: white; }
+
+/* Top Section */
+#fiveDigitUnitedStatesCup3Text { left: 24px; top: 15px; }
+#topBar { top: 57px; }
+
+/* Bottom Section */ 
+#bracketText { left: 24px; bottom: 15px; }
+#roundName { right: 24px; bottom: 15px; }
+#bottomBar { bottom: 57px; }
