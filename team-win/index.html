@@ -8,7 +8,19 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+    <!-- Videos for background -->
+    <video autoplay loop muted class="backgroundVideo" id="backgroundVideoMinorLeague">
+        <source src="../_shared/background-videos/MINORLEAGUE-Background.mp4" type="video/mp4">
+    </video>
+    <video autoplay loop muted class="backgroundVideo" id="backgroundVideoMajorLeague">
+        <source src="../_shared/background-videos/MAJORLEAGUE-Background.mp4" type="video/mp4">
+    </video>
+
     <div id="main">
+        <!-- Overlays -->
+        <img id="redOverlay" class="overlay" src="static/red.png">
+        <img id="blueOverlay" class="overlay" src="static/blue.png">
+
         <!-- Top Section -->
         <div id="fiveDigitUnitedStatesCup3Text" class="topBottomText textMinor">5 DIGIT UNITED STATES CUP 3</div>
         <div id="topBar" class="topBottomBar topBottomBarMinor"></div>
@@ -19,17 +31,10 @@
         <div id="winnerTeam" class="textMinor">SOUTHERN CALIFORNIA</div>
 
         <!-- Player Section -->
-        <section id="playerSection">
-            <div class="playerText textMinor">PLAYER 1................</div>
-            <div class="playerText textMinor">PLAYER 1</div>
-            <div class="playerText textMinor">PLAYER 1................</div>
-            <div class="playerText textMinor">PLAYER 1</div>
-            <div class="playerText textMinor">PLAYER 1................</div>
-            <div class="playerText textMinor">PLAYER 1</div>
-        </section>
+        <section id="playerSection"></section>
 
         <!-- Bottom Section -->
-        <div id="bracketText" class="topBottomText textMinor">WINNERS BRACKET</div>
+        <div id="bracketText" class="topBottomText textMinor">MINOR LEAGUE</div>
         <div id="bottomBar" class="topBottomBar topBottomBarMinor"></div>
         <div id="roundName" class="topBottomText textMinor">QUARTERFINALS</div>
     </div>

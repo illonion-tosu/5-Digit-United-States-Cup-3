@@ -300,6 +300,7 @@ socket.onmessage = async (event) => {
         redTeamStarContainerEl.innerHTML = ""
         blueTeamStarContainerEl.innerHTML = ""
 
+        // Set star positions
         let starPositions
         switch (currentFirstTo) {
             case 6: starPositions = sixStars; break;
@@ -308,6 +309,7 @@ socket.onmessage = async (event) => {
             default: starPositions = eightStars
         }
 
+        // Create stars
         function createStar(i, starImage, starContainer) {
             const createStar = document.createElement("img")
             createStar.classList.add((i === currentFirstTo - 1)? "largeStar" : "smallStar")
@@ -324,6 +326,18 @@ socket.onmessage = async (event) => {
         i = 0
         for (i; i < currentBlueStars; i++) createStar(i, "blue_star", blueTeamStarContainerEl)
         for (i; i < currentFirstTo; i++) createStar(i, "white_star", blueTeamStarContainerEl)
+
+        // Set cookies
+        if (currentRedStars >= currentFirstTo) {
+            document.cookie = `winnerTeamName=${currentRedTeamName}; path=/`
+            document.cookie = `winnerTeamColour=red; path=/`
+        } else if (currentBlueStars >= currentFirstTo) {
+            document.cookie = `winnerTeamName=${currentBlueTeamName}; path=/`
+            document.cookie = `winnerTeamColour=blue; path=/`
+        } else {
+            document.cookie = `winnerTeamName=none; path=/`
+            document.cookie = `winnerTeamColour=none; path=/`
+        }
     }
 
     if (chatLength !== data.tourney.manager.chat.length) {

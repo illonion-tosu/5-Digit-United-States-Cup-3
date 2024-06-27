@@ -4,6 +4,15 @@
     font-weight: 800
 }
 
+/* Videos */
+.backgroundVideo {
+    position: absolute; left: 0; top: 0;
+}
+#backgroundVideoMajorLeague {
+    opacity: 0;
+    transition: 500ms ease-in-out;
+}
+
 /* Whole Page */
 #main {
     position: absolute; left: 0; top: 0;
@@ -29,6 +38,12 @@
 .topBottomBarMajor { background-color: black; }
 .topBottomBarMinor { background-color: white; }
 
+/* Background Overlay */
+.overlay {
+    position: absolute; left: 0; top: 0;
+    width: 1920px; height: 1080px;
+}
+
 /* Top Section */
 #fiveDigitUnitedStatesCup3Text { left: 24px; top: 15px; }
 #topBar { top: 57px; }
@@ -45,6 +60,8 @@
     transform: translateX(-50%);
     width: 423px; height: 283px;
     border-radius: 15px;
+    background-size: cover;
+    background-position: center;
 }
 /* Winner Text */
 #winnerText {
