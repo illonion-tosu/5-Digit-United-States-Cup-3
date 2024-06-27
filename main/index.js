@@ -549,14 +549,41 @@ function tournamentSelection(league) {
     }
 }
 
-setInterval(() => {
-    tournamentSelectionLeague = getCookie("tournamentSelection")
-    tournamentSelection(tournamentSelectionLeague)
-},500)
-
 function getTimeStringFromMilliseconds(milliseconds) {
     let seconds = Math.round(milliseconds / 1000)
     let minutes = Math.floor(seconds / 60)
     let secondsCounter = (seconds % 60).toString().padStart(2, '0')
     return `${minutes}:${secondsCounter}`
 }
+
+// Set current picker
+const currentPickerMainTextEl = document.getElementById("currentPickerMainText")
+const pickedByEl = document.getElementById("pickedBy")
+const pickedByTeamEl = document.getElementById("pickedByTeam")
+function setCurrentPicker(team) {
+    document.cookie = `currentPicker=${team}; path=/`
+    if (team === "red") {
+        currentPickerMainTextEl.innerText = "Red"
+        pickedByEl.style.color = "var(--redColor)"
+        pickedByEl.style.display = "block"
+        pickedByTeamEl.innerText = currentRedTeamName
+        mapInformationLeftContainerEl.style.borderColor = "var(--redColor)"
+    } else if (team === "blue") {
+        currentPickerMainTextEl.innerText = "Blue"
+        pickedByEl.style.color = "var(--blueColor)"
+        pickedByEl.style.display = "block"
+        pickedByTeamEl.innerText = currentBlueTeamName
+        mapInformationLeftContainerEl.style.borderColor = "var(--blueColor)"
+    } else {
+        const defaultColour = (tournamentSelectionLeague === "minor")? "white" : "black"
+        pickedByEl.style.color = defaultColour
+        pickedByEl.style.display = "none"
+        mapInformationLeftContainerEl.style.borderColor = defaultColour
+    }
+}
+
+setInterval(() => {
+    tournamentSelectionLeague = getCookie("tournamentSelection")
+    tournamentSelection(tournamentSelectionLeague)
+    setCurrentPicker(getCookie("currentPicker"))
+},500)

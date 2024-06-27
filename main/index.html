@@ -91,8 +91,24 @@
             </div>
         </div>
 
+        <!-- Picked By -->
+        <div id="pickedBy">Picked by: <span id="pickedByTeam"></span></div>
+
         <!-- Chat Display -->
         <div class="chatDisplayMinor" id="chatDisplay"></div>
+    </div>
+
+    <!-- Side Bar -->
+    <div id="sideBar">
+        <div class="sideBarSection">
+            <h1>Who's pick is it currently?</h1>
+            <div class="sideBarSectionMainText" id="currentPickerMainText">No One</div>
+            <div class="sideBarButtonSection" id="currentPickerButtonSection">
+                <button class="sideBarButton" onclick="setCurrentPicker('red')">Red</button>
+                <button class="sideBarButton" onclick="setCurrentPicker('blue')">Blue</button>
+                <button class="sideBarButton" onclick="setCurrentPicker('none')">No One</button>
+            </div>
+        </div>
     </div>
     <script src="index.js"></script>
 </body>

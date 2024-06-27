@@ -160,7 +160,7 @@
 .mapInformationRightContainers::before { width: 400px; }
 
 /* Map Information Right Container Top */
-#mapInformationRightContainer { bottom: 53px; }
+#mapInformationRightContainer { bottom: 55px; }
 /* Map Information Texts */
 .mapInformationRightTexts { width: 372px; }
 #mapInformationRightSongNameDifficultyWrapper, #mapInformationRightArtistWrapper, #mapInformationRightMappedByText, #mapInformationRightMappedByName {
@@ -174,11 +174,57 @@
 }
 
 /* Map Information Right Container Bottom */
-#mapInformationRightSongProgressContainer { bottom: 8px; }
+#mapInformationRightSongProgressContainer { bottom: 10px; }
 #mapInformationRightSongProgressContainer::before { width: 400px; }
 /* Map Information Progress */
 #mapInformationSongProgressSection { width: 360px; }
 #mapInformationSongProgressRectangle { width: 280px; }
 
+/* Picked By Text */
+#pickedBy {
+    position: absolute; left: 620px; bottom: 10px;
+    color: white;
+    font-family: "Bicyclette"; font-size: 30px; font-weight: 800;
+    transform: 500ms ease-in-out;
+    opacity: 1;
+}
+
 /* Chat Display */
 #chatDisplay { bottom: 18px; right: 28px; }
+
+/* Side Bar */
+#sideBar {
+    position: absolute; left: 1920px; top: 0;
+    width: 250px; height: 1080px;
+    background-color: rgb(17, 17, 17);
+    font-family: "Bicyclette"; font-weight: 800;
+    color: white;
+}
+.sideBarSection h1 { margin: 20px; }
+.sideBarSectionMainText {
+    font-size: 40px;
+    margin-left: 20px;
+    margin-bottom: 20px;
+}
+.sideBarButtonSection {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+}
+.sideBarButton {
+    height: 50px;
+    margin-bottom: 10px;
+    font-family: inherit;
+    font-weight: inherit;
+    font-size: 24px;
+    color: white;
+    background-color: transparent;
+    border: 2px solid white;
+    border-radius: 10px;
+}
+.sideBarButton:active {
+    background-color: white;
+    color: black;
+}
+#currentPickerButtonSection button { width: 200px; }

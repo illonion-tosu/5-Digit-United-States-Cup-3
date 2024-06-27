@@ -807,6 +807,8 @@ function mapClickEvent() {
         mapPicked = true
         currentlyPickingEl.style.display = "none"
 
+        // Set cookie for current picking team
+        document.cookie = `currentPicker=${nextActionTeam.toLowerCase()}; path=/`
         currentPickedTile = currentTile
     }
 
