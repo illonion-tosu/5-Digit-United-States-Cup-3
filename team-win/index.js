@@ -1,3 +1,16 @@
+// Import mappool
+const roundNameEl = document.getElementById("roundName")
+let allBeatmaps
+async function getMappool() {
+    const response = await fetch("http://127.0.0.1:24050/5DUSC3/_data/beatmaps.json")
+    const mappool = await response.json()
+    console.log(mappool)
+    allBeatmaps = mappool.beatmaps
+    roundNameEl.innerText = mappool.roundName.toUpperCase()
+}
+
+getMappool()
+
 // Get teams
 let allTeams
 async function getTeams() {
@@ -102,12 +115,9 @@ setInterval(() => {
                 teamBannerEl.style.backgroundImage = `url("../flags/${previousTeamName}.png")`
 
                 // Set player details
-                playerSectionEl.innerHTML = ""
+                const playerTexts = document.getElementsByClassName("playerText")
                 for (let i = 0; i < currentTeamDetails.player_names.length; i++) {
-                    const playerText = document.createElement("div")
-                    playerText.innerText = currentTeamDetails.player_names[i].toUpperCase()
-                    playerText.classList.add("playerText", (previousTournamentSelectionLeague === "minor")? "textMinor" : "textMajor")
-                    playerSectionEl.append(playerText)
+                    playerTexts[i].innerText = currentTeamDetails.player_names[i].toUpperCase()
                 }
             }
         }
