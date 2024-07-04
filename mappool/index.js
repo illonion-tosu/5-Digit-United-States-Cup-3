@@ -348,11 +348,11 @@ socket.onmessage = async (event) => {
         isStarVisible = data.tourney.manager.bools.starsVisible
 
         if (isStarVisible) {
-            redTeamStarsEl.style.opacity = 1
-            blueTeamStarsEl.style.opacity = 1
+            redTeamStarContainerEl.style.opacity = 1
+            blueTeamStarContainerEl.style.opacity = 1
         } else {
-            redTeamStarsEl.style.opacity = 0
-            blueTeamStarsEl.style.opacity = 0
+            redTeamStarContainerEl.style.opacity = 0
+            blueTeamStarContainerEl.style.opacity = 0
         }
     }
 
