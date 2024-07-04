@@ -320,12 +320,12 @@ socket.onmessage = async (event) => {
         }
 
         let i = 0
-        for (i; i < currentRedStars; i++) createStar(i, "red_star", redTeamStarContainerEl)
-        for (i; i < currentFirstTo; i++) createStar(i, "white_star", redTeamStarContainerEl)
+        for (i; i < currentRedStars; i++) createStar(i, "white_red_star", redTeamStarContainerEl)
+        for (i; i < currentFirstTo; i++) createStar(i, "gray_star", redTeamStarContainerEl)
 
         i = 0
-        for (i; i < currentBlueStars; i++) createStar(i, "blue_star", blueTeamStarContainerEl)
-        for (i; i < currentFirstTo; i++) createStar(i, "white_star", blueTeamStarContainerEl)
+        for (i; i < currentBlueStars; i++) createStar(i, "white_blue_star", blueTeamStarContainerEl)
+        for (i; i < currentFirstTo; i++) createStar(i, "gray_star", blueTeamStarContainerEl)
 
         // Set cookies
         if (currentRedStars >= currentFirstTo) {
@@ -488,6 +488,8 @@ socket.onmessage = async (event) => {
             // Set winner from previous map
             if (!resultsShown) {
                 resultsShown = true
+                showPicking(true)
+
                 let currentWinner
                 if (data.tourney.manager.gameplay.score.left > data.tourney.manager.gameplay.score.right && currentPickedTile) {
                     currentWinner = "Red"
