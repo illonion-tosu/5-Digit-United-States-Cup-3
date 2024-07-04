@@ -54,7 +54,7 @@
     position: absolute;top: 62px;
     display: flex;
     transition: 500ms ease-in-out;
-    oapcity: 1;
+    opacity: 1;
 }
 #redTeamStars { left: 168px; }
 #blueTeamStars { 
