@@ -4,7 +4,6 @@ let allBeatmaps
 async function getMappool() {
     const response = await fetch("http://127.0.0.1:24050/5DUSC3/_data/beatmaps.json")
     const mappool = await response.json()
-    console.log(mappool)
     allBeatmaps = mappool.beatmaps
     roundTextEl.innerText = mappool.roundName.toUpperCase()
 }
@@ -32,6 +31,7 @@ let currentRedTeamName, currentBlueTeamName
 let currentBestOf, currentFirstTo, currentRedStars, currentBlueStars
 
 // Score Visibility
+let isStarVisible
 let isScoreVisible
 
 // Current Score
@@ -93,6 +93,7 @@ let chatLength = 0
 
 socket.onmessage = async (event) => {
     const data = JSON.parse(event.data)
+    console.log(data)
 
     // Team Name
     if (currentRedTeamName !== data.tourney.manager.teamName.left) {
@@ -160,6 +161,19 @@ socket.onmessage = async (event) => {
         }
     }
 
+    // Star visibility
+    if (isStarVisible !== data.tourney.manager.bools.starsVisible) {
+        isStarVisible = data.tourney.manager.bools.starsVisible
+
+        if (isStarVisible) {
+            redTeamStarsEl.style.opacity = 1
+            blueTeamStarsEl.style.opacity = 1
+        } else {
+            redTeamStarsEl.style.opacity = 0
+            blueTeamStarsEl.style.opacity = 0
+        }
+    }
+
     // Score Visibility
     if (isScoreVisible !== data.tourney.manager.bools.scoreVisible) {
         isScoreVisible = data.tourney.manager.bools.scoreVisible
@@ -197,7 +211,6 @@ socket.onmessage = async (event) => {
 
         // Score underline and score difference colour change
         const currentDifference = Math.min(1000000, currentScoreDelta) / 1000000
-        console.log(currentDifference, currentScoreDelta)
         if (currentScoreRed > currentScoreBlue) {
             redCurrentUnderlineEl.style.opacity = 1
             blueCurrentUnderlineEl.style.opacity = 0
@@ -284,7 +297,6 @@ socket.onmessage = async (event) => {
 
         // Put in correct stats for mappool map
         const currentMapDetails = findMapInMappool(currentId)
-        console.log(currentMapDetails)
         if (currentMapDetails) {
             foundMapInMappool = true
             mapInformationRightSREl.innerText = `SR: ${Math.round(parseFloat(currentMapDetails.difficultyrating) * 100) / 100}`

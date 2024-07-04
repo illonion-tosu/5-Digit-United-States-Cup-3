@@ -79,6 +79,10 @@
 }
 
 /* Team Stars */
+.teamStarContainer {
+    transition: 500ms ease-in-out;
+    opacity: 1;
+}
 .largeStar {
     position: absolute;
     width: 60px;

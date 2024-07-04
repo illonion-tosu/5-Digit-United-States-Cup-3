@@ -223,6 +223,9 @@ let mapPicked = false
 let resultsShown = false
 let currentPickedTile
 
+// Stars
+let isStarVisible
+
 // OBS Information
 const sceneCollection = document.getElementById("sceneCollection")
 let autoadvance_button = document.getElementById('autoAdvanceButton')
@@ -337,6 +340,19 @@ socket.onmessage = async (event) => {
         } else {
             document.cookie = `winnerTeamName=none; path=/`
             document.cookie = `winnerTeamColour=none; path=/`
+        }
+    }
+
+    // Star visibility
+    if (isStarVisible !== data.tourney.manager.bools.starsVisible) {
+        isStarVisible = data.tourney.manager.bools.starsVisible
+
+        if (isStarVisible) {
+            redTeamStarsEl.style.opacity = 1
+            blueTeamStarsEl.style.opacity = 1
+        } else {
+            redTeamStarsEl.style.opacity = 0
+            blueTeamStarsEl.style.opacity = 0
         }
     }
 
