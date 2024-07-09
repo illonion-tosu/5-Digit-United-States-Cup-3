@@ -764,14 +764,14 @@ function mapClickEvent() {
         let currentContainer = (nextActionTeam === "Red") ? redTeamBanContainerEl : blueTeamBanContainerEl
         let currentTile = currentContainer.children[0]
         if (currentContainer.childElementCount > 1 && 
-            currentContainer.dataset.id &&
-            currentContainer.dataset.action) {
+            currentTile.dataset.id &&
+            currentTile.dataset.action) {
                 currentTile = currentContainer.children[1]
             }
     
         // Get potential previous pick's information
         let previousTileId
-        if (currentTile.hasAttribute("id")) {
+        if (currentTile.hasAttribute("data-id")) {
             previousTileId = currentTile.id
             previousTileId = previousTileId.split("-")[0]
         }
@@ -845,7 +845,13 @@ function mapClickEvent() {
     }
 
     // Switch teams for next action
-    if (nextActionTeam === "Red") nextActionTeam = "Blue"
+	let redTeamBanCount = 0
+	let blueTeamBanCount = 0
+	for (let i = 0; i < redTeamBanContainerEl.childElementCount; i++) if (redTeamBanContainerEl.children[i].dataset.id) redTeamBanCount++
+	for (let i = 0; i < blueTeamBanContainerEl.childElementCount; i++) if (blueTeamBanContainerEl.children[i].dataset.id) blueTeamBanCount++
+	
+	if (redTeamBanCount === blueTeamBanCount && nextAction === "Ban") {}
+    else if (nextActionTeam === "Red") nextActionTeam = "Blue"
     else if (nextActionTeam === "Blue") nextActionTeam = "Red"
     nextActionTextEl.innerText = `${nextActionTeam} ${nextAction}`
 }
