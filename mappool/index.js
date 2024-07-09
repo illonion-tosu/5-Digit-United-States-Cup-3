@@ -233,7 +233,7 @@ let autoadvance_timer_container = document.getElementById('autoAdvanceTimer')
 let autoadvance_timer_label = document.getElementById('autoAdvanceTimerLabel')
 
 let enableAutoAdvance = false
-const gameplay_scene_name = "Gameplay (Gameplay)"
+const gameplay_scene_name = "Gameplay"
 const mappool_scene_name = "Mappool"
 const tema_win_scene_name = "Winner"
 
@@ -465,8 +465,11 @@ socket.onmessage = async (event) => {
                 }
             }
 
+            console.log("do we get here")
             setTimeout(() => {
+                console.log("do we get here 2")
                 if (enableAutoAdvance) {
+                    console.log("do we get here 3")
                     obsGetCurrentScene((scene) => {
                         if (scene.name === gameplay_scene_name) return
                         if (enableAutoAdvance) obsSetCurrentScene(gameplay_scene_name)
@@ -515,7 +518,6 @@ socket.onmessage = async (event) => {
 
                 if (currentWinner) {
                     currentPickedTile.children[1].classList.add(`pickContainerWinner${currentWinner}`)
-                    currentPickedTile.children[2].style.display = "block"
                     currentPickedTile.children[3].classList.remove(`pickContainerBottomNone`)
                     currentPickedTile.children[3].classList.add(`pickContainerBottom${currentWinner}`)
                     currentPickedTile.children[4].style.display = "block"
@@ -771,8 +773,9 @@ function mapClickEvent() {
     
         // Get potential previous pick's information
         let previousTileId
+        console.log(currentTile.hasAttribute("data-id"))
         if (currentTile.hasAttribute("data-id")) {
-            previousTileId = currentTile.id
+            previousTileId = currentTile.dataset.id
             previousTileId = previousTileId.split("-")[0]
         }
         
@@ -789,10 +792,10 @@ function mapClickEvent() {
         this.style.color = "black"
 
         // Remove background colour for previous button
-        let previousTile = document.getElementById(previousTileId)
-        if (document.contains(previousTile)) {
-            previousTile.classList.remove("banColourBackground")
-            previousTile.style.color = "white"
+        let previousTiles = document.querySelectorAll(`[data-id="${previousTileId}"]:not([data-action]), [data-id="${previousTileId}"][data-action=""]`);
+        if (previousTiles.length !== 0) {
+            previousTiles[0].classList.remove("banColourBackground")
+            previousTiles[0].style.color = "white"
         }
     }
 
@@ -822,14 +825,9 @@ function mapClickEvent() {
         currentTile.dataset.action = "Pick"
         currentTile.children[0].style.backgroundImage = `url("${currentMap.imgURL}")`
         currentTile.children[0].style.opacity = 1
+        currentTile.children[2].style.display = "block"
         currentTile.children[3].classList.add("pickContainerBottomNone")
         currentTile.children[5].innerText = `${currentMap.mod}${(checkNumberOfModsInModpoolIsOne(currentMap.mod))? "" : currentMap.order}`
-
-        // Set colour of text on current tile
-        getAverageColor(currentMap.imgURL, function(brightness) {
-            if (brightness > 140) currentTile.children[5].style.color = "black"
-            else currentTile.children[5].style.color = "white"
-        })
 
         // Set background colour for current button
         this.style.color = "black"
@@ -854,40 +852,6 @@ function mapClickEvent() {
     else if (nextActionTeam === "Red") nextActionTeam = "Blue"
     else if (nextActionTeam === "Blue") nextActionTeam = "Red"
     nextActionTextEl.innerText = `${nextActionTeam} ${nextAction}`
-}
-
-// Get average background color
-function getAverageColor(imageUrl, callback) {
-    var img = new Image()
-    img.crossOrigin = 'Anonymous'
-    img.src = imageUrl
-
-    img.onload = function() {
-        var canvas = document.createElement('canvas')
-        var context = canvas.getContext('2d')
-        var width = canvas.width = img.width
-        var height = canvas.height = img.height
-
-        context.drawImage(img, 0, 0, width, height)
-        var imageData = context.getImageData(0, 0, width, height)
-        var data = imageData.data
-
-        var r = 0, g = 0, b = 0
-
-        for (var i = 0; i < data.length; i += 4) {
-            r += data[i]
-            g += data[i + 1]
-            b += data[i + 2]
-        }
-
-        var pixelCount = data.length / 4
-        r = Math.floor(r / pixelCount)
-        g = Math.floor(g / pixelCount)
-        b = Math.floor(b / pixelCount)
-
-        var brightness = (r + g + b) / 3
-        callback(brightness)
-    }
 }
 
 // Check number of mods in particular modpool
@@ -1162,12 +1126,7 @@ function applyChangesSetPick() {
     let currentButton = mappoolSectionButtonsEl.querySelector(`[data-id="${pickManagementSelectedMap}"]`)
     currentButton.style.backgroundColor = "lightgreen"
     currentButton.style.color = "black"
-
-    // Set colour of text on current tile
-    getAverageColor(currentMap.imgURL, function(brightness) {
-        if (brightness > 140) currentPickContainer.children[5].style.color = "black"
-        else currentPickContainer.children[5].style.color = "white"
-    })
+    currentPickContainer.children[2].style.display = "block"
 }
 
 // Remove pick
@@ -1183,6 +1142,7 @@ function applyChangesRemovePick() {
     currentPickContainer.removeAttribute('data-action')
     currentPickContainer.children[0].style.backgroundImage = `none`
     currentPickContainer.children[0].style.opacity = 0
+    currentPickContainer.children[2].style.display = "none"
     currentPickContainer.children[3].classList.remove("pickContainerBottomNone", "pickContainerBottomRed", "pickContainerBottomBlue")
     if (window.getComputedStyle(currentPickContainer.children[4]).display !== "none") {
         currentPickContainer.children[4].style.display = "none"
@@ -1200,7 +1160,6 @@ function applyChangesWinnerOptions() {
     switch (pickManagementWinnerSelectElValue) {
         case "No One":
             currentPickContainer.children[1].classList.remove("pickContainerWinnerRed", "pickContainerWinnerBlue")
-            currentPickContainer.children[2].style.display = "none"
             currentPickContainer.children[3].classList.remove("pickContainerBottomRed", "pickContainerBottomBlue")
             currentPickContainer.children[4].style.display = "none"
             if (currentPickContainer.children[5].innerText === "") currentPickContainer.children[3].classList.remove("pickContainerWinnerNone")
@@ -1209,7 +1168,6 @@ function applyChangesWinnerOptions() {
         case "Red": case "Blue":
             currentPickContainer.children[1].classList.remove("pickContainerWinnerNone", "pickContainerWinnerRed", "pickContainerWinnerBlue")
             currentPickContainer.children[1].classList.add(`pickContainerWinner${pickManagementWinnerSelectElValue}`)
-            currentPickContainer.children[2].style.display = "block"
             currentPickContainer.children[3].classList.remove("pickContainerBottomNone", "pickContainerBottomRed", "pickContainerBottomBlue")
             currentPickContainer.children[3].classList.add(`pickContainerBottom${pickManagementWinnerSelectElValue}`)
             currentPickContainer.children[4].style.display = "block"
