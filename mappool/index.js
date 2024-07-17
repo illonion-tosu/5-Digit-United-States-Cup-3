@@ -465,11 +465,8 @@ socket.onmessage = async (event) => {
                 }
             }
 
-            console.log("do we get here")
             setTimeout(() => {
-                console.log("do we get here 2")
                 if (enableAutoAdvance) {
-                    console.log("do we get here 3")
                     obsGetCurrentScene((scene) => {
                         if (scene.name === gameplay_scene_name) return
                         if (enableAutoAdvance) obsSetCurrentScene(gameplay_scene_name)
@@ -636,6 +633,9 @@ setInterval(() => {
 const logoMajorEl = document.getElementById("logoMajor")
 const logoMinorEl = document.getElementById("logoMinor")
 
+// Bracket Text
+const bracketTextEl = document.getElementById("bracketText")
+
 // Tournament Selection
 const backgroundVideoMajorLeagueEl = document.getElementById("backgroundVideoMajorLeague")
 const tournamentSelectionEl = document.getElementById("tournamentSelection")
@@ -679,6 +679,10 @@ function tournamentSelection(league) {
         // Left Container
         mapInformationLeftContainerEl.classList.add("mapInformationLeftContainerMajor")
         mapInformationLeftContainerEl.classList.remove("mapInformationLeftContainerMinor")
+
+        // Bracket Text
+        bracketTextEl.classList.add("bracketTextMajor")
+        bracketTextEl.classList.remove("bracketTextMinor")
     } else if (league === "minor") {
         // Text on sidebar
         tournamentSelectionEl.innerText = "Minor League"
@@ -713,6 +717,10 @@ function tournamentSelection(league) {
         // Left Container
         mapInformationLeftContainerEl.classList.remove("mapInformationLeftContainerMajor")
         mapInformationLeftContainerEl.classList.add("mapInformationLeftContainerMinor")
+
+        // Bracket Text
+        bracketTextEl.classList.remove("bracketTextMajor")
+        bracketTextEl.classList.add("bracketTextMinor")
     }
 }
 
@@ -773,7 +781,6 @@ function mapClickEvent() {
     
         // Get potential previous pick's information
         let previousTileId
-        console.log(currentTile.hasAttribute("data-id"))
         if (currentTile.hasAttribute("data-id")) {
             previousTileId = currentTile.dataset.id
             previousTileId = previousTileId.split("-")[0]
@@ -1197,4 +1204,11 @@ function getTimeStringFromMilliseconds(milliseconds) {
     let minutes = Math.floor(seconds / 60)
     let secondsCounter = (seconds % 60).toString().padStart(2, '0')
     return `${minutes}:${secondsCounter}`
+}
+
+// Bracket text
+const bracketTextSpecfic = document.getElementById("bracketTextSpecfic")
+function changeBracketText(text) {
+    bracketTextSpecfic.innerText = text
+    document.cookie = `bracket=${text}; path=/`
 }

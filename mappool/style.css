@@ -263,6 +263,17 @@
 #mapInformationSongProgressSection { width: 385px; }
 #mapInformationSongProgressRectangle { width: 305px; }
 
+/* Bracket Text */
+#bracketText { 
+    position: absolute; bottom: 28px; right: 45px;
+    width: 180px;
+    font-family: "Bicyclette"; font-weight: 800; font-size: 38px;
+    text-align: right;
+    transition: 500ms ease-in-out;
+}
+.bracketTextMinor { color: white; }
+.bracketTextMajor { color: black; }
+
 /* Side Bar */
 #sideBar {
     position: absolute; left: 1920px; top: 0;
@@ -288,7 +299,7 @@
 #divider1 { left: 249px; }
 #divider2 { left: 499px; }
 /* Section Stuff */
-.sideBarSection h1 { margin: 20px; }
+.sideBarSection h1 { margin: 12px 20px; }
 .sideBarSectionMainText {
     font-size: 30px;
     margin-left: 20px;
@@ -301,7 +312,7 @@
     align-items: center;
 }
 .sideBarButton {
-    height: 50px;
+    height: 40px;
     margin-bottom: 10px;
     font-family: inherit;
     font-weight: inherit;
@@ -318,7 +329,7 @@
 /* Tournament Selection Section */
 #tournamentSelectionSectionButtons button { width: 100px; }
 /* Next Action Section */
-#nextActionSection { 
+#nextActionSection, #currentBracketText { 
     border-top: 1px solid white; 
     margin: 25px 0px;
 }

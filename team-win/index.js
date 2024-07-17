@@ -44,8 +44,11 @@ const teamBannerEl = document.getElementById("teamBanner")
 const playerSectionEl = document.getElementById("playerSection")
 const redOverlayEl = document.getElementById("redOverlay")
 const blueOverlayEl = document.getElementById("blueOverlay")
-const bracketTextEl = document.getElementById("bracketText")
+const bracketTextSpecficEl = document.getElementById("bracketTextSpecfic")
 setInterval(() => {
+    // Bracket text 
+    bracketTextSpecfic.innerText = getCookie("bracket")
+    
     // If there are teams
     if (allTeams) {
 
@@ -78,9 +81,6 @@ setInterval(() => {
                 const topBottomBarMajorsArray = Array.from(topBottomBarMajors)
                 topBottomBarMajorsArray.forEach(element => element.classList.add("topBottomBarMinor"))
                 topBottomBarMajorsArray.forEach(element => element.classList.remove("topBottomBarMajor"))
-
-                // Set bracket text
-                bracketTextEl.innerText = "MINOR LEAGUE"
             } else {
                 // Set backgrounds
                 backgroundVideoMajorLeagueEl.style.opacity = 1
@@ -95,9 +95,6 @@ setInterval(() => {
                 const topBottomBarMinorsArray = Array.from(topBottomBarMinors)
                 topBottomBarMinorsArray.forEach(element => element.classList.add("topBottomBarMajor"))
                 topBottomBarMinorsArray.forEach(element => element.classList.remove("topBottomBarMinor"))
-
-                // Set bracket text
-                bracketTextEl.innerText = "MAJOR LEAGUE"
             }
         }
 

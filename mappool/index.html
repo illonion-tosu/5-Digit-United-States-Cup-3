@@ -98,6 +98,9 @@
                 <div id="mapInformationSongProgressTimerEnd">0:00</div>
             </div>
         </div>
+
+        <!-- Bracket text -->
+        <div class="bracketTextMinor" id="bracketText"><span id="bracketTextSpecfic">WINNER</span> BRACKET</div></div>
     </div>
 
     <!-- Side Bar -->
@@ -126,6 +129,13 @@
                 <div class="sideBarButtonSection" id="showCurrentlyPickingSectionButtons">
                     <button class="sideBarButton" onclick="showPicking(true)">Show</button>
                     <button class="sideBarButton" onclick="showPicking(false)">Hide</button>
+                </div>
+            </section>
+            <section class="sideBarSection" id="currentBracketText">
+                <h1>Winner or loser bracket?</h1>
+                <div class="sideBarButtonSection" id="showCurrentlyPickingSectionButtons">
+                    <button class="sideBarButton" onclick="changeBracketText('WINNER')">Winner</button>
+                    <button class="sideBarButton" onclick="changeBracketText('LOWER')">Lower</button>
                 </div>
             </section>
             <section id="mappoolSection">
