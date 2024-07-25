@@ -235,7 +235,7 @@ let autoadvance_timer_label = document.getElementById('autoAdvanceTimerLabel')
 let enableAutoAdvance = false
 const gameplay_scene_name = "Gameplay"
 const mappool_scene_name = "Mappool"
-const tema_win_scene_name = "Winner"
+const team_win_scene_name = "Team Win"
 
 function switchAutoAdvance() {
     enableAutoAdvance = !enableAutoAdvance
@@ -463,16 +463,16 @@ socket.onmessage = async (event) => {
                     mapPicked = true
                     currentlyPickingEl.style.display = "none"
                 }
-            }
 
-            setTimeout(() => {
-                if (enableAutoAdvance) {
-                    obsGetCurrentScene((scene) => {
-                        if (scene.name === gameplay_scene_name) return
-                        if (enableAutoAdvance) obsSetCurrentScene(gameplay_scene_name)
-                    })
-                }
-            }, 10000)
+                setTimeout(() => {
+                    if (enableAutoAdvance) {
+                        obsGetCurrentScene((scene) => {
+                            if (scene.name === gameplay_scene_name) return
+                            if (enableAutoAdvance) obsSetCurrentScene(gameplay_scene_name)
+                        })
+                    }
+                }, 10000)
+            }
         }
     }
 
@@ -525,8 +525,8 @@ socket.onmessage = async (event) => {
                     setTimeout(() => {
                         if (currentRedStars === currentFirstTo || currentBlueStars === currentFirstTo) {
                             obsGetCurrentScene((scene) => {
-                                if (scene.name === tema_win_scene_name) return
-                                if (enableAutoAdvance) obsSetCurrentScene(tema_win_scene_name)
+                                if (scene.name === team_win_scene_name) return
+                                if (enableAutoAdvance) obsSetCurrentScene(team_win_scene_name)
                             })
                         } else {
                             obsGetCurrentScene((scene) => {
