@@ -80,7 +80,7 @@
 
 /* Player Section */
 #playerSection {
-    position: absolute; left: 50%; top: 733px;
+    position: absolute; left: 50%; top: 670px;
     transform: translateX(-50%);
     display: flex;
     flex-wrap: wrap;
@@ -95,4 +95,11 @@
 }
 .playerText:nth-child(odd) {
     text-align: right;
+}
+
+/* Chat Display */
+#chatDisplay { 
+    bottom: 90px; left: 50%; 
+    transform: translateX(-50%); 
+    height: 130px;
 }

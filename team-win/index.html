@@ -5,7 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Team Win</title>
 
+    <link rel="stylesheet" href="../_shared/chatDisplay.css">
     <link rel="stylesheet" href="style.css">
+
+    <script src="../_shared/deps/reconnecting-websocket.min.js"></script>
 </head>
 <body>
     <!-- Videos for background -->
@@ -44,6 +47,9 @@
         <div id="bracketText" class="topBottomText textMinor"><span id="bracketTextSpecfic"></span> BRACKET</div>
         <div id="bottomBar" class="topBottomBar topBottomBarMinor"></div>
         <div id="roundName" class="topBottomText textMinor">QUARTERFINALS</div>
+
+        <!-- Chat Display -->
+        <div class="chatDisplayMinor" id="chatDisplay"></div>
     </div>
 
     <script src="index.js"></script>

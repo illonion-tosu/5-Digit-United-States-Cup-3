@@ -4,7 +4,6 @@ let allBeatmaps
 async function getMappool() {
     const response = await fetch("http://127.0.0.1:24050/5DUSC3/_data/beatmaps.json")
     const mappool = await response.json()
-    console.log(mappool)
     allBeatmaps = mappool.beatmaps
     roundNameEl.innerText = mappool.roundName.toUpperCase()
 }
@@ -81,6 +80,22 @@ setInterval(() => {
                 const topBottomBarMajorsArray = Array.from(topBottomBarMajors)
                 topBottomBarMajorsArray.forEach(element => element.classList.add("topBottomBarMinor"))
                 topBottomBarMajorsArray.forEach(element => element.classList.remove("topBottomBarMajor"))
+                // Set majors and minors for chat
+                // Chat Display
+                chatDisplayEl.classList.remove("chatDisplayMajor")
+                chatDisplayEl.classList.add("chatDisplayMinor")
+                // Chat Message Containers
+                const chatMessageContainerElements = document.getElementsByClassName("chatMessageContainer")
+                for (let i = 0; i < chatMessageContainerElements.length; i++) {
+                    chatMessageContainerElements[i].classList.remove("chatMessageContainerMajor")
+                    chatMessageContainerElements[i].classList.add("chatMessageContainerMinor")
+                }
+                // Chat Message times
+                const chatMessageTimeElements = document.getElementsByClassName("chatMessageTime")
+                for (let i = 0; i < chatMessageTimeElements.length; i++) {
+                    chatMessageTimeElements[i].classList.remove("chatMessageTimeMajor")
+                    chatMessageTimeElements[i].classList.add("chatMessageTimeMinor")
+                }
             } else {
                 // Set backgrounds
                 backgroundVideoMajorLeagueEl.style.opacity = 1
@@ -95,6 +110,22 @@ setInterval(() => {
                 const topBottomBarMinorsArray = Array.from(topBottomBarMinors)
                 topBottomBarMinorsArray.forEach(element => element.classList.add("topBottomBarMajor"))
                 topBottomBarMinorsArray.forEach(element => element.classList.remove("topBottomBarMinor"))
+                // Set majors and minors for chat
+                // Chat Display
+                chatDisplayEl.classList.add("chatDisplayMajor")
+                chatDisplayEl.classList.remove("chatDisplayMinor")
+                // Chat Message Containers
+                const chatMessageContainerElements = document.getElementsByClassName("chatMessageContainer")
+                for (let i = 0; i < chatMessageContainerElements.length; i++) {
+                    chatMessageContainerElements[i].classList.add("chatMessageContainerMajor")
+                    chatMessageContainerElements[i].classList.remove("chatMessageContainerMinor")
+                }
+                // Chat Message Time
+                const chatMessageTimeElements = document.getElementsByClassName("chatMessageTime")
+                for (let i = 0; i < chatMessageTimeElements.length; i++) {
+                    chatMessageTimeElements[i].classList.add("chatMessageTimeMajor")
+                    chatMessageTimeElements[i].classList.remove("chatMessageTimeMinor")
+                }
             }
         }
 
@@ -120,3 +151,64 @@ setInterval(() => {
         }
     }
 }, 500)
+
+// Socket Events
+// Credits: VictimCrasher - https://github.com/VictimCrasher/static/tree/master/WaveTournament
+const socket = new ReconnectingWebSocket("ws://" + location.host + "/ws")
+socket.onopen = () => { console.log("Successfully Connected") }
+socket.onclose = event => { console.log("Socket Closed Connection: ", event); socket.send("Client Closed!") }
+socket.onerror = error => { console.log("Socket Error: ", error) }
+
+// Chat Display
+const chatDisplayEl = document.getElementById("chatDisplay")
+let chatLength = 0
+
+socket.onmessage = async (event) => {
+    const data = JSON.parse(event.data)
+
+    // Chat Display
+    if (chatLength !== data.tourney.manager.chat.length) {
+        // Chat stuff
+        // This is also mostly taken from Victim Crasher: https://github.com/VictimCrasher/static/tree/master/WaveTournament
+        (chatLength === 0 || chatLength > data.tourney.manager.chat.length) ? (chatDisplayEl.innerHTML = "", chatLength = 0) : null;
+        const fragment = document.createDocumentFragment()
+
+        for (let i = chatLength; i < data.tourney.manager.chat.length; i++) {
+            const chatColour = data.tourney.manager.chat[i].team
+
+            // Chat message container
+            const chatMessageContainer = document.createElement("div")
+            chatMessageContainer.classList.add("chatMessageContainer", (previousTournamentSelectionLeague === "minor")? "chatMessageContainerMinor": "ChatMessageContainerMajor")
+
+            // Time
+            const chatMessageTime = document.createElement("div")
+            chatMessageTime.classList.add("chatMessageTime", (previousTournamentSelectionLeague === "minor")? "chatMessageTimeMinor": "chatMessageTimeMajor")
+            chatMessageTime.innerText = data.tourney.manager.chat[i].time
+
+            // Whole Message
+            const chatMessageContent = document.createElement("div")
+            chatMessageContent.classList.add("chatMessageContent")  
+
+            // Name
+            const chatMessageName = document.createElement("div")
+            chatMessageName.classList.add(chatColour, "chatMessageUser")
+            chatMessageName.innerText = data.tourney.manager.chat[i].name + ": "
+
+            // Message
+            const chatMessageText = document.createElement("div")
+            chatMessageText.classList.add("chatMessageText")
+            chatMessageText.innerText = data.tourney.manager.chat[i].messageBody
+
+            chatMessageContent.append(chatMessageName, chatMessageText)
+            chatMessageContainer.append(chatMessageTime, chatMessageContent)
+            fragment.append(chatMessageContainer)
+        }
+
+        chatDisplayEl.append(fragment)
+        chatLength = data.tourney.manager.chat.length
+        chatDisplayEl.scrollTo({
+            top: chatDisplayEl.scrollHeight,
+            behavior: 'smooth'
+        })
+    }
+}
