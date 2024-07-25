@@ -462,16 +462,16 @@ socket.onmessage = async (event) => {
                     currentButton.click()
                     mapPicked = true
                     currentlyPickingEl.style.display = "none"
-                }
 
-                setTimeout(() => {
-                    if (enableAutoAdvance) {
-                        obsGetCurrentScene((scene) => {
-                            if (scene.name === gameplay_scene_name) return
-                            if (enableAutoAdvance) obsSetCurrentScene(gameplay_scene_name)
-                        })
-                    }
-                }, 10000)
+                    setTimeout(() => {
+                        if (enableAutoAdvance) {
+                            obsGetCurrentScene((scene) => {
+                                if (scene.name === gameplay_scene_name) return
+                                if (enableAutoAdvance) obsSetCurrentScene(gameplay_scene_name)
+                            })
+                        }
+                    }, 10000)
+                }
             }
         }
     }
