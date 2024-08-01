@@ -329,10 +329,7 @@
 /* Tournament Selection Section */
 #tournamentSelectionSectionButtons button { width: 100px; }
 /* Next Action Section */
-#nextActionSection, #currentBracketText { 
-    border-top: 1px solid white; 
-    margin: 25px 0px;
-}
+#nextActionSection, #currentBracketText { border-top: 1px solid white; }
 #tournamentSelectionSectionButtons, #nextActionSectionButtons, #showCurrentlyPickingSectionButtons {
     margin: 0px 20px;
     flex-direction: row;
